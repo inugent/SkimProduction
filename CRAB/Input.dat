@@ -1,4 +1,17 @@
-/TauPlusX/Run2011A-PromptReco-v6/AOD https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet HLT_IsoMu15_LooseIsoPFTau15_v8_TauPlusX_TauNtuple DATA_SkimmedTauNtuple.root Cert_160404-180252_7TeV_PromptReco_Collisions11_JSON.txt -1 -1 200 grid-ce.physik.rwth-aachen.de 
+datasetpath = /TauPlusX/Run2011A-PromptReco-v6/AOD
+dbs_url = https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_01_writer/servlet/DBSServlet
+publish_data_name = HLT_IsoMu15_LooseIsoPFTau15_v8_TauPlusX_TauNtuple
+output_file = DATA_SkimmedTauNtuple.root
+lumi_mask = Cert_160404-180252_7TeV_PromptReco_Collisions11_JSON.txt
+total_number_of_lumis = -1
+total_number_of_events = -1
+number_of_jobs = 200
+CE_white_list = grid-ce.physik.rwth-aachen.de
 
-/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola/Summer11-PU_S4_START42_V11-v1/AODSIM http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet HLT_IsoMu12_LooseIsoPFTau10_v2_DYJetsToLL_TauNtuple MC_DY_SkimmedTauNtuple.root none -1 -1 200 grid-ce.physik.rwth-aachen.de
-
+datasetpath = /DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola/Summer11-PU_S4_START42_V11-v1/AODSIM
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = HLT_IsoMu12_LooseIsoPFTau10_v2_DYJetsToLL_TauNtuple
+output_file = MC_DY_SkimmedTauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 200
+CE_white_list = grid-ce.physik.rwth-aachen.de

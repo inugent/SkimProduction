@@ -7,8 +7,6 @@
 #
 #   substitute a string by another in all files in a directory
 #
-#   Code written by Swagato Banerjee, University of Victoria
-#
 ############################################################
 #
 if (@ARGV < 2) { 
