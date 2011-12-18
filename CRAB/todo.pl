@@ -54,6 +54,7 @@ if( $ARGV[0] eq "--Submit" ){
     @total_number_of_events;
     @number_of_jobs;
     @CE_white_list;
+    @CE_black_list;
     open(DAT, $TempDataSetFile) || die("Could not open file $TempDataSetFile! [ABORTING]");
     $idx=-1;
     while ($item = <DAT>) {
@@ -70,6 +71,7 @@ if( $ARGV[0] eq "--Submit" ){
 	    push(@total_number_of_events,"");
 	    push(@number_of_jobs,"");
 	    push(@CE_white_list,"");
+	    push(@CE_black_list,"");
 	}
 	if($a eq "dbs_url"){
 	    $dbs_url[$idx]=$item;
@@ -95,6 +97,10 @@ if( $ARGV[0] eq "--Submit" ){
 	if($a eq "CE_white_list"){
 	    $CE_white_list[$idx]=$item;
 	}
+	if($a eq "CE_black_list"){
+            $CE_black_list[$idx]=$item;
+        }
+
     }
     close(DAT);
 
@@ -105,15 +111,6 @@ if( $ARGV[0] eq "--Submit" ){
 	$dir=~ s/.root/_CRAB/g;
 	$dir=~ s/output_file =/ /g;
 	printf("\ncreating dir: $dir\n");
-	#printf("\n$datasetpath[$idx]");
-	#printf("\n$dbs_url[$idx]");
-	#printf("\n$publish_data_name[$idx]");
-	#printf("\n$output_file[$idx]");
-	#printf("\n$lumi_mask[$idx]");
-	#printf("\n$total_number_of_lumis[$idx]");
-	#printf("\n$total_number_of_events[$idx]");
-	#printf("\n$number_of_jobs[$idx]");
-	#printf("\n$CE_white_list[$idx]");
 	system(sprintf("mkdir $dir; cp crab_TEMPLATE.cfg  $dir/crab.cfg;cp $pythonfile $dir/"));
 	system(sprintf("./subs \"<datasetpath>\"            \"$datasetpath[$idx] \"                  $dir/crab.cfg"));
 	system(sprintf("./subs \"<dbs_url>\"                \"$dbs_url[$idx] \"                      $dir/crab.cfg"));
@@ -132,6 +129,9 @@ if( $ARGV[0] eq "--Submit" ){
 	if($CE_white_list[$idx] ne "none" || $CE_white_list[$idx] ne ""){
 	    system(sprintf("./subs \"<CE_white_list>\"          \"$CE_white_list[$idx] \"            $dir/crab.cfg"));
 	}
+	if($CE_black_list[$idx] ne "none" || $CE_black_list[$idx] ne ""){
+            system(sprintf("./subs \"<CE_black_list>\"          \"$CE_black_list[$idx] \"            $dir/crab.cfg"));
+        }
 	if($njobs !=0){
 	    system(sprintf("cd $dir ; crab -create -submit $njobs ; cd .."));
 	}

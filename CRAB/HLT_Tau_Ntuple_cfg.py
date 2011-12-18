@@ -17,9 +17,8 @@ process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
 
 
 
-
-#process.GlobalTag.globaltag = 'START42_V11::All'
-process.GlobalTag.globaltag = 'GR_P_V22::All'
+process.GlobalTag.globaltag = 'START42_V11::All'
+#process.GlobalTag.globaltag = 'GR_P_V22::All'
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load("Configuration.EventContent.EventContent_cff")
@@ -31,15 +30,15 @@ process.load("Configuration.StandardSequences.EndOfProcess_cff")
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger.categories.append('InputTrackSelector')
-process.MessageLogger.categories.append('KinematicTauProducer')
+process.MessageLogger.categories.append('KinematicTauBasicProducer')
 process.MessageLogger.categories.append('KinematicTauSkim')
-process.MessageLogger.debugModules = cms.untracked.vstring('KinematicTauProducer', 'KinematicTauSkim')
+process.MessageLogger.debugModules = cms.untracked.vstring('KinematicTauBasicProducer', 'KinematicTauSkim')
 process.MessageLogger.cerr = cms.untracked.PSet(
      threshold = cms.untracked.string('DEBUG'),
      FwkReport = cms.untracked.PSet(limit = cms.untracked.int32(0)),
      DEBUG = cms.untracked.PSet(limit = cms.untracked.int32(0)),
      InputTrackSelector = cms.untracked.PSet(limit = cms.untracked.int32(-1)),
-     KinematicTauProducer = cms.untracked.PSet(limit = cms.untracked.int32(-1)),
+     KinematicTauBasicProducer = cms.untracked.PSet(limit = cms.untracked.int32(-1)),
      KinematicTauSkim = cms.untracked.PSet(limit = cms.untracked.int32(-1))
 )
 
@@ -47,8 +46,8 @@ process.MessageLogger.cerr = cms.untracked.PSet(
 
 process.source = cms.Source("PoolSource",
 	fileNames = cms.untracked.vstring(
-    'file:///home/home2/institut_3b/cherepanov/work/CMSSW_4_2_0/src/Ztautau/TauXPromptReco172_798.root'),
-#    'file:///home/home2/institut_3b/cherepanov/work/CMSSW_4_2_0/src/Ztautau/SkimmingEff/BA94F49F-A29C-E011-A212-E0CB4EA0A908.root'),
+#    'file:///home/home2/institut_3b/cherepanov/work/CMSSW_4_2_0/src/Ztautau/TauXPromptReco172_798.root'),
+    'file://dcap://grid-dcap.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/store/mc/Summer11/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola/AODSIM/PU_S4_START42_V11-v1/0000/BE080B04-B59C-E011-8A92-90E6BA19A25E.root'),
     )
 
 
@@ -79,36 +78,34 @@ process.load("SkimmingTools.EventCounter.countInput_cfi")
 process.load("SkimmingTools.EventCounter.countTriggerPassed_cfi")
 process.load("SkimmingTools.EventCounter.countKinFitPassed_cfi")
 process.load("TauDataFormat.TauNtuple.tauntuple_cfi")
+process.load("TauDataFormat.TauNtuple.eventCounter_cfi")
 
 
+###### New HPS
+process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
+###### New HPS
+
+#process.NtupleMaker.PUInputFile = cms.untracked.string("../data/Lumi_160404_180252_andMC_Flat_Tail.root")
 
 
 process.filter_1 = hlt.triggerResultsFilter.clone(
     hltResults = cms.InputTag( "TriggerResults", "", "HLT" ),
-    triggerConditions =  ( 'HLT_IsoMu15_LooseIsoPFTau15_v8', ), #  data TauPlusX PromtReco-6
-#    triggerConditions =  ( 'HLT_IsoMu12_LooseIsoPFTau10_v2', ),  #  trigger MC  DY sample 
+#    triggerConditions =  ( 'HLT_IsoMu15_LooseIsoPFTau15_v8', ), #  data TauPlusX PromtReco-6
+    triggerConditions =  ( 'HLT_IsoMu12_LooseIsoPFTau10_v2', ),  #  trigger MC  DY sample 
     l1tResults = '',
     throw = False
     )
 
+process.EvntCounterA.DataMCType = cms.untracked.string("dy_tautau");
+process.EvntCounterB.DataMCType = cms.untracked.string("dy_tautau");
+
+
 
 process.schedule = cms.Schedule()
 
+process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.TrigFilter*process.CountTriggerPassedEvents*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.CountKinFitPassedEvents*process.DetailedProducer*process.EvntCounterB*process.NtupleMaker)
 
-process.KinFitSkim  = cms.Path(process.CountInputEvents*process.filter_1*process.CountTriggerPassedEvents*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauProducer*process.KinematicTauSkim*process.CountKinFitPassedEvents*process.DetailedProducer*process.NtupleMaker)
-#process.Ntuple      = cms.Path(process.NtupleMaker)
-#process.skim_QualityTau = cms.Path(process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauProducer*process.KinematicTauSkim)
-
-#process.schedule.append(process.TriggerSkim)
 process.schedule.append(process.KinFitSkim)
-#process.schedule.append(process.Ntuple)
-
-#process.schedule.append(process.endjob_step)
-#process.schedule.append(process.out_step)
 
 
 
-
-
-#process.schedule.append(process.out_step)
-#process.schedule.append(process.endjob_step)
