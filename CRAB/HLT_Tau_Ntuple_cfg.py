@@ -16,8 +16,8 @@ process.load('Configuration.StandardSequences.GeometryExtended_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
 
 
-
-process.GlobalTag.globaltag = 'START42_V11::All'
+<globaltag>
+#process.GlobalTag.globaltag = 'START42_V11::All'
 #process.GlobalTag.globaltag = 'GR_P_V22::All'
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
@@ -96,8 +96,8 @@ process.filter_1 = hlt.triggerResultsFilter.clone(
     throw = False
     )
 
-process.EvntCounterA.DataMCType = cms.untracked.string("dy_tautau");
-process.EvntCounterB.DataMCType = cms.untracked.string("dy_tautau");
+process.EvntCounterA.DataMCType = cms.untracked.string("<DataType>");
+process.EvntCounterB.DataMCType = cms.untracked.string("<DataType>");
 
 
 
