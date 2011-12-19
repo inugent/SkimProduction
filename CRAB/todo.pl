@@ -42,6 +42,9 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("    WW\n");
     printf("    WZ\n");
     printf("    qcd\n");
+    printf("\n\n./todo.pl --Submit <InputPar.txt>                  Produces the SkimSummary.log to summarize the skim information."); 
+    printf("\n                                                   This is run after retreiving the output from the job. The output");
+    printf("\n                                                   goes in Code/InputData/.");
     printf("\n\n");
     exit(0); 
 } 
@@ -167,4 +170,92 @@ if( $ARGV[0] eq "--Submit" ){
 	}
     	$idx++;  
     }
+}
+
+
+
+if( $ARGV[0] eq "--SkimSummary" ){
+    $TempDataSetFile=$ARGV[1];
+    @ID;
+    @NEvents;
+    @NEventsErr;
+    @NEvents_sel;
+    @NEventsErr_sel;
+    @NEvents_noweight;
+    @NEvents_noweight_sel;
+
+    @DataType;
+    open(DAT, $TempDataSetFile) || die("Could not open file $TempDataSetFile! [ABORTING]");
+    $idx=-1;
+    while ($item = <DAT>) {
+        chomp($item);
+        ($a,$b,$c,$d)=split(/ /,$item);
+        if($a eq "DataType"){
+	    push(@DataType,$c);
+	}
+    }
+    close(DAT);
+    $idx=0;
+    foreach $data (@DataType){
+        $datadir=$DataType[$idx];
+        $datadir=~ s/.root/_CRAB/g;
+        $datadir=~ s/DataType =/ /g;
+	$idx++;
+	$myDIR=getcwd;
+	#printf("\n $myDIR \n");
+	opendir(DIR,"$myDIR/$datadir");
+	@dirs = grep {( /crab_/)} readdir(DIR);
+	closedir DIR;
+	foreach $subdir (@dirs){
+	    printf("\nOpening Dir: $myDIR/$datadir/$subdir\n");
+	    opendir(SUBDIR,"$myDIR/$datadir/$subdir/res/");
+	    @files = grep { /stdout/ } readdir(SUBDIR);
+	    foreach $file (@files){
+		open(INPUT,"$myDIR/$datadir/$subdir/res/$file")  || die "can't open log file $myDIR/$datadir/$subdir/res/$file" ;
+		while (<INPUT>) {
+		    ($i1,$i2,$i3,$i4,$i5,$i6,$i7,$i8,$i9,$i10,$i11)=split(/ /,$_);
+		    if($i1 eq "[EventCounter-AllEvents]:" || $i1 eq "[EventCounter-BeforeTauNtuple]:"){
+			$flag=0;
+		      IDLOOP: {
+			  foreach $currentid (@ID){
+			      if($currentid eq $i2){
+				  last IDLOOP;
+			      }
+			      $flag++;
+			  }
+		      }
+			$size=@ID;
+			if($flag==$size){
+			    push(@ID,$i2);
+			    push(@NEvents,0);
+			    push(@NEventsErr,0);
+			    push(@NEvents_sel,0);
+			    push(@NEventsErr_sel,0);
+			    push(@NEvents_noweight,0);
+			    push(@NEvents_noweight_sel,0);
+			}
+			if($i1 eq "[EventCounter-AllEvents]:"){
+			    $NEvents[$flag]+=$i7;
+			    $NEvents_noweight[$flag]+=$i11;
+			    $NEventsErr[$flag]=sqrt($NEvents_noweight[$flag]);
+			}
+			if($i1 eq "[EventCounter-BeforeTauNtuple]:"){
+			    $NEvents_sel[$flag]+=$i7;
+			$NEvents_noweight_sel[$flag]+=$i11;
+			    $NEventsErr_sel[$flag]=sqrt($NEvents_noweight_sel[$flag]);
+			}
+		    }
+		}
+		close(OUTPUT) ;
+		$idx=0;
+		system(sprintf("rm SkimSummary.log"));
+		foreach $currentid (@ID){
+		    #printf("%d %f %f %f %f %f %f \n",$ID[$idx],$NEvents[$idx],$NEventsErr[$idx],$NEvents_sel[$idx],$NEventsErr_sel[$idx],$NEvents_noweight[$idx],$NEvents_noweight_sel[$idx]);
+		    system(sprintf("echo \"%d %f %f %f %f %f %f \" >> SkimSummary.log",$ID[$idx],$NEvents[$idx],$NEventsErr[$idx],$NEvents_sel[$idx],$NEventsErr_sel[$idx],$NEvents_noweight[$idx],$NEvents_noweight_sel[$idx]));
+		    $idx++;
+		}
+	    }
+	}
+    }
+    printf("SkimSummary.log has been generated. Please copy it into Code/InputData/ ");
 }
