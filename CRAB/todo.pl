@@ -213,7 +213,7 @@ if( $ARGV[0] eq "--SkimSummary" ){
 	    foreach $file (@files){
 		open(INPUT,"$myDIR/$datadir/$subdir/res/$file")  || die "can't open log file $myDIR/$datadir/$subdir/res/$file" ;
 		while (<INPUT>) {
-		    ($i1,$i2,$i3,$i4,$i5,$i6,$i7,$i8,$i9,$i10,$i11)=split(/ /,$_);
+		    ($i1,$i2,$i3,$i4,$i5,$i6,$i7,$i8,$i9,$i10,$i11,$i12,$i13)=split(/ /,$_);
 		    if($i1 eq "[EventCounter-AllEvents]:" || $i1 eq "[EventCounter-BeforeTauNtuple]:"){
 			$flag=0;
 		      IDLOOP: {
@@ -236,13 +236,15 @@ if( $ARGV[0] eq "--SkimSummary" ){
 			}
 			if($i1 eq "[EventCounter-AllEvents]:"){
 			    $NEvents[$flag]+=$i7;
-			    $NEvents_noweight[$flag]+=$i11;
-			    $NEventsErr[$flag]=sqrt($NEvents_noweight[$flag]);
+			    $NEvents_noweight[$flag]+=$i13;
+			    $tmp=$NEventsErr[$flag];
+			    $NEventsErr[$flag]=sqrt($tmp*$tmp+$i9*$i9);
 			}
 			if($i1 eq "[EventCounter-BeforeTauNtuple]:"){
 			    $NEvents_sel[$flag]+=$i7;
-			$NEvents_noweight_sel[$flag]+=$i11;
-			    $NEventsErr_sel[$flag]=sqrt($NEvents_noweight_sel[$flag]);
+			    $NEvents_noweight_sel[$flag]+=$i13;
+			    $tmp=$NEventsErr_sel[$flag];
+                            $NEventsErr_sel[$flag]=sqrt($tmp*$tmp+$i9*$i9);
 			}
 		    }
 		}
