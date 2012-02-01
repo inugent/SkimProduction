@@ -103,7 +103,7 @@ process.EvntCounterB.DataMCType = cms.untracked.string("<DataType>");
 
 process.schedule = cms.Schedule()
 
-process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.TrigFilter*process.CountTriggerPassedEvents*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.CountKinFitPassedEvents*process.DetailedProducer*process.EvntCounterB*process.NtupleMaker)
+process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.TrigFilter*process.CountTriggerPassedEvents*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.CountKinFitPassedEvents*process.KinematicTauProducer*process.EvntCounterB*process.NtupleMaker)
 
 process.schedule.append(process.KinFitSkim)
 
