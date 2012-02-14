@@ -42,7 +42,7 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("    WW\n");
     printf("    WZ\n");
     printf("    qcd\n");
-    printf("\n\n./todo.pl --Submit <InputPar.txt>                  Produces the SkimSummary.log to summarize the skim information."); 
+    printf("\n\n./todo.pl --SkimSummary <InputPar.txt> <CodeDir> Produces the SkimSummary.log to summarize the skim information."); 
     printf("\n                                                   This is run after retreiving the output from the job. The output");
     printf("\n                                                   goes in Code/InputData/.");
     printf("\n\n");
@@ -177,6 +177,7 @@ if( $ARGV[0] eq "--Submit" ){
 
 if( $ARGV[0] eq "--SkimSummary" ){
     $TempDataSetFile=$ARGV[1];
+    $CodeDir=$ARGV[2];
     @ID;
     @NEvents;
     @NEventsErr;
@@ -184,6 +185,7 @@ if( $ARGV[0] eq "--SkimSummary" ){
     @NEventsErr_sel;
     @NEvents_noweight;
     @NEvents_noweight_sel;
+    @NFiles;
 
     @DataType;
     open(DAT, $TempDataSetFile) || die("Could not open file $TempDataSetFile! [ABORTING]");
@@ -234,12 +236,14 @@ if( $ARGV[0] eq "--SkimSummary" ){
 			    push(@NEventsErr_sel,0);
 			    push(@NEvents_noweight,0);
 			    push(@NEvents_noweight_sel,0);
+			    push(@NFiles,0);
 			}
 			if($i1 eq "[EventCounter-AllEvents]:"){
 			    $NEvents[$flag]+=$i7;
 			    $NEvents_noweight[$flag]+=$i13;
 			    $tmp=$NEventsErr[$flag];
 			    $NEventsErr[$flag]=sqrt($tmp*$tmp+$i9*$i9);
+			    $NFiles[$flag]+=1;
 			}
 			if($i1 eq "[EventCounter-BeforeTauNtuple]:"){
 			    $NEvents_sel[$flag]+=$i7;
@@ -253,12 +257,12 @@ if( $ARGV[0] eq "--SkimSummary" ){
 		$idx=0;
 		system(sprintf("rm SkimSummary.log"));
 		foreach $currentid (@ID){
-		    #printf("%d %f %f %f %f %f %f \n",$ID[$idx],$NEvents[$idx],$NEventsErr[$idx],$NEvents_sel[$idx],$NEventsErr_sel[$idx],$NEvents_noweight[$idx],$NEvents_noweight_sel[$idx]);
-		    system(sprintf("echo \"%d %f %f %f %f %f %f \" >> SkimSummary.log",$ID[$idx],$NEvents[$idx],$NEventsErr[$idx],$NEvents_sel[$idx],$NEventsErr_sel[$idx],$NEvents_noweight[$idx],$NEvents_noweight_sel[$idx]));
+		    system(sprintf("echo \"ID= %d AllEvt= %f AllEvtErr= %f SelEvt= %f  SelEvtErr= %f AllEvtnoweight= %f SelEvtnoweight= %f Eff(weight)= %f Eff(noweight)= %f Nfile= %d \" >> SkimSummary.log",$ID[$idx],$NEvents[$idx],$NEventsErr[$idx],$NEvents_sel[$idx],$NEventsErr_sel[$idx],$NEvents_noweight[$idx],$NEvents_noweight_sel[$idx], $NEvents_sel[$idx]/$NEvents[$idx],$NEvents_noweight_sel[$idx]/$NEvents_noweight[$idx],$NFiles[$idx]));
 		    $idx++;
 		}
 	    }
 	}
     }
-    printf("SkimSummary.log has been generated. Please copy it into Code/InputData/ ");
+    system(sprintf("cp SkimSummary.log $CodeDir/InputData/SkimSummary.log "));
+    printf("SkimSummary.log has been generated. It has been copied to $CodeDir/InputData/SkimSummary.log\n ");
 }
