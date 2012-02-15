@@ -200,17 +200,20 @@ if( $ARGV[0] eq "--SkimSummary" ){
     close(DAT);
     $idx=0;
     foreach $data (@DataType){
-        $datadir=$DataType[$idx];
-        $datadir=~ s/.root/_CRAB/g;
-        $datadir=~ s/DataType =/ /g;
+	printf("Looking for: $data \n");
+        $datadir=$data;
+#$DataType[$idx];
+        #$datadir=~ s/.root/_CRAB/g;
+        #$datadir=~ s/DataType =/ /g;
 	$idx++;
 	$myDIR=getcwd;
-	#printf("\n $myDIR \n");
-	opendir(DIR,"$myDIR/$datadir");
-	@dirs = grep {( /crab_/)} readdir(DIR);
+	opendir(DIR,"$myDIR/$datadir/");
+	printf("Searching: $myDIR/$datadir/ \n");
+	system(sprintf("ls $myDIR/$datadir/"));
+	@dirs = grep {(/crab_/)} readdir(DIR);
 	closedir DIR;
 	foreach $subdir (@dirs){
-	    printf("\nOpening Dir: $myDIR/$datadir/$subdir\n");
+	    printf("Opening Dir: $myDIR/$datadir/$subdir\n");
 	    opendir(SUBDIR,"$myDIR/$datadir/$subdir/res/");
 	    @files = grep { /stdout/ } readdir(SUBDIR);
 	    foreach $file (@files){
