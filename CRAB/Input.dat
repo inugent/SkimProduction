@@ -10,8 +10,9 @@ number_of_jobs = 200
 CE_white_list = grid-ce.physik.rwth-aachen.de
 process.GlobalTag.globaltag = 'FT_R_44_V9::All'
 
+
 DataType = dy_ll
-datasetpath = /DYJetsToLL_M-10To50_TuneZ2_7TeV-madgraph/Fall11-PU_S6_START44_V9B-v1/AODSIM
+datasetpath = /DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola/Fall11-PU_S6_START44_V9B-v1/AODSIM
 dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
 publish_data_name = HLT_IsoMu_LooseIsoPFTau_DYJetsToLL_TauNtuple
 output_file = TauNtuple.root
