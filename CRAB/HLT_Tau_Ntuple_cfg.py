@@ -101,7 +101,8 @@ process.filter_1 = hlt.triggerResultsFilter.clone(
 process.EvntCounterA.DataMCType = cms.untracked.string("<DataType>");
 process.EvntCounterB.DataMCType = cms.untracked.string("<DataType>");
 
-
+#### uncomment for local running
+#process.NtupleMaker.PUInputFile = cms.untracked.string("Lumi_160404_180252_andMC_Flat_Tail.root");
 
 process.schedule = cms.Schedule()
 
