@@ -62,6 +62,9 @@ for($l=3;$l<$numArgs; $l++){
 
 if( $ARGV[0] eq "--Submit" ){
 
+    #organize the Lumi_XYZ.root file
+    system(sprintf("mkdir ../../data"));    
+    system(sprintf("cp  ../../TauDataFormat/TauNtuple/Lumi_160404_180252_andMC_Flat_Tail.root ../../data/ "));
     
     $pythonfile=$ARGV[1];
     $TempDataSetFile=$ARGV[2];
@@ -134,7 +137,6 @@ if( $ARGV[0] eq "--Submit" ){
 
     }
     close(DAT);
-
     ## create crab files and submit 
     $idx=0;
     foreach $data (@DataType){
@@ -143,7 +145,7 @@ if( $ARGV[0] eq "--Submit" ){
 	$dir=~ s/DataType =/ /g;
 	printf("\ncreating dir: $dir\n");
 	system(sprintf("mkdir $dir; cp crab_TEMPLATE.cfg  $dir/crab.cfg;cp $pythonfile $dir/"));
-	system(sprintf("cp ../../Lumi_160404_180252_andMC_Flat_Tail.root $dir"));
+	system(sprintf("cp ../../data/Lumi_160404_180252_andMC_Flat_Tail.root $dir"));
 	system(sprintf("./subs \"<DataType>\"               \"$DataType[$idx]\"                      $dir/$pythonfile"));
 	system(sprintf("./subs \"<globaltag>\"               \"$globaltag[$idx]\"                    $dir/$pythonfile"));
 	system(sprintf("./subs \"<datasetpath>\"            \"$datasetpath[$idx]\"                   $dir/crab.cfg"));
