@@ -145,7 +145,7 @@ if( $ARGV[0] eq "--Submit" ){
 	$dir=~ s/DataType =/ /g;
 	printf("\ncreating dir: $dir\n");
 	system(sprintf("mkdir $dir; cp crab_TEMPLATE.cfg  $dir/crab.cfg;cp $pythonfile $dir/"));
-	system(sprintf("cp ../../data/Lumi_160404_180252_andMC_Flat_Tail.root $dir"));
+	#system(sprintf("cp ../../data/Lumi_160404_180252_andMC_Flat_Tail.root $dir"));
 	system(sprintf("./subs \"<DataType>\"               \"$DataType[$idx]\"                      $dir/$pythonfile"));
 	system(sprintf("./subs \"<globaltag>\"               \"$globaltag[$idx]\"                    $dir/$pythonfile"));
 	system(sprintf("./subs \"<datasetpath>\"            \"$datasetpath[$idx]\"                   $dir/crab.cfg"));

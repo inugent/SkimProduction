@@ -87,8 +87,6 @@ process.load("TauDataFormat.TauNtuple.eventCounter_cfi")
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 ###### New HPS
 
-#process.NtupleMaker.PUInputFile = cms.untracked.string("../data/Lumi_160404_180252_andMC_Flat_Tail.root")
-
 
 process.filter_1 = hlt.triggerResultsFilter.clone(
     hltResults = cms.InputTag( "TriggerResults", "", "HLT" ),
@@ -101,8 +99,7 @@ process.filter_1 = hlt.triggerResultsFilter.clone(
 process.EvntCounterA.DataMCType = cms.untracked.string("<DataType>");
 process.EvntCounterB.DataMCType = cms.untracked.string("<DataType>");
 
-#### uncomment for local running
-#process.NtupleMaker.PUInputFile = cms.untracked.string("Lumi_160404_180252_andMC_Flat_Tail.root");
+process.NtupleMaker.PUInputFile = cms.untracked.string("$CMSSW_BASE/src/data/Lumi_160404_180252_andMC_Flat_Tail.root");
 
 process.schedule = cms.Schedule()
 
