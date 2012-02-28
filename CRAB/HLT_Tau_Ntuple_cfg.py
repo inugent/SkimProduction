@@ -17,8 +17,6 @@ process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
 
 
 <globaltag>
-#process.GlobalTag.globaltag = 'START42_V11::All'
-#process.GlobalTag.globaltag = 'GR_P_V22::All'
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load("Configuration.EventContent.EventContent_cff")
@@ -46,8 +44,7 @@ process.MessageLogger.cerr = cms.untracked.PSet(
 
 process.source = cms.Source("PoolSource",
 	fileNames = cms.untracked.vstring(
-#    'file:///home/home2/institut_3b/cherepanov/work/CMSSW_4_2_0/src/Ztautau/TauXPromptReco172_798.root'),
-    'file://dcap://grid-dcap.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/store/mc/Summer11/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola/AODSIM/PU_S4_START42_V11-v1/0000/BE080B04-B59C-E011-8A92-90E6BA19A25E.root'),
+    'file://dcap://grid-dcap.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/store/data/Run2011A/TauPlusX/AOD/08Nov2011-v1/0001/28F4BD62-2416-E111-922D-00261894395C.root'),
     )
 
 
