@@ -8,6 +8,7 @@ import HLTrigger.HLTfilters.triggerResultsFilter_cfi as hlt
 
 process = cms.Process("AOD")
 
+
 process.load('Configuration/StandardSequences/Services_cff')
 process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration/StandardSequences/MagneticField_38T_cff')
@@ -15,12 +16,15 @@ process.load('Configuration.StandardSequences.GeometryExtended_cff')
 #process.load('Configuration.StandardSequences.GeometryDB_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
 
-
 <globaltag>
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load("Configuration.EventContent.EventContent_cff")
 process.load('HLTrigger.Configuration.HLT_GRun_cff')
+
+process.load("Configuration.StandardSequences.Geometry_cff")
+process.load("Configuration.StandardSequences.MagneticField_cff")
+process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 
 #HLT_Photon15_TrackIso_L1R
 process.load("Configuration.StandardSequences.EndOfProcess_cff")
@@ -125,14 +129,14 @@ process.filter_1 = hlt.triggerResultsFilter.clone(
     throw = False
     )
 
-process.EvntCounterA.DataMCType = cms.untracked.string("<DataType>");
-process.EvntCounterB.DataMCType = cms.untracked.string("<DataType>");
+process.EvntCounterA.DataMCType = cms.untracked.string("Data");
+process.EvntCounterB.DataMCType = cms.untracked.string("Data");
 
 process.NtupleMaker.PUInputFile = cms.untracked.string("$CMSSW_BASE/src/data/Lumi_160404_180252_andMC_Flat_Tail.root");
 
 process.schedule = cms.Schedule()
 
-process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.MultiTrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.primaryVertexFilter*process.noscraping*process.HBHENoiseFilter*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.CountKinFitPassedEvents*process.KinematicTauProducer*process.EvntCounterB*process.NtupleMaker)
+process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.PFTau*process.MultiTrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.primaryVertexFilter*process.noscraping*process.HBHENoiseFilter*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.CountKinFitPassedEvents*process.KinematicTauProducer*process.EvntCounterB*process.NtupleMaker)
 
 process.schedule.append(process.KinFitSkim)
 
