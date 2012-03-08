@@ -65,7 +65,7 @@ if( $ARGV[0] eq "--Submit" ){
     #organize the Lumi_XYZ.root file
     system(sprintf("mkdir ../../data"));    
     system(sprintf("cp  ../../TauDataFormat/TauNtuple/Lumi_160404_180252_andMC_Flat_Tail.root ../../data/ "));
-    
+    system(sprintf("rm submit_jobs; touch submit_jobs"));    
     $pythonfile=$ARGV[1];
     $TempDataSetFile=$ARGV[2];
     # Open ListofFile.txt
@@ -143,11 +143,12 @@ if( $ARGV[0] eq "--Submit" ){
 	$dir=$DataType[$idx];
 	$dir=~ s/.root/_CRAB/g;
 	$dir=~ s/DataType =/ /g;
+	$dir.=sprintf("%d", $idx);
 	printf("\ncreating dir: $dir\n");
-	system(sprintf("mkdir $dir; cp crab_TEMPLATE.cfg  $dir/crab.cfg;cp $pythonfile $dir/"));
-	#system(sprintf("cp ../../data/Lumi_160404_180252_andMC_Flat_Tail.root $dir"));
-	system(sprintf("./subs \"<DataType>\"               \"$DataType[$idx]\"                      $dir/$pythonfile"));
-	system(sprintf("./subs \"<globaltag>\"               \"$globaltag[$idx]\"                    $dir/$pythonfile"));
+	system(sprintf("mkdir $dir; cp crab_TEMPLATE.cfg  $dir/crab.cfg;cp $pythonfile $dir/HLT_Tau_Ntuple_cfg.py"));
+	system(sprintf("cp ../../data/Lumi_160404_180252_andMC_Flat_Tail.root $dir"));
+	system(sprintf("./subs \"<DataType>\"               \"$DataType[$idx]\"                      $dir/HLT_Tau_Ntuple_cfg.py"));
+	system(sprintf("./subs \"<globaltag>\"               \"$globaltag[$idx]\"                    $dir/HLT_Tau_Ntuple_cfg.py"));
 	system(sprintf("./subs \"<datasetpath>\"            \"$datasetpath[$idx]\"                   $dir/crab.cfg"));
 	system(sprintf("./subs \"<dbs_url>\"                \"$dbs_url[$idx] \"                      $dir/crab.cfg"));
 	system(sprintf("./subs \"<publish_data_name>\"      \"$publish_data_name[$idx] \"            $dir/crab.cfg"));
@@ -171,8 +172,19 @@ if( $ARGV[0] eq "--Submit" ){
 	if($njobs !=0){
 	    system(sprintf("cd $dir ; crab -create -submit $njobs ; cd .."));
 	}
+	else{
+	    system(sprintf("echo 'cd $dir ; crab -create ; crab -submit ; cd ..' >>  createandsubmit_test \n"));
+	    system(sprintf("echo 'cd $dir ; rm -rf crab_*; crab -create ; crab -submit ; cd ..' >>  createandsubmit \n"));
+	    system(sprintf("echo 'cd $dir; crab -getoutput; crab -submit ; cd ..' >> getoutput \n"));
+	}
     	$idx++;  
     }
+    printf("The Submission Directories have been set up....\n");
+    printf("To create and submit a test version of your crab jobs: source createandsubmit \n");
+    printf("To create and submit the crab jobs: source createandsubmit \n");
+    printf("To get the log files from the crab jobs: source getoutput \n");
+    printf("NOTE: PLEASE VALIDATE YOUR CODE RUNS BEFORE SUBMITTING ALL JOBS (ie source createandsubmit)\n");
+
 }
 
 
