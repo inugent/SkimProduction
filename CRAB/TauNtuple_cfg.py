@@ -95,32 +95,6 @@ process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
                                            maxd0 = cms.double(2)
                                            )
 
-process.noscraping = cms.EDFilter("FilterOutScraping",
-                                  applyfilter = cms.untracked.bool(True),
-                                  debugOn = cms.untracked.bool(True),
-                                  numtrack = cms.untracked.uint32(10),
-                                  thresh = cms.untracked.double(0.25)
-                                  )
-
-process.HBHENoiseFilter = cms.EDFilter('HBHENoiseFilter',
-                               noiselabel = cms.InputTag('hcalnoise','','RECO'),
-                               minRatio = cms.double(-999),
-                               maxRatio = cms.double(999),
-                               minHPDHits = cms.int32(17),
-                               minRBXHits = cms.int32(999),
-                               minHPDNoOtherHits = cms.int32(10),
-                               minZeros = cms.int32(10),
-                               minHighEHitTime = cms.double(-9999.0),
-                               maxHighEHitTime = cms.double(9999.0),
-                               maxRBXEMF = cms.double(-999.0),
-                               minNumIsolatedNoiseChannels = cms.int32(9999),
-                               minIsolatedNoiseSumE = cms.double(9999),
-                               minIsolatedNoiseSumEt = cms.double(9999),
-                               useTS4TS5 = cms.bool(True)
-                               )
-
-
-
 process.filter_1 = hlt.triggerResultsFilter.clone(
     hltResults = cms.InputTag( "TriggerResults", "", "HLT" ),
 #    triggerConditions =  ( 'HLT_IsoMu15_LooseIsoPFTau15_v8', ), #  data TauPlusX PromtReco-6
@@ -129,14 +103,41 @@ process.filter_1 = hlt.triggerResultsFilter.clone(
     throw = False
     )
 
-process.EvntCounterA.DataMCType = cms.untracked.string("Data");
-process.EvntCounterB.DataMCType = cms.untracked.string("Data");
+process.EvntCounterA.DataMCType = cms.untracked.string(<DataType>);
+process.EvntCounterB.DataMCType = cms.untracked.string(<DataType>);
 
 process.NtupleMaker.PUInputFile = cms.untracked.string("$CMSSW_BASE/src/data/Lumi_160404_180252_andMC_Flat_Tail.root");
 
 process.schedule = cms.Schedule()
 
-process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.PFTau*process.MultiTrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.primaryVertexFilter*process.noscraping*process.HBHENoiseFilter*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.CountKinFitPassedEvents*process.KinematicTauProducer*process.EvntCounterB*process.NtupleMaker)
+if <DataType> == "Data":
+    process.noscraping = cms.EDFilter("FilterOutScraping",
+                                      applyfilter = cms.untracked.bool(True),
+                                      debugOn = cms.untracked.bool(True),
+                                      numtrack = cms.untracked.uint32(10),
+                                      thresh = cms.untracked.double(0.25)
+                                      )
+    
+    process.HBHENoiseFilter = cms.EDFilter('HBHENoiseFilter',
+                                           noiselabel = cms.InputTag('hcalnoise','','RECO'),
+                                           minRatio = cms.double(-999),
+                                           maxRatio = cms.double(999),
+                                           minHPDHits = cms.int32(17),
+                                           minRBXHits = cms.int32(999),
+                                           minHPDNoOtherHits = cms.int32(10),
+                                           minZeros = cms.int32(10),
+                                           minHighEHitTime = cms.double(-9999.0),
+                                           maxHighEHitTime = cms.double(9999.0),
+                                           maxRBXEMF = cms.double(-999.0),
+                                           minNumIsolatedNoiseChannels = cms.int32(9999),
+                                           minIsolatedNoiseSumE = cms.double(9999),
+                                           minIsolatedNoiseSumEt = cms.double(9999),
+                                           useTS4TS5 = cms.bool(True)
+                                           )
+            
+    process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.PFTau*process.MultiTrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.primaryVertexFilter*process.noscraping*process.HBHENoiseFilter*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.CountKinFitPassedEvents*process.KinematicTauProducer*process.EvntCounterB*process.NtupleMaker)
+else:
+    process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.PFTau*process.MultiTrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.primaryVertexFilter*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.CountKinFitPassedEvents*process.KinematicTauProducer*process.EvntCounterB*process.NtupleMaker)
 
 process.schedule.append(process.KinFitSkim)
 
