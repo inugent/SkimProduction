@@ -26,22 +26,8 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\n    number_of_jobs = <number_of_jobs>");
     printf("\n    CE_white_list = <CE_white_list>");
     printf("\nList of DataTypes:\n");
-    printf("    data\n");
-    printf("    h_tautau\n");
-    printf("    hpm_taunu\n");
-    printf("    ttbar\n");
-    printf("    w_lnu\n");
-    printf("    w_enu\n");
-    printf("    w_munu\n");
-    printf("    w_taunu\n");
-    printf("    dy_ll\n");
-    printf("    dy_ee\n");
-    printf("    dy_mumu\n");
-    printf("    dy_tautau\n");
-    printf("    ZZ\n");
-    printf("    WW\n");
-    printf("    WZ\n");
-    printf("    qcd\n");
+    printf("    data, h_tautau, hpm_taunu, ttbar, w_lnu, w_enu, w_munu, w_taunu, dy_ll, dy_ee, dy_mumu, dy_tautau\n");
+    printf("    ZZ, WW, WZ, qcd\n");
     printf("\n\n./todo.pl --SkimSummary <InputPar.txt> <CodeDir> Produces the SkimSummary.log to summarize the skim information."); 
     printf("\n                                                   This is run after retreiving the output from the job. The output");
     printf("\n                                                   goes in Code/InputData/.");
@@ -173,17 +159,17 @@ if( $ARGV[0] eq "--Submit" ){
 	    system(sprintf("cd $dir ; crab -create -submit $njobs ; cd .."));
 	}
 	else{
-	    system(sprintf("echo 'cd $dir ; crab -create ; crab -submit ; cd ..' >>  createandsubmit_test \n"));
+	    system(sprintf("echo 'cd $dir ; crab -create ; crab -submit 1; cd ..' >>  createandsubmit_test \n"));
 	    system(sprintf("echo 'cd $dir ; rm -rf crab_*; crab -create ; crab -submit ; cd ..' >>  createandsubmit \n"));
 	    system(sprintf("echo 'cd $dir; crab -getoutput; crab -submit ; cd ..' >> getoutput \n"));
 	}
     	$idx++;  
     }
     printf("The Submission Directories have been set up....\n");
-    printf("To create and submit a test version of your crab jobs: source createandsubmit \n");
+    printf("To create and submit a test version of your crab jobs: source createandsubmit_test \n");
     printf("To create and submit the crab jobs: source createandsubmit \n");
     printf("To get the log files from the crab jobs: source getoutput \n");
-    printf("NOTE: PLEASE VALIDATE YOUR CODE RUNS BEFORE SUBMITTING ALL JOBS (ie source createandsubmit)\n");
+    printf("NOTE: PLEASE VALIDATE YOUR CODE RUNS BEFORE SUBMITTING ALL JOBS (ie source createandsubmit_test)\n");
 
 }
 

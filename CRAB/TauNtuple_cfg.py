@@ -103,14 +103,14 @@ process.filter_1 = hlt.triggerResultsFilter.clone(
     throw = False
     )
 
-process.EvntCounterA.DataMCType = cms.untracked.string(<DataType>);
-process.EvntCounterB.DataMCType = cms.untracked.string(<DataType>);
+process.EvntCounterA.DataMCType = cms.untracked.string('<DataType>');
+process.EvntCounterB.DataMCType = cms.untracked.string('<DataType>');
 
 process.NtupleMaker.PUInputFile = cms.untracked.string("$CMSSW_BASE/src/data/Lumi_160404_180252_andMC_Flat_Tail.root");
 
 process.schedule = cms.Schedule()
 
-if <DataType> == "Data":
+if "<DataType>" == "Data":
     process.noscraping = cms.EDFilter("FilterOutScraping",
                                       applyfilter = cms.untracked.bool(True),
                                       debugOn = cms.untracked.bool(True),
