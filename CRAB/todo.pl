@@ -51,7 +51,9 @@ if( $ARGV[0] eq "--Submit" ){
     #organize the Lumi_XYZ.root file
     system(sprintf("mkdir ../../data"));    
     system(sprintf("cp  ../../TauDataFormat/TauNtuple/Lumi_160404_180252_andMC_Flat_Tail.root ../../data/ "));
-    system(sprintf("rm submit_jobs; touch submit_jobs"));    
+    system(sprintf("rm createandsubmit_test; touch createandsubmit_test"));
+    system(sprintf("rm createandsubmit; touch createandsubmit"));
+    system(sprintf("rm getoutput; touch getoutput"));    
     $pythonfile=$ARGV[1];
     $TempDataSetFile=$ARGV[2];
     # Open ListofFile.txt
@@ -131,7 +133,7 @@ if( $ARGV[0] eq "--Submit" ){
 	$dir=~ s/DataType =/ /g;
 	$dir.=sprintf("%d", $idx);
 	printf("\ncreating dir: $dir\n");
-	system(sprintf("mkdir $dir; cp crab_TEMPLATE.cfg  $dir/crab.cfg;cp $pythonfile $dir/HLT_Tau_Ntuple_cfg.py"));
+	system(sprintf("rm $dir -rf; mkdir $dir; cp crab_TEMPLATE.cfg  $dir/crab.cfg;cp $pythonfile $dir/HLT_Tau_Ntuple_cfg.py"));
 	system(sprintf("cp ../../data/Lumi_160404_180252_andMC_Flat_Tail.root $dir"));
 	system(sprintf("./subs \"<DataType>\"               \"$DataType[$idx]\"                      $dir/HLT_Tau_Ntuple_cfg.py"));
 	system(sprintf("./subs \"<globaltag>\"               \"$globaltag[$idx]\"                    $dir/HLT_Tau_Ntuple_cfg.py"));
@@ -160,8 +162,8 @@ if( $ARGV[0] eq "--Submit" ){
 	}
 	else{
 	    system(sprintf("echo 'cd $dir ; crab -create ; crab -submit 1; cd ..' >>  createandsubmit_test \n"));
-	    system(sprintf("echo 'cd $dir ; rm -rf crab_*; crab -create ; crab -submit ; cd ..' >>  createandsubmit \n"));
-	    system(sprintf("echo 'cd $dir; crab -getoutput; crab -submit ; cd ..' >> getoutput \n"));
+	    system(sprintf("echo 'cd $dir ;  crab -submit ; cd ..' >>  createandsubmit \n"));
+	    system(sprintf("echo 'cd $dir; crab -getoutput; cd ..' >> getoutput \n"));
 	}
     	$idx++;  
     }

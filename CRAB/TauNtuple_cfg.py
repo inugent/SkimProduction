@@ -76,7 +76,6 @@ process.load("RecoTauTag.KinematicTau.KinematicTauSkim_cfi")
 process.load("TriggerFilter.Filter.triggerFilter_cfi")
 process.load("HLTrigger.HLTfilters.triggerResultsFilter_cfi")
 
-
 process.load("SkimmingTools.EventCounter.countInput_cfi")
 process.load("SkimmingTools.EventCounter.countTriggerPassed_cfi")
 process.load("SkimmingTools.EventCounter.countKinFitPassed_cfi")
@@ -95,18 +94,11 @@ process.primaryVertexFilter = cms.EDFilter("GoodVertexFilter",
                                            maxd0 = cms.double(2)
                                            )
 
-process.filter_1 = hlt.triggerResultsFilter.clone(
-    hltResults = cms.InputTag( "TriggerResults", "", "HLT" ),
-#    triggerConditions =  ( 'HLT_IsoMu15_LooseIsoPFTau15_v8', ), #  data TauPlusX PromtReco-6
-    triggerConditions =  ( 'HLT_IsoMu12_LooseIsoPFTau10_v2', ),  #  trigger MC  DY sample 
-    l1tResults = '',
-    throw = False
-    )
-
 process.EvntCounterA.DataMCType = cms.untracked.string('<DataType>');
 process.EvntCounterB.DataMCType = cms.untracked.string('<DataType>');
-
-process.NtupleMaker.PUInputFile = cms.untracked.string("$CMSSW_BASE/src/data/Lumi_160404_180252_andMC_Flat_Tail.root");
+process.MultiTrigFilter.useTriggers = cms.vstring("HLT_QuadJet40_IsoPFTau40","HLT_QuadJet45_IsoPFTau45","HLT_QuadJet50_IsoPFTau50")
+process.KinematicTauSkim.discriminators = cms.vstring("PFRecoTauDiscriminationByKinematicFit","PFRecoTauDiscriminationByKinematicFitQuality")
+process.NtupleMaker.PUInputFile = cms.untracked.string("$CMSSW_BASE/src/data/Lumi_160404_180252_andMC_Flat_Tail.root")
 
 process.schedule = cms.Schedule()
 
@@ -135,11 +127,9 @@ if "<DataType>" == "Data":
                                            useTS4TS5 = cms.bool(True)
                                            )
             
-    process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.PFTau*process.MultiTrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.primaryVertexFilter*process.noscraping*process.HBHENoiseFilter*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.CountKinFitPassedEvents*process.KinematicTauProducer*process.EvntCounterB*process.NtupleMaker)
+    process.KinFitSkim  = cms.Path(process.EvntCounterA*process.MultiTrigFilter*process.TrigFilterInfo*process.primaryVertexFilter*process.noscraping*process.HBHENoiseFilter*process.PFTau*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.KinematicTauProducer*process.EvntCounterB*process.NtupleMaker)
 else:
-    process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.PFTau*process.MultiTrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.primaryVertexFilter*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.CountKinFitPassedEvents*process.KinematicTauProducer*process.EvntCounterB*process.NtupleMaker)
-
+    process.KinFitSkim  = cms.Path(process.EvntCounterA*process.MultiTrigFilter*process.TrigFilterInfo*process.primaryVertexFilter*process.PFTau*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.KinematicTauProducer*process.EvntCounterB*process.NtupleMaker)
+    
 process.schedule.append(process.KinFitSkim)
-
-
-
+            
