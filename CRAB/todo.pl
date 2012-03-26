@@ -201,12 +201,14 @@ if( $ARGV[0] eq "--SkimSummary" ){
     }
     close(DAT);
     $idx=0;
+    $diridx=0;
     foreach $data (@DataType){
 	printf("Looking for: $data \n");
         $datadir=$data;
-#$DataType[$idx];
-        #$datadir=~ s/.root/_CRAB/g;
-        #$datadir=~ s/DataType =/ /g;
+        $datadir=~ s/.root/_CRAB/g;
+        $datadir=~ s/DataType =/ /g;
+        $datadir.=sprintf("%d", $diridx);
+	$diridx++;
 	$idx++;
 	$myDIR=getcwd;
 	opendir(DIR,"$myDIR/$datadir/");
