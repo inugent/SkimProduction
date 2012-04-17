@@ -12,7 +12,8 @@ doDebugOutput = True
 myjets = "goodPatJets" #"selectedPatJets"
 myBtag = "TCHEM"
 runOnMC=True
-if "<DataType>" == "Data":
+DataType = "<DataType>"
+if DataType == "Data":
     runOnMC=False
 ############################################
 
@@ -171,9 +172,9 @@ process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 ###### New HPS
 
 
-process.EvntCounterA.DataMCType = cms.untracked.string('Data');
-process.EvntCounterB.DataMCType = cms.untracked.string('Data');
-process.MultiTrigFilter.useTriggers = cms.vstring("HLT_QuadJet40_IsoPFTau40","HLT_QuadJet45_IsoPFTau45","HLT_QuadJet50_IsoPFTau50")
+process.EvntCounterA.DataMCType = cms.untracked.string(DataType);
+process.EvntCounterB.DataMCType = cms.untracked.string(DataType);
+process.MultiTrigFilter.useTriggers = cms.vstring("IsoMu24","IsoPFTau35_Trk20_MET")
 process.KinematicTauSkim.discriminators = cms.vstring("PFRecoTauDiscriminationByKinematicFit","PFRecoTauDiscriminationByKinematicFitQuality")
 process.NtupleMaker.PUInputFile = cms.untracked.string("$CMSSW_BASE/src/data/Lumi_160404_180252_andMC_Flat_Tail.root")
 process.NtupleMaker.doPatJets = cms.untracked.bool(True)
@@ -260,11 +261,11 @@ else:
     process.KinFitSkim  = cms.Path(process.EvntCounterA*process.MultiTrigFilter*process.TrigFilterInfo*process.goodVertices*process.PFTau*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.KinematicTauProducer*process.CSCTightHaloFilter*process.hcalLaserEventFilter*process.EcalDeadCellTriggerPrimitiveFilter*process.ak5PFJetsL2L3Residual*process.trackingFailureFilter*process.patDefaultSequence*process.goodPatJets*process.EvntCounterB*process.NtupleMaker)
     
 process.schedule.append(process.KinFitSkim)
-if doDebugOutput :
-    process.debugOutput = cms.OutputModule("PoolOutputModule",
-                                           outputCommands = cms.untracked.vstring('keep *'),
-                                           fileName = cms.untracked.string('TauNtupleDebugOutput.root'),
-                                           )
-    process.out_step = cms.EndPath(process.debugOutput)
-    
-    process.schedule.append(process.out_step)
+#if doDebugOutput :
+#    process.debugOutput = cms.OutputModule("PoolOutputModule",
+#                                           outputCommands = cms.untracked.vstring('keep *'),
+#                                           fileName = cms.untracked.string('TauNtupleDebugOutput.root'),
+#                                           )
+#    process.out_step = cms.EndPath(process.debugOutput)
+#    
+#    process.schedule.append(process.out_step)

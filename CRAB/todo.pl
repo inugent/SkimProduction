@@ -50,7 +50,7 @@ if( $ARGV[0] eq "--Submit" ){
 
     #organize the Lumi_XYZ.root file
     system(sprintf("mkdir ../../data"));    
-    system(sprintf("cp  ../../TauDataFormat/TauNtuple/Lumi_160404_180252_andMC_Flat_Tail.root ../../data/ "));
+    system(sprintf("cp  ../../TauDataFormat/TauNtuple/Cert_PU_FILES/Lumi_160404_180252_andMC_Flat_Tail.root ../../data/ "));
     system(sprintf("rm createandsubmit_test; touch createandsubmit_test"));
     system(sprintf("rm createandsubmit; touch createandsubmit"));
     system(sprintf("rm getoutput; touch getoutput"));    
