@@ -30,7 +30,11 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("    ZZ, WW, WZ, qcd\n");
     printf("\n\n./todo.pl --SkimSummary <InputPar.txt> <CodeDir> Produces the SkimSummary.log to summarize the skim information."); 
     printf("\n                                                   This is run after retreiving the output from the job. The output");
-    printf("\n                                                   goes in Code/InputData/.");
+    printf("\n                                                   goes in Code/InputData/.\n");
+    printf("\n./todo.pl --CheckandCleanOutput <InputPar.txt>     Checks number fo output files (crab can produce duplicate files when resubmitting)");
+    printf("\n                                                   OutputFilesfromDisk.log - List of output Files on Disk.");
+    printf("\n                                                   OutputFilesfromlog.log - List of output Files from log files.");
+    printf("\n                                                   DiffLogAndDisk.log - List of files which are on Disk but not in log files"); 
     printf("\n\n");
     exit(0); 
 } 
@@ -272,4 +276,98 @@ if( $ARGV[0] eq "--SkimSummary" ){
     }
     system(sprintf("cp SkimSummary.log $CodeDir/InputData/SkimSummary.log "));
     printf("SkimSummary.log has been generated. It has been copied to $CodeDir/InputData/SkimSummary.log\n ");
+}
+
+
+
+if( $ARGV[0] eq "--CheckandCleanOutput" ){
+    $TempDataSetFile=$ARGV[1];
+    @DataType;
+    open(DAT, $TempDataSetFile) || die("Could not open file $TempDataSetFile! [ABORTING]");
+    $idx=-1;
+    while ($item = <DAT>) {
+        chomp($item);
+        ($a,$b,$c,$d)=split(/ /,$item);
+        if($a eq "DataType"){
+            push(@DataType,$c);
+        }
+    }
+    close(DAT);
+
+
+    foreach $data (@DataType){
+        printf("Looking for: $data \n");
+        $datadir=$data;
+        $datadir=~ s/.root/_CRAB/g;
+        $datadir=~ s/DataType =/ /g;
+        $datadir.=sprintf("%d", $diridx);
+        $diridx++;
+        $idx++;
+        $myDIR=getcwd;
+        opendir(DIR,"$myDIR/$datadir/");
+        printf("Searching: $myDIR/$datadir/ \n");
+        system(sprintf("ls $myDIR/$datadir/"));
+        @dirs = grep {(/crab_/)} readdir(DIR);
+        closedir DIR;
+        foreach $subdir (@dirs){
+	    system(sprintf("rm  $myDIR/$datadir/OutputFilesfromDisk.log"));
+	    system(sprintf("rm $myDIR/$datadir/OutputFilesfromlog.log"));
+            system(sprintf("rm $myDIR/$datadir/DiffLogAndDisk.log"));
+            system(sprintf("rm FileSummary.log"));
+            printf("Opening Dir: $myDIR/$datadir/$subdir\n");
+            opendir(SUBDIR,"$myDIR/$datadir/$subdir/res/");
+            @files = grep { /stdout/ } readdir(SUBDIR);
+	    system(sprintf("rm junk1; touch junk1"));
+            foreach $file (@files){
+		system(sprintf("grep \"LFN:\"  $myDIR/$datadir/$subdir/res/$file  | grep -v \"echo\"  >> junk1"));
+	    }
+	    system(sprintf("cat junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"TauNtuple\"a[2] }' | tee $myDIR/$datadir/OutputFilesfromlog.log"));
+	    system(sprintf("tail -n 1 junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"uberftp grid-ftp.physik.rwth-aachen.de \\\"cd /pnfs/physik.rwth-aachen.de/cms\"  a[1]  \" ; ls */ \\\" | tee junk3 \"}' > junk2")); 
+	    system(sprintf("echo \"grep root junk3 | awk '{print \\\$9 }'| tee $myDIR/$datadir/OutputFilesfromDisk.log   \" >> junk2"));
+	    system(sprintf("source junk2;"));
+	    system(sprintf("echo 'N Files found in in$myDIR/$datadir/OutputFilesfromlog.log: ' >> FileSummary.log "));
+	    system(sprintf("cat $myDIR/$datadir/OutputFilesfromlog.log | wc -l >> FileSummary.log"));
+	    system(sprintf("echo 'N Files found in in$myDIR/$datadir/OutputFilesfromDisk.log: ' >> FileSummary.log "));
+	    system(sprintf("cat $myDIR/$datadir/OutputFilesfromDisk.log | wc -l >> FileSummary.log"));
+
+	    @ListfromDisk=();
+	    open(DAT, "$myDIR/$datadir/OutputFilesfromDisk.log") || die("Could not open file $myDIR/$datadir/OutputFilesfromDisk.log! [ABORTING]");
+	    $idx=-1;
+	    while ($item = <DAT>) {
+		chomp($item);
+		push(@ListfromDisk,$item);
+	    }
+	    close(DAT);
+
+	    @ListfromLog=();
+	    open(DAT, "$myDIR/$datadir/OutputFilesfromlog.log") || die("Could not open file $myDIR/$datadir/OutputFilesfromlog.log! [ABORTING]");
+	    $idx=-1;
+	    while ($item = <DAT>) {
+		chomp($item);
+		push(@ListfromLog,$item);
+	    }
+	    close(DAT);
+	   
+ 
+	    foreach $thedisk (@ListfromDisk){
+		$match=0;
+		foreach $thelog (@ListfromLog){
+		    if($thedisk eq $thelog){
+			printf("match");
+			$match=1;
+		    }
+		}
+		printf("$thedisk $match\n"); 
+		if($match != 1){
+		    system(sprintf("echo '$thedisk' >> $myDIR/$datadir/DiffLogAndDisk.log "));
+		}
+	    }
+
+            system(sprintf("rm junk1; touch junk1"));
+            system(sprintf("rm junk2; touch junk2"));
+            system(sprintf("rm junk3; touch junk3"));
+            system(sprintf("rm junk4; touch junk4"));
+
+	}
+    }
 }
