@@ -49,6 +49,7 @@ for($l=3;$l<$numArgs; $l++){
     }
 }
 
+$time= strftime("_%h_%d_%Y_hr%H_min%M",localtime);
 
 if( $ARGV[0] eq "--Submit" ){
 
@@ -103,7 +104,7 @@ if( $ARGV[0] eq "--Submit" ){
 	    $dbs_url[$idx]=$item;
 	}
         if($a eq "publish_data_name"){
-            $publish_data_name[$idx]=$item;
+            $publish_data_name[$idx]=$item . $time;
 	}
 	if($a eq "output_file"){
 	    $output_file[$idx]=$item;
@@ -173,7 +174,7 @@ if( $ARGV[0] eq "--Submit" ){
     }
     printf("The Submission Directories have been set up....\n");
     printf("To create and submit a test version of your crab jobs: source createandsubmittest \n");
-    printf("To create and submit the crab jobs: source createandsubmit \n");
+    printf("To create and submit the crab jobs: source submitall \n");
     printf("To get the log files from the crab jobs: source getoutput \n");
     printf("NOTE: PLEASE VALIDATE YOUR CODE RUNS BEFORE SUBMITTING ALL JOBS (ie source createandsubmittest)\n");
 
