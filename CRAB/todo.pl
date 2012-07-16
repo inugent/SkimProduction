@@ -55,8 +55,8 @@ if( $ARGV[0] eq "--Submit" ){
     #organize the Lumi_XYZ.root file
     system(sprintf("mkdir ../../data"));    
     system(sprintf("cp  ../../TauDataFormat/TauNtuple/Cert_PU_FILES/Lumi_160404_180252_andMC_Flat_Tail.root ../../data/ "));
-    system(sprintf("rm createandsubmit_test; touch createandsubmit_test"));
-    system(sprintf("rm createandsubmit; touch createandsubmit"));
+    system(sprintf("rm createandsubmittest; touch createandsubmittest"));
+    system(sprintf("rm submitall; touch submitall"));
     system(sprintf("rm getoutput; touch getoutput"));    
     $pythonfile=$ARGV[1];
     $TempDataSetFile=$ARGV[2];
@@ -165,17 +165,17 @@ if( $ARGV[0] eq "--Submit" ){
 	    system(sprintf("cd $dir ; crab -create -submit $njobs ; cd .."));
 	}
 	else{
-	    system(sprintf("echo 'cd $dir ; crab -create ; crab -submit 1; cd ..' >>  createandsubmit_test \n"));
-	    system(sprintf("echo 'cd $dir ;  crab -submit ; cd ..' >>  createandsubmit \n"));
+	    system(sprintf("echo 'cd $dir ; crab -create ; crab -submit 1; cd ..' >>  createandsubmittest \n"));
+	    system(sprintf("echo 'cd $dir ;  crab -submit ; cd ..' >>  submitall \n"));
 	    system(sprintf("echo 'cd $dir; crab -getoutput; cd ..' >> getoutput \n"));
 	}
     	$idx++;  
     }
     printf("The Submission Directories have been set up....\n");
-    printf("To create and submit a test version of your crab jobs: source createandsubmit_test \n");
+    printf("To create and submit a test version of your crab jobs: source createandsubmittest \n");
     printf("To create and submit the crab jobs: source createandsubmit \n");
     printf("To get the log files from the crab jobs: source getoutput \n");
-    printf("NOTE: PLEASE VALIDATE YOUR CODE RUNS BEFORE SUBMITTING ALL JOBS (ie source createandsubmit_test)\n");
+    printf("NOTE: PLEASE VALIDATE YOUR CODE RUNS BEFORE SUBMITTING ALL JOBS (ie source createandsubmittest)\n");
 
 }
 

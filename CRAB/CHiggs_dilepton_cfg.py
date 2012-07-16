@@ -174,7 +174,10 @@ process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 
 process.EvntCounterA.DataMCType = cms.untracked.string(DataType);
 process.EvntCounterB.DataMCType = cms.untracked.string(DataType);
-process.MultiTrigFilter.useTriggers = cms.vstring("IsoMu24")
+if DataType == "Data":
+    process.MultiTrigFilter.useTriggers = cms.vstring("IsoMu24");
+else:
+    process.MultiTrigFilter.useTriggers = cms.vstring("IsoMu24","HLT_QuadJet40_IsoPFTau40","HLT_QuadJet45_IsoPFTau45","IsoPFTau35_Trk20_MET")
 process.KinematicTauSkim.discriminators = cms.vstring("PFRecoTauDiscriminationByKinematicFit","PFRecoTauDiscriminationByKinematicFitQuality")
 process.NtupleMaker.PUInputFile = cms.untracked.string("$CMSSW_BASE/src/data/Lumi_160404_180252_andMC_Flat_Tail.root")
 process.NtupleMaker.doPatJets = cms.untracked.bool(True)
