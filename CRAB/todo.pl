@@ -6,7 +6,7 @@ $numArgs = $#ARGV +1;
 $ARGV[$argnum];
 
 if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
-    printf("\nThis code requires one input option. The systax is:./todo.pl [OPTION]");
+    printf("\nThis code requires one input option. The syntax is:./todo.pl [OPTION]");
     printf("\nPlease choose from the following options:");
     printf("\n\n./todo.pl --help                                   Prints this message");
     printf("\n\n./todo.pl --Submit <python_cfg> <InputPar.txt>     Submit crab jobs to the grid");
