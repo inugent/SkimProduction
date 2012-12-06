@@ -55,7 +55,7 @@ if( $ARGV[0] eq "--Submit" ){
 
     #organize the Lumi_XYZ.root file
     system(sprintf("mkdir ../../data"));    
-    system(sprintf("cp  ../../TauDataFormat/TauNtuple/Cert_PU_FILES/Lumi_160404_180252_andMC_Flat_Tail.root ../../data/ "));
+    system(sprintf("cp  ../../data/pu2012.root ../../data/ "));
     system(sprintf("rm createandsubmittest; touch createandsubmittest"));
     system(sprintf("rm submitall; touch submitall"));
     system(sprintf("rm getoutput; touch getoutput"));    
@@ -139,7 +139,7 @@ if( $ARGV[0] eq "--Submit" ){
 	$dir.=sprintf("%d", $idx);
 	printf("\ncreating dir: $dir\n");
 	system(sprintf("rm $dir -rf; mkdir $dir; cp crab_TEMPLATE.cfg  $dir/crab.cfg;cp $pythonfile $dir/HLT_Tau_Ntuple_cfg.py"));
-	system(sprintf("cp ../../data/Lumi_160404_180252_andMC_Flat_Tail.root $dir"));
+	system(sprintf("cp ../../data/pu2012.root $dir"));
 	system(sprintf("./subs \"<DataType>\"               \"$DataType[$idx]\"                      $dir/HLT_Tau_Ntuple_cfg.py"));
 	system(sprintf("./subs \"<globaltag>\"               \"$globaltag[$idx]\"                    $dir/HLT_Tau_Ntuple_cfg.py"));
 	system(sprintf("./subs \"<datasetpath>\"            \"$datasetpath[$idx]\"                   $dir/crab.cfg"));
@@ -318,14 +318,25 @@ if( $ARGV[0] eq "--CheckandCleanOutput" ){
             printf("Opening Dir: $myDIR/$datadir/$subdir\n");
             opendir(SUBDIR,"$myDIR/$datadir/$subdir/res/");
             @files = grep { /stdout/ } readdir(SUBDIR);
-	    system(sprintf("rm junk1; touch junk1"));
+	    system(sprintf("rm junk1; touch junk1; touch junk5"));	    
             foreach $file (@files){
 		system(sprintf("grep \"LFN:\"  $myDIR/$datadir/$subdir/res/$file  | grep -v \"echo\"  >> junk1"));
 	    }
 	    system(sprintf("cat junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"TauNtuple\"a[2] }' | tee $myDIR/$datadir/OutputFilesfromlog.log"));
 	    system(sprintf("tail -n 1 junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"uberftp grid-ftp.physik.rwth-aachen.de \\\"cd /pnfs/physik.rwth-aachen.de/cms\"  a[1]  \" ; ls */ \\\" | tee junk3 \"}' > junk2")); 
-	    system(sprintf("echo \"grep root junk3 | awk '{print \\\$9 }'| tee $myDIR/$datadir/OutputFilesfromDisk.log   \" >> junk2"));
+
+	    $FilesonDisk="$myDIR/$datadir/OutputFilesfromDisk.log";
+	    system(sprintf("echo \"grep root junk3 | awk '{print \\\$9 }'| tee $FilesonDisk   \" >> junk2"));
 	    system(sprintf("source junk2;"));
+
+	    open(DAT, $FilesonDisk) || die("Could not open file $FilesonDisk!");
+            while ($item = <DAT>) {
+                chomp($item);
+		system(sprintf("tail -n 1 junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"uberftp grid-ftp.physik.rwth-aachen.de \\\"cd /pnfs/physik.rwth-aachen.de/cms\"  a[1]  \" ; rm $item \\\" \"}' >> junk5"));
+
+	    }
+	    close(DAT);
+
 	    system(sprintf("echo 'N Files found in in$myDIR/$datadir/OutputFilesfromlog.log: ' >> FileSummary.log "));
 	    system(sprintf("cat $myDIR/$datadir/OutputFilesfromlog.log | wc -l >> FileSummary.log"));
 	    system(sprintf("echo 'N Files found in in$myDIR/$datadir/OutputFilesfromDisk.log: ' >> FileSummary.log "));
@@ -349,7 +360,9 @@ if( $ARGV[0] eq "--CheckandCleanOutput" ){
 	    }
 	    close(DAT);
 	   
- 
+
+	    $DiffFile="$myDIR/$datadir/DiffLogAndDisk.log";
+	    system(sprintf("rm $DiffFile; touch  $DiffFile")); 
 	    foreach $thedisk (@ListfromDisk){
 		$match=0;
 		foreach $thelog (@ListfromLog){
@@ -360,15 +373,30 @@ if( $ARGV[0] eq "--CheckandCleanOutput" ){
 		}
 		printf("$thedisk $match\n"); 
 		if($match != 1){
-		    system(sprintf("echo '$thedisk' >> $myDIR/$datadir/DiffLogAndDisk.log "));
+		    system(sprintf("echo '$thedisk' >> $DiffFile "));
 		}
 	    }
 
+
+	    system(sprintf("rm junk6; touch junk6"));
+	    system(sprintf("grep \"LFN:\"  $myDIR/$datadir/$subdir/res/$file  >> junk6"));
+
+	    $CleanFile="$myDIR/$datadir/CleanDisk.dat";
+	    $redo="$myDIR/$datadir/Redo";
+	    system(sprintf("rm $CleanFile; touch $CleanFile ; rm $redo; touch $redo" ));
+	    open(DAT, $DiffFile) || die("Could not open file $DiffFile!");
+	    while ($item = <DAT>) {
+		chomp($item);
+		system(sprintf("grep $item junk5 >> $CleanFile "));
+		system(sprintf("grep $item junk6 | awk '{ split(\$1,a,\"/CMSSW_\"); print a[2]}'| awk '{ split(\$1,a,\"/.stdout\"); print \" crab -submit \" a[1]}' | >>$redo")); 
+	    }
+	    close(DAT);
+	    
             system(sprintf("rm junk1; touch junk1"));
             system(sprintf("rm junk2; touch junk2"));
             system(sprintf("rm junk3; touch junk3"));
             system(sprintf("rm junk4; touch junk4"));
-
+	    system(sprintf("rm junk5; touch junk5"));
 	}
     }
 }
