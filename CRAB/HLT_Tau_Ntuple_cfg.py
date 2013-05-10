@@ -30,10 +30,10 @@ process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 
 
-
 process.source = cms.Source("PoolSource",
 	fileNames = cms.untracked.vstring(
-    'file://dcap://grid-dcap.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/store/data/Run2011A/TauPlusX/AOD/08Nov2011-v1/0001/28F4BD62-2416-E111-922D-00261894395C.root'),
+                              'file://dcap://grid-dcap.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/store/data/Run2012A/TauPlusX/AOD/13Jul2012-v1/0000/76C17B7B-98D7-E111-B500-20CF3027A639.root'),
+ 
     )
 
 
@@ -84,6 +84,19 @@ process.load("SkimmingTools.EventCounter.countKinFitPassed_cfi")
 process.load("SkimmingTools.SkimmingCuts.cuts_cfi")
 process.load("TauDataFormat.TauNtuple.tauntuple_cfi")
 process.load("TauDataFormat.TauNtuple.eventCounter_cfi")
+####################### MET corrections ######################
+
+process.load("JetMETCorrections.Type1MET.pfMETCorrections_cff")
+
+process.pfJetMETcorr.jetCorrLabel = cms.string("ak5PFL1FastL2L3Residual")
+process.load("JetMETCorrections.Type1MET.pfMETCorrections_cff")
+process.load("JetMETCorrections.Type1MET.pfMETCorrectionType0_cfi")
+process.pfType1CorrectedMet.applyType0Corrections = cms.bool(False)
+process.pfType1CorrectedMet.srcType1Corrections = cms.VInputTag(
+    cms.InputTag('pfMETcorrType0'),
+    cms.InputTag('pfJetMETcorr', 'type1')        
+)
+####################### MET corrections ######################
 
 
 process.endjob_step = cms.Path(process.endOfProcess)
@@ -95,23 +108,15 @@ process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 ###### New HPS
 
 
-process.filter_1 = hlt.triggerResultsFilter.clone(
-    hltResults = cms.InputTag( "TriggerResults", "", "HLT" ),
-#    triggerConditions =  ( 'HLT_IsoMu15_LooseIsoPFTau15_v8', ), #  data TauPlusX PromtReco-6
-    triggerConditions =  ( 'HLT_IsoMu12_LooseIsoPFTau10_v2', ),  #  trigger MC  DY sample 
-    l1tResults = '',
-    throw = False
-    )
-
 process.EvntCounterA.DataMCType = cms.untracked.string("<DataType>");
 process.EvntCounterB.DataMCType = cms.untracked.string("<DataType>");
 
-process.NtupleMaker.PUInputFile = cms.untracked.string("$CMSSW_BASE/src/data/Lumi_190456_208686MCandData.root");
+process.NtupleMaker.PUInputFile = cms.untracked.string("$CMSSW_BASE/src/data/Lumi_190456_208686MC_PU_S10_andData.root");
 
 process.schedule = cms.Schedule()
 
-process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.TrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.KinematicFitSequencewithSkim*process.CountKinFitPassedEvents*process.EvntCounterB*process.recoTauClassicHPSSequence*process.PreselectionCuts*process.NtupleMaker)
 
+process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.MultiTrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.KinematicFitSequence*process.CountKinFitPassedEvents*process.EvntCounterB*process.recoTauClassicHPSSequence*process.PreselectionCuts*process.type0PFMEtCorrection*process.producePFMETCorrections*process.NtupleMaker)
 
 
 process.schedule.append(process.KinFitSkim)
