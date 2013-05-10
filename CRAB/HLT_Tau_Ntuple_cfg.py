@@ -16,6 +16,7 @@ process.load('Configuration.StandardSequences.GeometryExtended_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
 
 
+
 <globaltag>
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
@@ -27,18 +28,6 @@ process.load("Configuration.StandardSequences.EndOfProcess_cff")
 #process.load("RecoTauTag.Configuration.FixedConeHighEffPFTaus_cfi")
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
-process.MessageLogger.categories.append('InputTrackSelector')
-process.MessageLogger.categories.append('KinematicTauBasicProducer')
-process.MessageLogger.categories.append('KinematicTauSkim')
-process.MessageLogger.debugModules = cms.untracked.vstring('KinematicTauBasicProducer', 'KinematicTauSkim')
-process.MessageLogger.cerr = cms.untracked.PSet(
-     threshold = cms.untracked.string('DEBUG'),
-     FwkReport = cms.untracked.PSet(limit = cms.untracked.int32(0)),
-     DEBUG = cms.untracked.PSet(limit = cms.untracked.int32(0)),
-     InputTrackSelector = cms.untracked.PSet(limit = cms.untracked.int32(-1)),
-     KinematicTauBasicProducer = cms.untracked.PSet(limit = cms.untracked.int32(-1)),
-     KinematicTauSkim = cms.untracked.PSet(limit = cms.untracked.int32(-1))
-)
 
 
 
@@ -62,22 +51,43 @@ process.options = cms.untracked.PSet(
 
 
 process.load("CommonTools.PrimVtxSelector.PrimVtxSelector_cfi")
-process.load("RecoTauTag.KinematicTau.InputTrackSelector_cfi")
-process.load("RecoTauTag.KinematicTau.ThreeProngInputSelector_cff")
-process.load("RecoTauTag.KinematicTau.ThreeProngInputSelector_Step2_cfi")
-process.load("RecoTauTag.KinematicTau.ThreeProngInputSelector_Step1_cfi")
-process.load("RecoTauTag.KinematicTau.kinematictau_cfi")
-process.load("RecoTauTag.KinematicTau.kinematictauAdvanced_cfi")
-process.load("RecoTauTag.KinematicTau.KinematicTauSkim_cfi")
+
+
+process.load("RecoTauTag.KinematicTau.KinematicFitSequences_cff")
+process.load("RecoTauTag.KinematicTau.KinematicTauPostProcessing_cfi")
+
+
+process.load('Configuration.StandardSequences.EDMtoMEAtJobEnd_cff')
+process.load("Validation.Configuration.postValidation_cff")
+
+process.schedule = cms.Schedule()
+
+process.load('Configuration.StandardSequences.EndOfProcess_cff')
+process.load('Configuration.StandardSequences.EDMtoMEAtJobEnd_cff')
+process.load('RecoTauTag.KinematicTau.KinematicTauPostProcessing_cfi')
+process.load('RecoTauTag.KinematicTau.Tau_JAKID_Filter_cfi')
+process.load('DQMServices.Components.MEtoEDMConverter_cfi')
+
+process.dqmSaver.convention = 'Offline'
+process.dqmSaver.saveByRun = cms.untracked.int32(-1)
+process.dqmSaver.saveAtJobEnd = cms.untracked.bool(True)
+process.dqmSaver.forceRunNumber = cms.untracked.int32(1)
+process.dqmSaver.workflow = "/KinematicFitSequencewithDQM/VAL/RECO"
+#process.DQMStore.verbose=1
+
+
 process.load("TriggerFilter.Filter.triggerFilter_cfi")
 process.load("HLTrigger.HLTfilters.triggerResultsFilter_cfi")
-
-
 process.load("SkimmingTools.EventCounter.countInput_cfi")
 process.load("SkimmingTools.EventCounter.countTriggerPassed_cfi")
 process.load("SkimmingTools.EventCounter.countKinFitPassed_cfi")
+process.load("SkimmingTools.SkimmingCuts.cuts_cfi")
 process.load("TauDataFormat.TauNtuple.tauntuple_cfi")
 process.load("TauDataFormat.TauNtuple.eventCounter_cfi")
+
+
+process.endjob_step = cms.Path(process.endOfProcess)
+
 
 
 ###### New HPS
@@ -96,11 +106,13 @@ process.filter_1 = hlt.triggerResultsFilter.clone(
 process.EvntCounterA.DataMCType = cms.untracked.string("<DataType>");
 process.EvntCounterB.DataMCType = cms.untracked.string("<DataType>");
 
-process.NtupleMaker.PUInputFile = cms.untracked.string("$CMSSW_BASE/src/data/Lumi_160404_180252_andMC_Flat_Tail.root");
+process.NtupleMaker.PUInputFile = cms.untracked.string("$CMSSW_BASE/src/data/Lumi_190456_208686MCandData.root");
 
 process.schedule = cms.Schedule()
 
-process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.TrigFilter*process.CountTriggerPassedEvents*process.PrimVtxSelector*process.InputTrackSelector*process.ThreeProngInputSelector*process.KinematicTauBasicProducer*process.KinematicTauSkim*process.CountKinFitPassedEvents*process.KinematicTauProducer*process.EvntCounterB*process.NtupleMaker)
+process.KinFitSkim  = cms.Path(process.EvntCounterA*process.CountInputEvents*process.TrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.KinematicFitSequencewithSkim*process.CountKinFitPassedEvents*process.EvntCounterB*process.recoTauClassicHPSSequence*process.PreselectionCuts*process.NtupleMaker)
+
+
 
 process.schedule.append(process.KinFitSkim)
 
