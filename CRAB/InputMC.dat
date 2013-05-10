@@ -1,0 +1,106 @@
+
+DataType = dy_tautau
+datasetpath = /DYToTauTau_M_20_TuneZ2star_8TeV_pythia6_v2/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = DYJetsToTauTau_TauNtuple_MultiTrigger_v01
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 200
+process.GlobalTag.globaltag = 'START53_V20::All'
+
+
+DataType = dy_emu
+datasetpath = /SignalMC_Z2EMu_v6_GEN-SIM-RAW/anehrkor-SignalMC_Z2EMu_v6_AODSIM-3929d54512a78b5dc14ca881b70a54b7/USER
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = DYToEMu_TauNtuple_MultiTrigger_v01
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 200
+process.GlobalTag.globaltag = 'START53_V20::All'
+
+
+DataType = dy_mue
+datasetpath = /SignalMC_Z2MuE_v6_GEN-SIM-RAW/anehrkor-SignalMC_Z2MuE_v6_AODSIM-3929d54512a78b5dc14ca881b70a54b7/USER
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = DYToMuE_TauNtuple_MultiTrigger_v01
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 200
+process.GlobalTag.globaltag = 'START53_V20::All'
+
+
+DataType = dy_ll
+datasetpath = /DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = DYJetsToLL_TauNtuple_MultiTrigger_v01
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 200
+CE_white_list =   T2_DE_DESY
+process.GlobalTag.globaltag = 'START53_V20::All'
+
+
+DataType = w_lnu
+datasetpath = /WJetsToLNu_TuneZ2Star_8TeV-madgraph-tarball/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = WJetsToLNu_v1_TauNtuple_MultiTrigger_v01
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 200
+process.GlobalTag.globaltag = 'START53_V20::All'
+
+
+DataType = w_lnu
+datasetpath = /WJetsToLNu_TuneZ2Star_8TeV-madgraph-tarball/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = WJetsToLNu_v2_TauNtuple_MultiTrigger_v01
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 200
+CE_white_list =  T2_DE_DESY
+process.GlobalTag.globaltag = 'START53_V20::All'
+
+
+
+DataType = ttbar
+datasetpath = /TTJets_MassiveBinDECAY_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = TTJets_TauNtuple_MultiTrigger_v01
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 200
+process.GlobalTag.globaltag = 'START53_V20::All'
+
+
+DataType = ww
+datasetpath = /WWJetsTo2L2Nu_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = WWJetsTo2L2Nu_TauNtuple_MultiTrigger_v01
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 200
+process.GlobalTag.globaltag = 'START53_V20::All'
+
+
+
+DataType = wz
+datasetpath = /WZTo3LNu_TuneZ2star_8TeV_pythia6_tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = WZTo3LNu_TauNtuple_MultiTrigger_v01
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 200
+process.GlobalTag.globaltag = 'START53_V20::All'
+
+
+DataType = zz
+datasetpath = /ZZ_TuneZ2star_8TeV_pythia6_tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = ZZ_TauNtuple_MultiTrigger_v01
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 200
+process.GlobalTag.globaltag = 'START53_V20::All'
+
+
+
