@@ -54,7 +54,6 @@ $time= strftime("_%h_%d_%Y_hr%H_min%M",localtime);
 if( $ARGV[0] eq "--Submit" ){
 
     #organize the Lumi_XYZ.root file
-    system(sprintf("mkdir ../../data"));    
     system(sprintf("rm createandsubmittest; touch createandsubmittest"));
     system(sprintf("rm submitall; touch submitall"));
     system(sprintf("rm getoutput; touch getoutput"));    
@@ -73,6 +72,7 @@ if( $ARGV[0] eq "--Submit" ){
     @CE_black_list;
     @DataType;
     @globaltag;
+    @pileupfile;
     open(DAT, $TempDataSetFile) || die("Could not open file $TempDataSetFile! [ABORTING]");
     $idx=-1;
     while ($item = <DAT>) {
@@ -92,6 +92,7 @@ if( $ARGV[0] eq "--Submit" ){
 	    push(@CE_black_list,"");
 	    push(@DataType,$c);
 	    push(@globaltag,"");
+            push(@pileupfile,"");
 	}
         if($a eq "process.GlobalTag.globaltag"){
             $globaltag[$idx]=$item;
@@ -126,7 +127,9 @@ if( $ARGV[0] eq "--Submit" ){
 	if($a eq "CE_black_list"){
             $CE_black_list[$idx]=$item;
         }
-
+	if($a eq "Pile_Up_File"){
+	    $pileupfile[$idx]=$c;
+	}
     }
     close(DAT);
     ## create crab files and submit 
@@ -138,13 +141,15 @@ if( $ARGV[0] eq "--Submit" ){
 	$dir.=sprintf("%d", $idx);
 	printf("\ncreating dir: $dir\n");
 	system(sprintf("rm $dir -rf; mkdir $dir; cp crab_TEMPLATE.cfg  $dir/crab.cfg;cp $pythonfile $dir/HLT_Tau_Ntuple_cfg.py"));
-	system(sprintf("cp ../../data/pu2012.root $dir"));
-	system(sprintf("./subs \"<DataType>\"               \"$DataType[$idx]\"                      $dir/HLT_Tau_Ntuple_cfg.py"));
+	system(sprintf("cp ../../data/$pileupfile[$idx] $dir"));
+	system(sprintf("./subs \"<DataType>\"                \"$DataType[$idx]\"                     $dir/HLT_Tau_Ntuple_cfg.py"));
 	system(sprintf("./subs \"<globaltag>\"               \"$globaltag[$idx]\"                    $dir/HLT_Tau_Ntuple_cfg.py"));
-	system(sprintf("./subs \"<datasetpath>\"            \"$datasetpath[$idx]\"                   $dir/crab.cfg"));
-	system(sprintf("./subs \"<dbs_url>\"                \"$dbs_url[$idx] \"                      $dir/crab.cfg"));
-	system(sprintf("./subs \"<publish_data_name>\"      \"$publish_data_name[$idx] \"            $dir/crab.cfg"));
-	system(sprintf("./subs \"<output_file>\"            \"$output_file[$idx] \"                  $dir/crab.cfg"));
+	system(sprintf("./subs \"<Pile_Up_File>\"            \"$pileupfile[$idx]\"                   $dir/HLT_Tau_Ntuple_cfg.py"));
+	system(sprintf("./subs \"<Pile_Up_File>\"            \"$pileupfile[$idx]\"                   $dir/crab.cfg"));
+	system(sprintf("./subs \"<datasetpath>\"             \"$datasetpath[$idx]\"                  $dir/crab.cfg"));
+	system(sprintf("./subs \"<dbs_url>\"                 \"$dbs_url[$idx] \"                     $dir/crab.cfg"));
+	system(sprintf("./subs \"<publish_data_name>\"       \"$publish_data_name[$idx] \"           $dir/crab.cfg"));
+	system(sprintf("./subs \"<output_file>\"             \"$output_file[$idx] \"                 $dir/crab.cfg"));
 	if($lumi_mask[$idx] ne "none"){
 	    $lumifile=$lumi_mask[$idx];
 	    $lumifile=~ s/lumi_mask =/ /g;

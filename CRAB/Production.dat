@@ -8,6 +8,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 200
 process.GlobalTag.globaltag = 'FT_53_V21_AN3::All'
+Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = Data
 datasetpath = /SingleMu/Run2012B-22Jan2013-v1/AOD
@@ -18,6 +19,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 200
 process.GlobalTag.globaltag = 'FT_53_V21_AN3::All'
+Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = Data
 datasetpath = /SingleMu/Run2012C-22Jan2013-v1/AOD
@@ -28,6 +30,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 200
 process.GlobalTag.globaltag = 'FT_53_V21_AN3::All'
+Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = Data
 datasetpath = /SingleMu/Run2012D-22Jan2013-v1/AOD
@@ -38,6 +41,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 200
 process.GlobalTag.globaltag = 'FT_53_V21_AN3::All'
+Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = dy_tautau
 datasetpath = /DYToTauTau_M_20_TuneZ2star_8TeV_pythia6_v2/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -47,3 +51,4 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 200
 process.GlobalTag.globaltag = 'START53_V20::All'
+Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
