@@ -55,7 +55,6 @@ if( $ARGV[0] eq "--Submit" ){
 
     #organize the Lumi_XYZ.root file
     system(sprintf("mkdir ../../data"));    
-    system(sprintf("cp  ../../data/pu2012.root ../../data/ "));
     system(sprintf("rm createandsubmittest; touch createandsubmittest"));
     system(sprintf("rm submitall; touch submitall"));
     system(sprintf("rm getoutput; touch getoutput"));    
