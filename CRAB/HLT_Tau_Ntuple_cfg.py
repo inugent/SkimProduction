@@ -80,8 +80,8 @@ process.endjob_step = cms.Path(process.endOfProcess)
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 ###### New HPS
 
-debugging = True
-#debugging = False
+#debugging = True
+debugging = False
 if debugging:
     base = os.path.relpath(os.environ.get('CMSSW_BASE'))+'/src'
 else:
@@ -95,10 +95,14 @@ process.NtupleMaker.EleMVAWeights4 = cms.untracked.string(base+'/data/Electrons_
 process.NtupleMaker.EleMVAWeights5 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat5.weights.xml')
 process.NtupleMaker.EleMVAWeights6 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat6.weights.xml')
 process.NtupleMaker.ElectronMVAPtCut = cms.double(28.0);
+
+process.KinematicTauProducer.BDTweightFileMinus = cms.untracked.string(base+"/data/QualityCutsTraining_BDT.weights.xml") # currently not trained so all ambiguities are the same
+process.KinematicTauProducer.BDTweightFilePlus  = cms.untracked.string(base+"/data/QualityCutsTraining_BDT.weights.xml")
+process.KinematicTauProducer.BDTweightFileZero  = cms.untracked.string(base+"/data/QualityCutsTraining_BDT.weights.xml")        
     
 process.schedule = cms.Schedule()
 
-process.KinFitSkim  = cms.Path(process.EvntCounterA*process.MultiTrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.PFTau*process.KinematicFitSequence*process.CountKinFitPassedEvents*process.recoTauClassicHPSSequence*process.PreselectionCuts*process.type0PFMEtCorrection*process.producePFMETCorrections*process.EvntCounterB*process.NtupleMaker)
+process.KinFitSkim  = cms.Path(process.EvntCounterA*process.MultiTrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.PFTau*process.recoTauClassicHPSSequence*process.PreselectionCuts*process.KinematicFitSequence*process.CountKinFitPassedEvents*process.type0PFMEtCorrection*process.producePFMETCorrections*process.EvntCounterB*process.NtupleMaker)
 
 process.schedule.append(process.KinFitSkim)
 

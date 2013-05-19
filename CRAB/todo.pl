@@ -172,7 +172,7 @@ if( $ARGV[0] eq "--Submit" ){
 	else{
 	    system(sprintf("echo 'cd $dir ; crab -create ; crab -submit 1; cd ..' >>  createandsubmittest \n"));
 	    system(sprintf("echo 'cd $dir ;  crab -submit ; cd ..' >>  submitall \n"));
-	    system(sprintf("echo 'cd $dir; crab -getoutput; crab -getoutput; cd ..' >> getoutput \n"));
+	    system(sprintf("echo 'cd $dir; crab -status; crab -getoutput; cd ..' >> getoutput \n"));
 	}
     	$idx++;  
     }
