@@ -102,7 +102,7 @@ process.KinematicTauProducer.BDTweightFileZero  = cms.untracked.string(base+"/da
     
 process.schedule = cms.Schedule()
 
-process.KinFitSkim  = cms.Path(process.EvntCounterA*process.MultiTrigFilter*process.TrigFilterInfo*process.CountTriggerPassedEvents*process.PFTau*process.recoTauClassicHPSSequence*process.PreselectionCuts*process.KinematicFitSequence*process.CountKinFitPassedEvents*process.type0PFMEtCorrection*process.producePFMETCorrections*process.EvntCounterB*process.NtupleMaker)
+process.KinFitSkim  = cms.Path(process.EvntCounterA*process.MultiTrigFilter*process.TrigFilterInfo*process.MuonPreselectionCuts*process.CountTriggerPassedEvents*process.PFTau*process.recoTauClassicHPSSequence*process.PreselectionCuts*process.KinematicFitSequence*process.CountKinFitPassedEvents*process.type0PFMEtCorrection*process.producePFMETCorrections*process.EvntCounterB*process.NtupleMaker)
 
 process.schedule.append(process.KinFitSkim)
 
