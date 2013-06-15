@@ -1,4 +1,3 @@
-
 import FWCore.ParameterSet.Config as cms
 import os
 import HLTrigger.HLTfilters.triggerResultsFilter_cfi as hlt
@@ -7,12 +6,15 @@ import HLTrigger.HLTfilters.triggerResultsFilter_cfi as hlt
 process = cms.Process("AOD")
 
 process.load('Configuration/StandardSequences/Services_cff')
-process.load('SimGeneral.MixingModule.mixNoPU_cfi')
-process.load('Configuration/StandardSequences/MagneticField_38T_cff')
-process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
+#process.load('SimGeneral.MixingModule.mixNoPU_cfi')
+#process.load('Configuration/StandardSequences/MagneticField_38T_cff')
+process.load("Configuration.StandardSequences.MagneticField_cff")
+process.load("Configuration.StandardSequences.GeometryDB_cff")
+process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 
-#<globaltag>
-process.GlobalTag.globaltag = 'START52_V9::All'
+
+<globaltag>
+#process.GlobalTag.globaltag = 'START52_V9::All'
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load("Configuration.EventContent.EventContent_cff")
@@ -31,7 +33,7 @@ process.source = cms.Source("PoolSource",
                             
                             )
 
-numberOfEvents = 500
+numberOfEvents = 5000
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(numberOfEvents)
 )
@@ -46,8 +48,8 @@ process.load("HLTrigger.HLTfilters.triggerResultsFilter_cfi")
 process.load("SkimmingTools.SkimmingCuts.cuts_cfi")
 process.load("TauDataFormat.TauNtuple.tauntuple_cfi")
 process.load("TauDataFormat.TauNtuple.eventCounter_cfi")
-process.EvntCounterA.DataMCType = cms.untracked.string("Data")#("<DataType>")
-process.EvntCounterB.DataMCType = cms.untracked.string("Data")#("<DataType>")
+process.EvntCounterA.DataMCType = cms.untracked.string("<DataType>")
+process.EvntCounterB.DataMCType = cms.untracked.string("<DataType>")
 process.CountTriggerPassedEvents = process.EvntCounterB.clone()
 process.CountTriggerPassedEvents.CounterType = cms.untracked.string("CountTriggerPassedEvents")
 process.CountKinFitPassedEvents = process.EvntCounterB.clone()
@@ -78,7 +80,7 @@ if debugging:
 else:
     base = 'src'
     
-process.NtupleMaker.PUInputFile = cms.untracked.string(base+'/data/Lumi_190456_208686MC_PU_S10_andData.root') #pu_whole2012.root');
+process.NtupleMaker.PUInputFile = cms.untracked.string(base+'/data/<Pile_Up_File>') #pu_whole2012.root');
 process.NtupleMaker.EleMVAWeights1 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat1.weights.xml')
 process.NtupleMaker.EleMVAWeights2 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat2.weights.xml')
 process.NtupleMaker.EleMVAWeights3 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat3.weights.xml')
