@@ -57,6 +57,9 @@ if( $ARGV[0] eq "--Submit" ){
     system(sprintf("rm createandsubmittest; touch createandsubmittest"));
     system(sprintf("rm submitall; touch submitall"));
     system(sprintf("rm getoutput; touch getoutput"));    
+    system(sprintf("rm forceResubmit; touch forceResubmit"));
+    system(sprintf("rm resubmit; touch resubmit"));
+    system(sprintf("rm check; touch check"));
     $pythonfile=$ARGV[1];
     $TempDataSetFile=$ARGV[2];
     # Open ListofFile.txt
@@ -171,8 +174,11 @@ if( $ARGV[0] eq "--Submit" ){
 	}
 	else{
 	    system(sprintf("echo 'cd $dir ; crab -create ; crab -submit 1; cd ..' >>  createandsubmittest \n"));
-	    system(sprintf("echo 'cd $dir ;  crab -submit ; cd ..' >>  submitall \n"));
-	    system(sprintf("echo 'cd $dir; crab -status; crab -getoutput; cd ..' >> getoutput \n"));
+	    system(sprintf("echo 'cd $dir ; crab -submit ; cd ..' >>  submitall \n"));
+	    system(sprintf("echo 'cd $dir;  crab -status; crab -getoutput; cd ..' >> getoutput \n"));
+	    system(sprintf("echo \"cd $dir; crab -status | grep -A 2 \\\"resubmit\\\" | grep \\\"jobs:\\\" | awk '{print \\\"crab -resubmit \\\" \\\$4}' | tee junk; source junk; cd ..\" >>  resubmit \n"));
+	    system(sprintf("echo \"cd $dir; crab -status | grep '>>>>>>>>'; cd .. \">> check"));
+	    system(sprintf("echo \"cd $dir; crab -status | grep -A 2 \\\"Jobs with Wrapper Exit Code\\\" | grep \\\"jobs:\\\" | awk '{print \\\"crab -resubmit \\\" \\\$4}' | tee junk;crab -status | grep -A 2 \\\"Jobs with Wrapper Exit Code : 0\\\" | grep \\\"jobs:\\\" | awk '{print \\\"crab -resubmit \\\" \\\$4}' |  tee junk1;  diff junk junk1 | awk '{print \\\$2 \\\" \\\" \\\$3 \\\" \\\" \\\$4}'| tee junk3; source junk3; cd .. \" >> forceResubmit"));
 	}
     	$idx++;  
     }
