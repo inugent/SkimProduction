@@ -43,9 +43,9 @@ process.options = cms.untracked.PSet(
 )
 
 ####################### TauNtuple ######################
-process.load("TriggerFilter.Filter.triggerFilter_cfi")
+process.load("TauDataFormat.TauNtuple.triggerFilter_cfi")
 process.load("HLTrigger.HLTfilters.triggerResultsFilter_cfi")
-process.load("SkimmingTools.SkimmingCuts.cuts_cfi")
+process.load("TauDataFormat.TauNtuple.cuts_cfi")
 process.load("TauDataFormat.TauNtuple.tauntuple_cfi")
 process.load("TauDataFormat.TauNtuple.eventCounter_cfi")
 process.load("RecoTauTag.ImpactParameter.PFTau3ProngReco_cfi")
