@@ -24,7 +24,8 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\n    total_number_of_lumis = <total_number_of_lumis>");
     printf("\n    total_number_of_events = <total_number_of_events>");
     printf("\n    number_of_jobs = <number_of_jobs>");
-    printf("\n    CE_white_list = <CE_white_list>");
+    printf("\n    se_white_list = <se_white_list>");
+    printf("\n    se_black_list = <se_black_list>");
     printf("\nList of DataTypes:\n");
     printf("    data, h_tautau, hpm_taunu, ttbar, w_lnu, w_enu, w_munu, w_taunu, dy_ll, dy_ee, dy_mumu, dy_tautau\n");
     printf("    ZZ, WW, WZ, qcd\n");
@@ -71,8 +72,8 @@ if( $ARGV[0] eq "--Submit" ){
     @total_number_of_lumis;
     @total_number_of_events;
     @number_of_jobs;
-    @CE_white_list;
-    @CE_black_list;
+    @se_white_list;
+    @se_black_list;
     @DataType;
     @globaltag;
     @pileupfile;
@@ -91,8 +92,8 @@ if( $ARGV[0] eq "--Submit" ){
 	    push(@total_number_of_lumis,"");
 	    push(@total_number_of_events,"");
 	    push(@number_of_jobs,"");
-	    push(@CE_white_list,"");
-	    push(@CE_black_list,"");
+	    push(@se_white_list,"");
+	    push(@se_black_list,"");
 	    push(@DataType,$c);
 	    push(@globaltag,"");
             push(@pileupfile,"");
@@ -124,11 +125,11 @@ if( $ARGV[0] eq "--Submit" ){
 	if($a eq "number_of_jobs"){
 	    $number_of_jobs[$idx]=$item;
 	}
-	if($a eq "CE_white_list"){
-	    $CE_white_list[$idx]=$item;
-	}
-	if($a eq "CE_black_list"){
-            $CE_black_list[$idx]=$item;
+        if($a eq "se_white_list"){
+            $se_white_list[$idx]=$item;
+        }
+        if($a eq "se_black_list"){
+            $se_black_list[$idx]=$item;
         }
 	if($a eq "Pile_Up_File"){
 	    $pileupfile[$idx]=$c;
@@ -163,11 +164,11 @@ if( $ARGV[0] eq "--Submit" ){
 	system(sprintf("./subs \"<total_number_of_events>\" \"$total_number_of_events[$idx] \"       $dir/crab.cfg"));
 	system(sprintf("./subs \"<number_of_jobs>\"         \"$number_of_jobs[$idx] \"               $dir/crab.cfg"));
 	system(sprintf("./subs \"<number_of_jobs>\"         \"$number_of_jobs[$idx] \"               $dir/crab.cfg"));
-	if($CE_white_list[$idx] ne "none" || $CE_white_list[$idx] ne ""){
-	    system(sprintf("./subs \"<CE_white_list>\"          \"$CE_white_list[$idx] \"            $dir/crab.cfg"));
+	if($se_white_list[$idx] ne "none" || $se_white_list[$idx] ne ""){
+	    system(sprintf("./subs \"<se_white_list>\"          \"$se_white_list[$idx] \"            $dir/crab.cfg"));
 	}
-	if($CE_black_list[$idx] ne "none" || $CE_black_list[$idx] ne ""){
-            system(sprintf("./subs \"<CE_black_list>\"          \"$CE_black_list[$idx] \"            $dir/crab.cfg"));
+	if($se_black_list[$idx] ne "none" || $se_black_list[$idx] ne ""){
+            system(sprintf("./subs \"<se_black_list>\"          \"$se_black_list[$idx] \"            $dir/crab.cfg"));
         }
 	if($njobs !=0){
 	    system(sprintf("cd $dir ; crab -create -submit $njobs ; cd .."));

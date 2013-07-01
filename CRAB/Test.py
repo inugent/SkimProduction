@@ -48,6 +48,7 @@ process.load("HLTrigger.HLTfilters.triggerResultsFilter_cfi")
 process.load("SkimmingTools.SkimmingCuts.cuts_cfi")
 process.load("TauDataFormat.TauNtuple.tauntuple_cfi")
 process.load("TauDataFormat.TauNtuple.eventCounter_cfi")
+process.load("RecoTauTag.ImpactParameter.PFTau3ProngReco_cfi")
 process.EvntCounterA.DataMCType = cms.untracked.string("<DataType>")
 process.EvntCounterB.DataMCType = cms.untracked.string("<DataType>")
 process.CountTriggerPassedEvents = process.EvntCounterB.clone()
@@ -64,7 +65,7 @@ process.pfType1CorrectedMet.applyType0Corrections = cms.bool(False)
 process.pfType1CorrectedMet.srcType1Corrections = cms.VInputTag(
     cms.InputTag('pfMETcorrType0'),
     cms.InputTag('pfJetMETcorr', 'type1')        
-)
+    )
 
 ####################### MET corrections ######################
 process.endjob_step = cms.Path(process.endOfProcess)
@@ -73,8 +74,8 @@ process.endjob_step = cms.Path(process.endOfProcess)
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 ###### New HPS
 
-debugging = True
-#debugging = False
+#debugging = True
+debugging = False
 if debugging:
     base = os.path.relpath(os.environ.get('CMSSW_BASE'))+'/src'
 else:
@@ -89,11 +90,11 @@ process.NtupleMaker.EleMVAWeights5 = cms.untracked.string(base+'/data/Electrons_
 process.NtupleMaker.EleMVAWeights6 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat6.weights.xml')
 process.NtupleMaker.ElectronMVAPtCut = cms.double(28.0);
 process.NtupleMaker.PFTauTIPTag = cms.InputTag("hpsPFTauTransverseImpactParameters")
+process.NtupleMaker.PFTau3PSTag = cms.InputTag("PFTau3ProngReco")
 
 process.schedule = cms.Schedule()
 
-process.TauNutpleSkim  = cms.Path(process.EvntCounterA*process.MultiTrigFilter*process.TrigFilterInfo*process.MuonPreselectionCuts*process.CountTriggerPassedEvents*process.PFTau*process.PreselectionCuts*process.type0PFMEtCorrection*process.producePFMETCorrections*process.EvntCounterB*process.NtupleMaker)
-#process.recoTauClassicHPSSequence
+process.TauNutpleSkim  = cms.Path(process.EvntCounterA*process.MultiTrigFilter*process.TrigFilterInfo*process.MuonPreselectionCuts*process.CountTriggerPassedEvents*process.PFTau*process.PFTau3ProngReco*process.type0PFMEtCorrection*process.producePFMETCorrections*process.EvntCounterB*process.NtupleMaker)
 process.schedule.append(process.TauNutpleSkim)
 
 
