@@ -98,7 +98,7 @@ process.NtupleMaker.EleMVAWeights3 = cms.untracked.string(base+'/data/Electrons_
 process.NtupleMaker.EleMVAWeights4 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat4.weights.xml')
 process.NtupleMaker.EleMVAWeights5 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat5.weights.xml')
 process.NtupleMaker.EleMVAWeights6 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat6.weights.xml')
-process.NtupleMaker.ElectronMVAPtCut = cms.double(28.0);
+process.NtupleMaker.ElectronMVAPtCut = cms.double(10.0);
 
 process.schedule = cms.Schedule()
 
