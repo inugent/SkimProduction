@@ -66,7 +66,7 @@ else:
     process.NtupleMaker.pfjets = cms.InputTag('ak5PFJetsL1FastL2L3')
     
 ####################### Jet Flavour for bTagging ######################  
-process.load("PhysicsTools.PatAlgos.mcMatchLayer0.jetFlavourId_cff.py")
+process.load("PhysicsTools.PatAlgos.mcMatchLayer0.jetFlavourId_cff")
                         
 ####################### MET corrections ######################
 process.load("JetMETCorrections.Type1MET.pfMETCorrections_cff")
