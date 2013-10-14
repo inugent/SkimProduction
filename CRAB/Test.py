@@ -64,6 +64,9 @@ if "<DataType>" == "Data":
 else:
     jetCorrectionProducer = process.ak5PFJetsL1FastL2L3
     process.NtupleMaker.pfjets = cms.InputTag('ak5PFJetsL1FastL2L3')
+    
+####################### Jet Flavour for bTagging ######################  
+process.load("PhysicsTools.PatAlgos.mcMatchLayer0.jetFlavourId_cff.py")
                         
 ####################### MET corrections ######################
 process.load("JetMETCorrections.Type1MET.pfMETCorrections_cff")
@@ -107,7 +110,7 @@ process.NtupleMaker.doTrack= cms.untracked.bool(False)
 process.MultiTrigFilter.useTriggers = cms.vstring("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu24_eta2p1_v","HLT_Mu17_Ele8_CaloIdL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL","HLT_Mu8_Ele17_CaloIdL",
 "HLT_Mu8_Ele17_CaloIdT_CaloIsoVL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL")
 
-process.TauNutpleSkim  = cms.Path(process.EvntCounterA*process.MultiTrigFilter*process.MuonPreselectionCuts*process.CountTriggerPassedEvents*process.PFTau*process.PreselectionCuts*jetCorrectionProducer*process.type0PFMEtCorrection*process.producePFMETCorrections*process.EvntCounterB*process.NtupleMaker)
+process.TauNutpleSkim  = cms.Path(process.EvntCounterA*process.MultiTrigFilter*process.MuonPreselectionCuts*process.CountTriggerPassedEvents*process.PFTau*process.PreselectionCuts*jetCorrectionProducer*process.type0PFMEtCorrection*process.producePFMETCorrections*process.patJetFlavourId*process.EvntCounterB*process.NtupleMaker)
 process.schedule.append(process.TauNutpleSkim)
 
 
