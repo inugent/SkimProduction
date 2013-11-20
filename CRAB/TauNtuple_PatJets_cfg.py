@@ -64,42 +64,64 @@ process.selectedPatJets.cut = cms.string('pt > 18')
 switchToPFMET(process, input=cms.InputTag('pfMet')) #this adds uncorrected MET collection labelled "patMETs"
 
 # produce corrected MET collections (RECO)
-process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType1Type2_cff")
+process.load("JetMETCorrections.Type1MET.pfMETCorrections_cff")
 if "<DataType>" == "Data":
-    process.corrPfMetType1.jetCorrLabel = cms.string("ak5PFL1FastL2L3Residual")
+    process.pfJetMETcorr.offsetCorrLabel = cms.string("ak5PFL1FastL2L3Residual")
 else:
-    process.corrPfMetType1.jetCorrLabel = cms.string("ak5PFL1FastL2L3")
+    process.pfJetMETcorr.offsetCorrLabel = cms.string("ak5PFL1FastL2L3")
 
-process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
-process.load("JetMETCorrections.Type1MET.correctedMet_cff")
+process.pfType0Type1CorrectedMet = process.pfType1CorrectedMet.clone(
+    applyType0Corrections = cms.bool(True)
+)
 
 # produce PAT MET collections
 from PhysicsTools.PatAlgos.producersLayer1.metProducer_cfi import patMETs
-process.patPfMetT0pcT1 = patMETs.clone(
-    metSource = cms.InputTag('pfMetT0pcT1'),
+process.patPfMetT0T1 = patMETs.clone(
+    metSource = cms.InputTag('pfType0Type1CorrectedMet'),
     addMuonCorrections = cms.bool(False),
     addGenMET    = cms.bool(False)
 )
 process.patPfMetT1 = patMETs.clone(
-    metSource = cms.InputTag('pfMetT1'),
+    metSource = cms.InputTag('pfType1CorrectedMet'),
     addMuonCorrections = cms.bool(False),
     addGenMET    = cms.bool(False)
 )
 
-# compute PUJetID and MVA MET
+# compute PUJetID (https://twiki.cern.ch/twiki/bin/view/CMS/HiggsToTauTauWorkingSummer2013#MVA_JET_Id)
+from RecoJets.JetProducers.PileupJetID_cfi import *
+stdalgos = cms.VPSet(full_53x,cutbased,PhilV1)
+process.puJetMva = cms.EDProducer('PileupJetIdProducer',
+    produceJetIds = cms.bool(True),
+    jetids = cms.InputTag(""),
+    runMvas = cms.bool(True),
+    jets = cms.InputTag("ak5PFJets"),
+    vertexes = cms.InputTag("offlinePrimaryVertices"),
+    algos = cms.VPSet(stdalgos),
+    rho     = cms.InputTag("kt6PFJets","rho"),
+    jec     = cms.string("AK5PF"),
+    applyJec = cms.bool(True),
+    inputIsCorrected = cms.bool(False),
+    residualsFromTxt = cms.bool(False),
+    residualsTxt     = cms.FileInPath("RecoJets/JetProducers/data/dummy.txt"),
+)
+
+# compute MVA MET
 process.load('JetMETCorrections.METPUSubtraction.mvaPFMET_leptons_cff')
 process.pfMEtMVA.srcLeptons = cms.VInputTag("isomuons","isoelectrons","isotaus") # load default lepton selection (H2Tau) for MVA-MET
 if "<DataType>" == "Data":
     process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.vstring("ak5PFL1FastL2L3Residual")
 else:
     process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.string("ak5PFL1FastL2L3")
-process.PUJetMVAMetSequence = cms.Sequence( process.pfMEtMVAsequence * process.pileupJetIdProducer)
+process.patPfMetMVA = patMETs.clone(
+    metSource = cms.InputTag('pfMEtMVA'),
+    addMuonCorrections = cms.bool(False),
+    addGenMET    = cms.bool(False)
+)
+process.PUJetMVAMetSequence = cms.Sequence( process.pfMEtMVAsequence * process.puJetMva * process.patPfMetMVA)
 
-process.JetMetSequence = cms.Sequence(process.correctionTermsPfMetType1Type2
-                                      * process.correctionTermsPfMetType0PFCandidate
-                                      * process.pfMetT0pcT1 
-                                      * process.pfMetT1
-                                      * process.patPfMetT0pcT1
+process.JetMetSequence = cms.Sequence(process.producePFMETCorrections
+                                      * process.pfType0Type1CorrectedMet
+                                      * process.patPfMetT0T1
                                       * process.patPfMetT1
                                       * process.PUJetMVAMetSequence)
 
