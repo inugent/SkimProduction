@@ -64,25 +64,24 @@ process.selectedPatJets.cut = cms.string('pt > 18')
 switchToPFMET(process, input=cms.InputTag('pfMet')) #this adds uncorrected MET collection labelled "patMETs"
 
 # produce corrected MET collections (RECO)
-process.load("JetMETCorrections.Type1MET.pfMETCorrections_cff")
+process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType1Type2_cff")
 if "<DataType>" == "Data":
-    process.pfJetMETcorr.offsetCorrLabel = cms.string("ak5PFL1FastL2L3Residual")
+    process.corrPfMetType1.jetCorrLabel = cms.string("ak5PFL1FastL2L3Residual")
 else:
-    process.pfJetMETcorr.offsetCorrLabel = cms.string("ak5PFL1FastL2L3")
+    process.corrPfMetType1.jetCorrLabel = cms.string("ak5PFL1FastL2L3")
 
-process.pfType0Type1CorrectedMet = process.pfType1CorrectedMet.clone(
-    applyType0Corrections = cms.bool(True)
-)
+process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
+process.load("JetMETCorrections.Type1MET.correctedMet_cff")
 
 # produce PAT MET collections
 from PhysicsTools.PatAlgos.producersLayer1.metProducer_cfi import patMETs
-process.patPfMetT0T1 = patMETs.clone(
-    metSource = cms.InputTag('pfType0Type1CorrectedMet'),
+process.patPfMetT0pcT1 = patMETs.clone(
+    metSource = cms.InputTag('pfMetT0pcT1'),
     addMuonCorrections = cms.bool(False),
     addGenMET    = cms.bool(False)
 )
 process.patPfMetT1 = patMETs.clone(
-    metSource = cms.InputTag('pfType1CorrectedMet'),
+    metSource = cms.InputTag('pfMetT1'),
     addMuonCorrections = cms.bool(False),
     addGenMET    = cms.bool(False)
 )
@@ -119,9 +118,11 @@ process.patPfMetMVA = patMETs.clone(
 )
 process.PUJetMVAMetSequence = cms.Sequence( process.pfMEtMVAsequence * process.puJetMva * process.patPfMetMVA)
 
-process.JetMetSequence = cms.Sequence(process.producePFMETCorrections
-                                      * process.pfType0Type1CorrectedMet
-                                      * process.patPfMetT0T1
+process.JetMetSequence = cms.Sequence(process.correctionTermsPfMetType1Type2
+                                      * process.correctionTermsPfMetType0PFCandidate
+                                      * process.pfMetT0pcT1 
+                                      * process.pfMetT1
+                                      * process.patPfMetT0pcT1
                                       * process.patPfMetT1
                                       * process.PUJetMVAMetSequence)
 
