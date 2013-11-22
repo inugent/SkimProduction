@@ -105,7 +105,7 @@ process.puJetMva = cms.EDProducer('PileupJetIdProducer',
 )
 
 # compute MVA MET
-process.load('JetMETCorrections.METPUSubtraction.mvaPFMET_leptons_cff')
+'''process.load('JetMETCorrections.METPUSubtraction.mvaPFMET_leptons_cff')
 process.pfMEtMVA.srcLeptons = cms.VInputTag("isomuons","isoelectrons","isotaus") # load default lepton selection (H2Tau) for MVA-MET
 if "<DataType>" == "Data":
     process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.vstring("ak5PFL1FastL2L3Residual")
@@ -117,14 +117,15 @@ process.patPfMetMVA = patMETs.clone(
     addGenMET    = cms.bool(False)
 )
 process.PUJetMVAMetSequence = cms.Sequence( process.pfMEtMVAsequence * process.puJetMva * process.patPfMetMVA)
-
+'''
 process.JetMetSequence = cms.Sequence(process.correctionTermsPfMetType1Type2
                                       * process.correctionTermsPfMetType0PFCandidate
                                       * process.pfMetT0pcT1 
                                       * process.pfMetT1
                                       * process.patPfMetT0pcT1
                                       * process.patPfMetT1
-                                      * process.PUJetMVAMetSequence)
+                                      * process.puJetMva)
+                                      #* process.PUJetMVAMetSequence)
 
 #from PhysicsTools.PatUtils.metUncertaintyTools import runMEtUncertainties
 #runMEtUncertainties(process)
@@ -189,7 +190,7 @@ process.NtupleMaker.ElectronMVAPtCut = cms.double(28.0);
 process.NtupleMaker.doPatJets = cms.untracked.bool(True)
 process.NtupleMaker.srcPatJets = cms.untracked.string("selectedPatJets")
 process.NtupleMaker.doPatMET = cms.untracked.bool(True)
-process.NtupleMaker.srcPatMET = cms.untracked.string("patMETsPF")
+process.NtupleMaker.doMVAMET = cms.untracked.bool(False)
 
 process.schedule = cms.Schedule()
 
