@@ -61,7 +61,7 @@ process.selectedPatJets.cut = cms.string('pt > 18')
 
 ############ MET #############
 # add pf met
-switchToPFMET(process, input=cms.InputTag('pfMet')) #this adds uncorrected MET collection labelled "patMETs"
+switchToPFMET(process, input=cms.InputTag('pfMet')) #this adds uncorrected MET collection labeled "patMETs"
 
 # produce corrected MET collections (RECO)
 process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType1Type2_cff")
@@ -86,7 +86,12 @@ process.patPfMetT1 = patMETs.clone(
     addGenMET    = cms.bool(False)
 )
 
-# compute PUJetID (https://twiki.cern.ch/twiki/bin/view/CMS/HiggsToTauTauWorkingSummer2013#MVA_JET_Id)
+# PUJetID following the instructions given here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/PileupJetID
+process.load("CMGTools.External.pujetidsequence_cff")
+process.puJetId.algos = cms.VPSet(full_53x,cutbased,PhilV1)
+
+# to use MVA-MET + PUJetID, uncomment the 2 sections below
+'''# compute PUJetID (https://twiki.cern.ch/twiki/bin/view/CMS/HiggsToTauTauWorkingSummer2013#MVA_JET_Id)
 from RecoJets.JetProducers.PileupJetID_cfi import *
 stdalgos = cms.VPSet(full_53x,cutbased,PhilV1)
 process.puJetMva = cms.EDProducer('PileupJetIdProducer',
@@ -102,7 +107,7 @@ process.puJetMva = cms.EDProducer('PileupJetIdProducer',
     inputIsCorrected = cms.bool(False),
     residualsFromTxt = cms.bool(False),
     residualsTxt     = cms.FileInPath("RecoJets/JetProducers/data/dummy.txt"),
-)
+)'''
 
 # compute MVA MET
 '''process.load('JetMETCorrections.METPUSubtraction.mvaPFMET_leptons_cff')
@@ -124,11 +129,8 @@ process.JetMetSequence = cms.Sequence(process.correctionTermsPfMetType1Type2
                                       * process.pfMetT1
                                       * process.patPfMetT0pcT1
                                       * process.patPfMetT1
-                                      * process.puJetMva)
-                                      #* process.PUJetMVAMetSequence)
-
-#from PhysicsTools.PatUtils.metUncertaintyTools import runMEtUncertainties
-#runMEtUncertainties(process)
+                                      * process.puJetIdSqeuence) # use this to run PUJetID alone
+                                      #* process.PUJetMVAMetSequence) # use this for MVA-MET + PUJetID
 
 ####### done with setting up PAT
 process.source = cms.Source("PoolSource",
@@ -205,7 +207,7 @@ process.TauNutpleSkim  = cms.Path(process.EvntCounterA
                                   * process.CountTriggerPassedEvents
                                   * process.patDefaultSequence
                                   * process.JetMetSequence
-                                  * process.PFTau
+                                  * process.recoTauClassicHPSSequence
                                   * process.PreselectionCuts
                                   * process.EvntCounterB
                                   * process.NtupleMaker)
