@@ -9,8 +9,8 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 
-#<globaltag>
-process.GlobalTag.globaltag = 'START52_V9::All'
+<globaltag>
+#process.GlobalTag.globaltag = 'START52_V9::All'
 
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load("Configuration.EventContent.EventContent_cff")
@@ -19,24 +19,29 @@ process.load('HLTrigger.Configuration.HLT_GRun_cff')
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 
+######################## dummy output module to avoid PAT crash
+process.out = cms.OutputModule("PoolOutputModule",
+                               fileName = cms.untracked.string('deleteMe.root'),
+                               outputCommands = cms.untracked.vstring('drop *')
+                               )
+
+
 ######################################################
 #
 # load Pat
-#
-from PhysicsTools.PatAlgos.patTemplate_cfg import *
-from PhysicsTools.PatAlgos.tools.coreTools import *
-from PhysicsTools.PatAlgos.tools.metTools import *
-from PhysicsTools.PatAlgos.tools.jetTools import *
-from PhysicsTools.PatAlgos.tools.pfTools import *
+process.load("PhysicsTools.PatAlgos.patSequences_cff")
+from PhysicsTools.PatAlgos.tools.coreTools import removeMCMatching
+from PhysicsTools.PatAlgos.tools.jetTools import switchJetCollection
+from PhysicsTools.PatAlgos.tools.pfTools import switchToPFMET
 
-removeMCMatching(process, ['All'])
+removeMCMatching(process, outputModules=[])
 
 # Jet energy corrections to use:
 if "<DataType>" == "Data":
-    inputJetCorrLabel = ('AK5PF', ['L1Offset', 'L2Relative', 'L3Absolute', 'L2L3Residual'])
+    inputJetCorrLabel = ('AK5PF', ['L1FastJet', 'L2Relative', 'L3Absolute', 'L2L3Residual'])
 else:
-    inputJetCorrLabel = ('AK5PF', ['L1Offset', 'L2Relative', 'L3Absolute'])
-process.patJetCorrFactors.useRho=False
+    inputJetCorrLabel = ('AK5PF', ['L1FastJet', 'L2Relative', 'L3Absolute'])
+#process.patJetCorrFactors.useRho=False
 
 # Add PF jets
 switchJetCollection(process,cms.InputTag('ak5PFJets'),
@@ -88,7 +93,7 @@ process.patPfMetT1 = patMETs.clone(
 
 # PUJetID following the instructions given here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/PileupJetID
 process.load("CMGTools.External.pujetidsequence_cff")
-process.puJetId.algos = cms.VPSet(full_53x,cutbased,PhilV1)
+#process.puJetId.algos = cms.VPSet(full_53x,cutbased,PhilV1)
 
 # to use MVA-MET + PUJetID, uncomment the 2 sections below
 '''# compute PUJetID (https://twiki.cern.ch/twiki/bin/view/CMS/HiggsToTauTauWorkingSummer2013#MVA_JET_Id)
@@ -141,8 +146,9 @@ process.source = cms.Source("PoolSource",
                                     '/store/data/Run2012D/TauPlusX/AOD/22Jan2013-v1/20000/0085A19F-9187-E211-9305-0025901D484C.root',
                                     '/store/data/Run2012D/TauPlusX/AOD/22Jan2013-v1/20000/00DF9FCD-8986-E211-B337-0025901D4936.root',
                                     '/store/data/Run2012D/TauPlusX/AOD/22Jan2013-v1/20000/022E5139-5287-E211-9024-0030487F164D.root',
-                                    '/store/data/Run2012D/TauPlusX/AOD/22Jan2013-v1/20000/023184C4-F487-E211-AC7C-0025904B144E.root')
+                                    '/store/data/Run2012D/TauPlusX/AOD/22Jan2013-v1/20000/023184C4-F487-E211-AC7C-0025904B144E.root')                  
                             )
+)
 
 numberOfEvents = 5000
 process.maxEvents = cms.untracked.PSet(
@@ -201,17 +207,17 @@ process.NtupleMaker.doTrack= cms.untracked.bool(False)
 process.MultiTrigFilter.useTriggers = cms.vstring("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu24_eta2p1_v","HLT_Mu17_Ele8_CaloIdL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL","HLT_Mu8_Ele17_CaloIdL",
 "HLT_Mu8_Ele17_CaloIdT_CaloIsoVL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL")
 
-process.TauNutpleSkim  = cms.Path(process.EvntCounterA
+process.TauNtupleSkim  = cms.Path(process.EvntCounterA
                                   * process.MultiTrigFilter
                                   * process.MuonPreselectionCuts
                                   * process.CountTriggerPassedEvents
+                                  * process.recoTauClassicHPSSequence
                                   * process.patDefaultSequence
                                   * process.JetMetSequence
-                                  * process.recoTauClassicHPSSequence
                                   * process.PreselectionCuts
                                   * process.EvntCounterB
                                   * process.NtupleMaker)
-process.schedule.append(process.TauNutpleSkim)
+process.schedule.append(process.TauNtupleSkim)
 
 
 
