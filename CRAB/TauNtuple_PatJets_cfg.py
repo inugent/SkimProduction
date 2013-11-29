@@ -19,13 +19,6 @@ process.load('HLTrigger.Configuration.HLT_GRun_cff')
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 
-######################## dummy output module to avoid PAT crash
-process.out = cms.OutputModule("PoolOutputModule",
-                               fileName = cms.untracked.string('deleteMe.root'),
-                               outputCommands = cms.untracked.vstring('drop *')
-                               )
-
-
 ######################################################
 #
 # load Pat
@@ -50,7 +43,8 @@ switchJetCollection(process,cms.InputTag('ak5PFJets'),
                     jetCorrLabel = inputJetCorrLabel,
                     doType1MET   = True,
                     genJetCollection=cms.InputTag("ak5GenJets"),
-                    doJetID      = True
+                    doJetID      = True,
+                    outputModules= []
                     )
 process.patJets.addTagInfos = True
 process.patJets.tagInfoSources  = cms.VInputTag(
