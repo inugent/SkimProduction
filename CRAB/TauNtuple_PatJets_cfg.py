@@ -170,6 +170,7 @@ process.CountKinFitPassedEvents.CounterType = cms.untracked.string("CountKinFitP
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 ###### New HPS
 
+
 #debugging = True
 debugging = False
 if debugging:
