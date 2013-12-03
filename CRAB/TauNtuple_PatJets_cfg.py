@@ -51,7 +51,6 @@ process.patJets.tagInfoSources  = cms.VInputTag(
     cms.InputTag("secondaryVertexTagInfosAOD"),
     )
 
-
 # load the PU JetID sequence
 #process.load("CMGTools.External.pujetidsequence_cff") # should not be needed, is done below with MVA MET
 
