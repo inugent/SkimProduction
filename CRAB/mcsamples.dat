@@ -152,3 +152,33 @@ number_of_jobs = 200
 process.GlobalTag.globaltag = 'START53_V27::All'
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
+
+DataType = hplusbwb
+datasetpath = /TTToHplusBWB_M-80_8TeV_ext-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = TTToHplusBWB_M-80_8TeV_ext-pythia6-tauola_Production_
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 400
+process.GlobalTag.globaltag = 'START53_V27::All'
+Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+
+DataType = hplusbwb
+datasetpath = /TTToHplusBWB_M-120_8TeV_ext-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = TTToHplusBWB_M-120_8TeV_ext-pythia6-tauola_Production_
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 400
+process.GlobalTag.globaltag = 'START53_V27::All'
+Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+
+DataType = hplusbwb
+datasetpath = /TTToHplusBWB_M-160_8TeV_ext-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM
+dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
+publish_data_name = TTToHplusBWB_M-160_8TeV_ext-pythia6-tauola_Production_
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 400
+process.GlobalTag.globaltag = 'START53_V27::All'
+Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
