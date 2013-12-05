@@ -1,3 +1,5 @@
+DataType = dy_emu
+datasetpath = /SignalMC_Z2EMu_v7_GEN-SIM-RAW/anehrkor-SignalMC_Z2EMu_v7_AODSIM-d7f8f1e306baff866e162d27fb2d0504/USER
 dbs_url = https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_02_writer/servlet/DBSServlet
 publish_data_name = DYToEMu_Production_
 output_file = TauNtuple.root
