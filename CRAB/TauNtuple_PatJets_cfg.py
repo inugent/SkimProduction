@@ -60,8 +60,10 @@ process.selectedPatJets.cut = cms.string('pt > 18')
 ############ MET #############
 # add pf met
 switchToPFMET(process, input=cms.InputTag('pfMet')) #this adds uncorrected MET collection labeled "patMETs"
-
+# load recommended met filters
+process.load("RecoMET.METFilters.metFilters_cff")
 # produce corrected MET collections (RECO)
+process.load("JetMETCorrections.Type1MET.correctionTermsCaloMet_cff")
 process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType1Type2_cff")
 if "<DataType>" == "Data":
     process.corrPfMetType1.jetCorrLabel = cms.string("ak5PFL1FastL2L3Residual")
@@ -69,17 +71,73 @@ else:
     process.corrPfMetType1.jetCorrLabel = cms.string("ak5PFL1FastL2L3")
 
 process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
+process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0RecoTrack_cff")
+process.load("JetMETCorrections.Type1MET.correctionTermsPfMetShiftXY_cff")
+if "<DataType>" == "Data":
+    process.corrPfMetShiftXY.parameter = process.pfMEtSysShiftCorrParameters_2012runABCDvsNvtx_data
+else:
+    process.corrPfMetShiftXY.parameter = process.pfMEtSysShiftCorrParameters_2012runABCDvsNvtx_mc
 process.load("JetMETCorrections.Type1MET.correctedMet_cff")
 
 # produce PAT MET collections
 from PhysicsTools.PatAlgos.producersLayer1.metProducer_cfi import patMETs
+process.patPfMetT0rt = patMETs.clone(
+    metSource = cms.InputTag('pfMetT0rt'),
+    addMuonCorrections = cms.bool(False),
+    addGenMET = cms.bool(False)
+)
+process.patPfMetT0rtT1 = patMETs.clone(
+    metSource = cms.InputTag('pfMetT0rtT1'),
+    addMuonCorrections = cms.bool(False),
+    addGenMET = cms.bool(False)
+)
+process.patPfMetT0pc = patMETs.clone(
+    metSource = cms.InputTag('pfMetT0pc'),
+    addMuonCorrections = cms.bool(False),
+    addGenMET = cms.bool(False)
+)
 process.patPfMetT0pcT1 = patMETs.clone(
     metSource = cms.InputTag('pfMetT0pcT1'),
     addMuonCorrections = cms.bool(False),
     addGenMET    = cms.bool(False)
 )
+process.patPfMetT0rtTxy = patMETs.clone(
+    metSource = cms.InputTag('pfMetT0rtTxy'),
+    addMuonCorrections = cms.bool(False),
+    addGenMET = cms.bool(False)
+)
+process.patPfMetT0rtT1Txy = patMETs.clone(
+    metSource = cms.InputTag('pfMetT0rtT1Txy'),
+    addMuonCorrections = cms.bool(False),
+    addGenMET = cms.bool(False)
+)
+process.patPfMetT0pcTxy = patMETs.clone(
+    metSource = cms.InputTag('pfMetT0pcTxy'),
+    addMuonCorrections = cms.bool(False),
+    addGenMET = cms.bool(False)
+)
+process.patPfMetT0pcT1Txy = patMETs.clone(
+    metSource = cms.InputTag('pfMetT0pcT1Txy'),
+    addMuonCorrections = cms.bool(False),
+    addGenMET = cms.bool(False)
+)
 process.patPfMetT1 = patMETs.clone(
     metSource = cms.InputTag('pfMetT1'),
+    addMuonCorrections = cms.bool(False),
+    addGenMET    = cms.bool(False)
+)
+process.patPfMetT1Txy = patMETs.clone(
+    metSource = cms.InputTag('pfMetT1Txy'),
+    addMuonCorrections = cms.bool(False),
+    addGenMET    = cms.bool(False)
+)
+process.patCaloMetT1 = patMETs.clone(
+    metSource = cms.InputTag('caloMetT1'),
+    addMuonCorrections = cms.bool(False),
+    addGenMET    = cms.bool(False)
+)
+process.patCaloMetT1T2 = patMETs.clone(
+    metSource = cms.InputTag('caloMetT1T2'),
     addMuonCorrections = cms.bool(False),
     addGenMET    = cms.bool(False)
 )
@@ -122,11 +180,34 @@ process.patPfMetMVA = patMETs.clone(
 process.PUJetMVAMetSequence = cms.Sequence( process.pfMEtMVAsequence * process.puJetMva * process.patPfMetMVA)
 '''
 process.JetMetSequence = cms.Sequence(process.correctionTermsPfMetType1Type2
+                                      * process.correctionTermsPfMetType0RecoTrack
                                       * process.correctionTermsPfMetType0PFCandidate
-                                      * process.pfMetT0pcT1 
+                                      * process.correctionTermsPfMetShiftXY
+                                      * process.correctionTermsCaloMet
+                                      * process.pfMetT0rt
+                                      * process.pfMetT0rtT1
+                                      * process.pfMetT0pc
+                                      * process.pfMetT0pcT1
+                                      * process.pfMetT0rtTxy
+                                      * process.pfMetT0rtT1Txy
+                                      * process.pfMetT0pcTxy
+                                      * process.pfMetT0pcT1Txy
                                       * process.pfMetT1
+                                      * process.pfMetT1Txy
+                                      * process.caloMetT1
+                                      * process.caloMetT1T2
+                                      * process.patPfMetT0rt
+                                      * process.patPfMetT0rtT1
+                                      * process.patPfMetT0pc
                                       * process.patPfMetT0pcT1
+                                      * process.patPfMetT0rtTxy
+                                      * process.patPfMetT0rtT1Txy
+                                      * process.patPfMetT0pcTxy
+                                      * process.patPfMetT0pcT1Txy
                                       * process.patPfMetT1
+                                      * process.patPfMetT1Txy
+                                      * process.patCaloMetT1
+                                      * process.patCaloMetT1T2
                                       * process.puJetIdSqeuence) # use this to run PUJetID alone
                                       #* process.PUJetMVAMetSequence) # use this for MVA-MET + PUJetID
 
@@ -223,6 +304,7 @@ else:
 
 
 process.TauNtupleSkim  = cms.Path(process.EvntCounterA
+				  * process.metFilters
                                   * process.MultiTrigFilter
                                   * process.MuonPreselectionCuts
                                   * process.CountTriggerPassedEvents
