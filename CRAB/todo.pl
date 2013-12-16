@@ -335,8 +335,8 @@ if( $ARGV[0] eq "--CheckandCleanOutput" ){
             foreach $file (@files){
 		system(sprintf("grep \"LFN:\"  $myDIR/$datadir/$subdir/res/$file  | grep -v \"echo\"  >> junk1"));
 	    }
-	    system(sprintf("cat junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"TauNtuple\"a[2] }' | tee $myDIR/$datadir/OutputFilesfromlog.log"));
-	    system(sprintf("tail -n 1 junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"uberftp grid-ftp.physik.rwth-aachen.de \\\"cd /pnfs/physik.rwth-aachen.de/cms\"  a[1]  \" ; ls */ \\\" | tee junk3 \"}' > junk2")); 
+		system(sprintf("cat junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"TauNtuple\"a[3] }' | tee $myDIR/$datadir/OutputFilesfromlog.log"));
+		system(sprintf("tail -n 1 junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"uberftp grid-ftp.physik.rwth-aachen.de \\\"cd /pnfs/physik.rwth-aachen.de/cms\" a[1] \"/TauNtuple\" a[2]  \" ; ls */ \\\" | tee junk3 \"}' > junk2"));
 
 	    $FilesonDisk="$myDIR/$datadir/OutputFilesfromDisk.log";
 	    system(sprintf("echo \"grep root junk3 | awk '{print \\\$9 }'| tee $FilesonDisk   \" >> junk2"));
@@ -345,7 +345,7 @@ if( $ARGV[0] eq "--CheckandCleanOutput" ){
 	    open(DAT, $FilesonDisk) || die("Could not open file $FilesonDisk!");
             while ($item = <DAT>) {
                 chomp($item);
-		system(sprintf("tail -n 1 junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"uberftp grid-ftp.physik.rwth-aachen.de \\\"cd /pnfs/physik.rwth-aachen.de/cms\"  a[1]  \" ; rm $item \\\" \"}' >> junk5"));
+		system(sprintf("tail -n 1 junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"uberftp grid-ftp.physik.rwth-aachen.de \\\"cd /pnfs/physik.rwth-aachen.de/cms\"  a[1] \"/TauNtuple\" a[2] \" ; rm $item \\\" \"}' >> junk5"));
 
 	    }
 	    close(DAT);
