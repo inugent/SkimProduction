@@ -303,17 +303,67 @@ else:
     process.MultiTrigFilter.useTriggers = cms.vstring("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu24_eta2p1_v","HLT_Mu17_Ele8_CaloIdL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL","HLT_Mu8_Ele17_CaloIdL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL")    
 
 
-process.TauNtupleSkim  = cms.Path(process.EvntCounterA
-				  * process.metFilters
-                                  * process.MultiTrigFilter
-                                  * process.MuonPreselectionCuts
-                                  * process.CountTriggerPassedEvents
-                                  * process.recoTauClassicHPSSequence
-                                  * process.patDefaultSequence
-                                  * process.JetMetSequence
-                                  * process.PreselectionCuts
-                                  * process.EvntCounterB
-                                  * process.NtupleMaker)
+#process.TauNtupleSkim  = cms.Path(process.EvntCounterA
+#				  * process.metFilters
+#                                  * process.MultiTrigFilter
+#                                  * process.MuonPreselectionCuts
+#                                  * process.CountTriggerPassedEvents
+#                                  * process.recoTauClassicHPSSequence
+#                                  * process.patDefaultSequence
+#                                  * process.JetMetSequence
+#                                  * process.PreselectionCuts
+#                                  * process.EvntCounterB
+#                                  * process.NtupleMaker)
+
+if "<PRESELECTION>" == "DoubleMu":
+    process.TauNtupleSkim = cms.Path(process.EvntCounterA
+                                     * process.metFilters
+                                     * process.MultiTrigFilter
+                                     * process.MuonPreselectionCuts
+                                     * process.CountTriggerPassedEvents
+                                     * process.recoTauClassicHPSSequence
+                                     * process.patDefaultSequence
+                                     * process.JetMetSequence
+                                     * process.DoubleMuPreselectionCuts
+                                     * process.EvntCounterB
+                                     * process.NtupleMaker)
+elif "<PRESELECTION>" == "DoubleEle":
+    process.TauNtupleSkim = cms.Path(process.EvntCounterA
+                                     * process.metFilters
+                                     * process.MultiTrigFilter
+                                     * process.ElePreselectionCuts
+                                     * process.CountTriggerPassedEvents
+                                     * process.recoTauClassicHPSSequence
+                                     * process.patDefaultSequence
+                                     * process.JetMetSequence
+                                     * process.DoubleElePreselectionCuts
+                                     * process.EvntCounterB
+                                     * process.NtupleMaker)
+elif "<PRESELECTION>" == "MuJet":
+    process.TauNtupleSkim = cms.Path(process.EvntCounterA
+                                     * process.metFilters
+                                     * process.MultiTrigFilter
+                                     * process.MuonPreselectionCuts
+                                     * process.CountTriggerPassedEvents
+                                     * process.recoTauClassicHPSSequence
+                                     * process.patDefaultSequence
+                                     * process.JetMetSequence
+                                     * process.MuJetPreselectionCuts
+                                     * process.EvntCounterB
+                                     * process.NtupleMaker)
+else:
+    process.TauNtupleSkim = cms.Path(process.EvntCounterA
+                                     * process.metFilters
+                                     * process.MultiTrigFilter
+                                     * process.MuonPreselectionCuts
+                                     * process.CountTriggerPassedEvents
+                                     * process.recoTauClassicHPSSequence
+                                     * process.patDefaultSequence
+                                     * process.JetMetSequence
+                                     * process.PreselectionCuts
+                                     * process.EvntCounterB
+                                     * process.NtupleMaker)
+
 process.schedule.append(process.TauNtupleSkim)
 
 

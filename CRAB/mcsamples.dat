@@ -6,6 +6,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 10
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = dy_mue
@@ -16,6 +17,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 10
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = dy_ee
@@ -26,6 +28,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = dy_mumu
@@ -36,6 +39,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = dy_tautau
@@ -46,6 +50,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = ww_2l2nu
@@ -56,6 +61,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = wz_3l1nu
@@ -66,6 +72,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list = T2_DE_DESY
 
@@ -77,6 +84,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = zz_4l
@@ -87,6 +95,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list = T2_DE_DESY
 
@@ -98,6 +107,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = zz_2l2nu
@@ -108,6 +118,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list = T2_DE_DESY
 
@@ -119,6 +130,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list = T2_DE_DESY
 
@@ -130,6 +142,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 200
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -141,6 +154,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 200
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -152,6 +166,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = hplusbwb
@@ -162,6 +177,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = hplusbwb
@@ -172,6 +188,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = w_lnu
@@ -182,6 +199,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = w_lnu
@@ -192,6 +210,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = h_tautau_ggf
@@ -202,6 +221,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = h_tautau_vbf
@@ -212,6 +232,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = h_tautau_whzhtth
@@ -222,4 +243,5 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root

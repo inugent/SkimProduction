@@ -7,6 +7,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -19,6 +20,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -31,6 +33,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -43,6 +46,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -55,6 +59,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = DoubleEle
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -67,6 +72,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = DoubleEle
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -79,6 +85,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = DoubleEle
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -91,6 +98,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = DoubleEle
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -103,6 +111,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = DoubleMu
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -115,6 +124,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = DoubleMu
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -127,6 +137,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = DoubleMu
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -139,6 +150,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = DoubleMu
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list =  T2_DE_DESY
 
@@ -151,6 +163,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 
 DataType = Data
@@ -162,6 +175,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list = T2_DE_RWTH
 
@@ -174,6 +188,7 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list = T2_DE_RWTH
   
@@ -186,5 +201,6 @@ total_number_of_lumis = -1
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
 se_white_list = T2_DE_RWTH 
