@@ -260,26 +260,26 @@ else:
     
 process.NtupleMaker.PUInputFile = cms.untracked.string(base+'/data/<Pile_Up_File>')
 # weight files for triggering MVA w/o IP
-process.NtupleMaker.EleMVATrigNoIPWeights1 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat1.weights.xml')
-process.NtupleMaker.EleMVATrigNoIPWeights2 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat2.weights.xml')
-process.NtupleMaker.EleMVATrigNoIPWeights3 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat3.weights.xml')
-process.NtupleMaker.EleMVATrigNoIPWeights4 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat4.weights.xml')
-process.NtupleMaker.EleMVATrigNoIPWeights5 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat5.weights.xml')
-process.NtupleMaker.EleMVATrigNoIPWeights6 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigNoIPV0_2012_Cat6.weights.xml')
+process.NtupleMaker.EleMVATrigNoIPWeights1 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigNoIPV0_2012_Cat1.weights.xml')
+process.NtupleMaker.EleMVATrigNoIPWeights2 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigNoIPV0_2012_Cat2.weights.xml')
+process.NtupleMaker.EleMVATrigNoIPWeights3 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigNoIPV0_2012_Cat3.weights.xml')
+process.NtupleMaker.EleMVATrigNoIPWeights4 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigNoIPV0_2012_Cat4.weights.xml')
+process.NtupleMaker.EleMVATrigNoIPWeights5 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigNoIPV0_2012_Cat5.weights.xml')
+process.NtupleMaker.EleMVATrigNoIPWeights6 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigNoIPV0_2012_Cat6.weights.xml')
 # weight files for non triggering MVA
-process.NtupleMaker.EleMVANonTrigWeights1 = cms.untracked.string(base+'/data/Electrons_BDTG_NonTrigV0_Cat1.weights.xml')
-process.NtupleMaker.EleMVANonTrigWeights2 = cms.untracked.string(base+'/data/Electrons_BDTG_NonTrigV0_Cat2.weights.xml')
-process.NtupleMaker.EleMVANonTrigWeights3 = cms.untracked.string(base+'/data/Electrons_BDTG_NonTrigV0_Cat3.weights.xml')
-process.NtupleMaker.EleMVANonTrigWeights4 = cms.untracked.string(base+'/data/Electrons_BDTG_NonTrigV0_Cat4.weights.xml')
-process.NtupleMaker.EleMVANonTrigWeights5 = cms.untracked.string(base+'/data/Electrons_BDTG_NonTrigV0_Cat5.weights.xml')
-process.NtupleMaker.EleMVANonTrigWeights6 = cms.untracked.string(base+'/data/Electrons_BDTG_NonTrigV0_Cat6.weights.xml')
+process.NtupleMaker.EleMVANonTrigWeights1 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_NonTrigV0_Cat1.weights.xml')
+process.NtupleMaker.EleMVANonTrigWeights2 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_NonTrigV0_Cat2.weights.xml')
+process.NtupleMaker.EleMVANonTrigWeights3 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_NonTrigV0_Cat3.weights.xml')
+process.NtupleMaker.EleMVANonTrigWeights4 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_NonTrigV0_Cat4.weights.xml')
+process.NtupleMaker.EleMVANonTrigWeights5 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_NonTrigV0_Cat5.weights.xml')
+process.NtupleMaker.EleMVANonTrigWeights6 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_NonTrigV0_Cat6.weights.xml')
 # weight files for triggering MVA w/ IP
-process.NtupleMaker.EleMVATrigWeights1 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigV0_Cat1.weights.xml')
-process.NtupleMaker.EleMVATrigWeights2 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigV0_Cat2.weights.xml')
-process.NtupleMaker.EleMVATrigWeights3 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigV0_Cat3.weights.xml')
-process.NtupleMaker.EleMVATrigWeights4 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigV0_Cat4.weights.xml')
-process.NtupleMaker.EleMVATrigWeights5 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigV0_Cat5.weights.xml')
-process.NtupleMaker.EleMVATrigWeights6 = cms.untracked.string(base+'/data/Electrons_BDTG_TrigV0_Cat6.weights.xml')
+process.NtupleMaker.EleMVATrigWeights1 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat1.weights.xml')
+process.NtupleMaker.EleMVATrigWeights2 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat2.weights.xml')
+process.NtupleMaker.EleMVATrigWeights3 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat3.weights.xml')
+process.NtupleMaker.EleMVATrigWeights4 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat4.weights.xml')
+process.NtupleMaker.EleMVATrigWeights5 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat5.weights.xml')
+process.NtupleMaker.EleMVATrigWeights6 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat6.weights.xml')
 
 # set Ntuple to run on PAT jets
 process.NtupleMaker.doPatJets = cms.untracked.bool(True)
@@ -303,17 +303,67 @@ else:
     process.MultiTrigFilter.useTriggers = cms.vstring("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu24_eta2p1_v","HLT_Mu17_Ele8_CaloIdL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL","HLT_Mu8_Ele17_CaloIdL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL")    
 
 
-process.TauNtupleSkim  = cms.Path(process.EvntCounterA
-				  * process.metFilters
-                                  * process.MultiTrigFilter
-                                  * process.MuonPreselectionCuts
-                                  * process.CountTriggerPassedEvents
-                                  * process.recoTauClassicHPSSequence
-                                  * process.patDefaultSequence
-                                  * process.JetMetSequence
-                                  * process.PreselectionCuts
-                                  * process.EvntCounterB
-                                  * process.NtupleMaker)
+#process.TauNtupleSkim  = cms.Path(process.EvntCounterA
+#				  * process.metFilters
+#                                  * process.MultiTrigFilter
+#                                  * process.MuonPreselectionCuts
+#                                  * process.CountTriggerPassedEvents
+#                                  * process.recoTauClassicHPSSequence
+#                                  * process.patDefaultSequence
+#                                  * process.JetMetSequence
+#                                  * process.PreselectionCuts
+#                                  * process.EvntCounterB
+#                                  * process.NtupleMaker)
+
+if "<PRESELECTION>" == "DoubleMu":
+    process.TauNtupleSkim = cms.Path(process.EvntCounterA
+                                     * process.metFilters
+                                     * process.MultiTrigFilter
+                                     * process.MuonPreselectionCuts
+                                     * process.CountTriggerPassedEvents
+                                     * process.recoTauClassicHPSSequence
+                                     * process.patDefaultSequence
+                                     * process.JetMetSequence
+                                     * process.DoubleMuPreselectionCuts
+                                     * process.EvntCounterB
+                                     * process.NtupleMaker)
+elif "<PRESELECTION>" == "DoubleEle":
+    process.TauNtupleSkim = cms.Path(process.EvntCounterA
+                                     * process.metFilters
+                                     * process.MultiTrigFilter
+                                     * process.ElePreselectionCuts
+                                     * process.CountTriggerPassedEvents
+                                     * process.recoTauClassicHPSSequence
+                                     * process.patDefaultSequence
+                                     * process.JetMetSequence
+                                     * process.DoubleElePreselectionCuts
+                                     * process.EvntCounterB
+                                     * process.NtupleMaker)
+elif "<PRESELECTION>" == "MuJet":
+    process.TauNtupleSkim = cms.Path(process.EvntCounterA
+                                     * process.metFilters
+                                     * process.MultiTrigFilter
+                                     * process.MuonPreselectionCuts
+                                     * process.CountTriggerPassedEvents
+                                     * process.recoTauClassicHPSSequence
+                                     * process.patDefaultSequence
+                                     * process.JetMetSequence
+                                     * process.MuJetPreselectionCuts
+                                     * process.EvntCounterB
+                                     * process.NtupleMaker)
+else:
+    process.TauNtupleSkim = cms.Path(process.EvntCounterA
+                                     * process.metFilters
+                                     * process.MultiTrigFilter
+                                     * process.MuonPreselectionCuts
+                                     * process.CountTriggerPassedEvents
+                                     * process.recoTauClassicHPSSequence
+                                     * process.patDefaultSequence
+                                     * process.JetMetSequence
+                                     * process.PreselectionCuts
+                                     * process.EvntCounterB
+                                     * process.NtupleMaker)
+
 process.schedule.append(process.TauNtupleSkim)
 
 
