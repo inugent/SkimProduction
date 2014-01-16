@@ -178,13 +178,17 @@ else:
 
 # choose preselection to apply
 if "<PRESELECTION>" == "DoubleMu":
-    useThesePreselectionCuts = process.DoubleMuPreselectionCuts
+    firstLevelPreselection = process.MuonPreselectionCuts
+    secondLevelPreselection = process.DoubleMuPreselectionCuts
 elif "<PRESELECTION>" == "DoubleEle":
-    useThesePreselectionCuts = process.DoubleElePreselectionCuts
+    firstLevelPreselection = process.ElePreselectionCuts
+    secondLevelPreselection = process.DoubleElePreselectionCuts
 elif "<PRESELECTION>" == "MuJet":
-    useThesePreselectionCuts = process.MuJetPreselectionCuts
+    firstLevelPreselection = process.MuonPreselectionCuts
+    secondLevelPreselection = process.MuJetPreselectionCuts
 else:
-    useThesePreselectionCuts = process.PreselectionCuts
+    firstLevelPreselection = process.MuonPreselectionCuts
+    secondLevelPreselection = process.PreselectionCuts
     
 process.TauNtupleSkim  = cms.Path(process.EvntCounterA
 				                  * process.metFilters
@@ -194,7 +198,7 @@ process.TauNtupleSkim  = cms.Path(process.EvntCounterA
                                   * process.recoTauClassicHPSSequence
                                   * process.JetSequence
                                   * process.MetSequence
-                                  * useThesePreselectionCuts
+                                  * secondLevelPreselection
                                   * process.EvntCounterB
                                   * process.NtupleMaker)
 
