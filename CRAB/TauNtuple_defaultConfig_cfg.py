@@ -39,8 +39,6 @@ process.pileupJetIdProducer.residualsTxt = cms.FileInPath("RecoJets/JetProducers
 process.JetSequence(process.ak5PFJetsCorr
                     * process.pileupJetIdProducer)
 
-process.NtupleMaker.doPatJets = cms.untracked.bool(False)
-
 ############ MET #############
 # load recommended met filters
 process.load("RecoMET.METFilters.metFilters_cff")
@@ -86,9 +84,6 @@ process.MetSequence = cms.Sequence(process.correctionTermsPfMetType1Type2
                                       * process.caloMetT1T2
                                       * process.pfMEtMVAsequence)
 
-process.NtupleMaker.doPatMET = cms.untracked.bool(False)
-process.NtupleMaker.doMVAMET = cms.untracked.bool(True)
-
 ###############
 
 process.source = cms.Source("PoolSource",
@@ -124,6 +119,10 @@ process.CountTriggerPassedEvents = process.EvntCounterB.clone()
 process.CountTriggerPassedEvents.CounterType = cms.untracked.string("CountTriggerPassedEvents")
 process.CountKinFitPassedEvents = process.EvntCounterB.clone()
 process.CountKinFitPassedEvents.CounterType = cms.untracked.string("CountKinFitPassedEvents")
+
+process.NtupleMaker.doPatJets = cms.untracked.bool(False)
+process.NtupleMaker.doPatMET = cms.untracked.bool(False)
+process.NtupleMaker.doMVAMET = cms.untracked.bool(True)
                         
 ###### New HPS
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
@@ -193,7 +192,7 @@ else:
 process.TauNtupleSkim  = cms.Path(process.EvntCounterA
 				                  * process.metFilters
                                   * process.MultiTrigFilter
-                                  * process.MuonPreselectionCuts
+                                  * firstLevelPreselection
                                   * process.CountTriggerPassedEvents
                                   * process.recoTauClassicHPSSequence
                                   * process.JetSequence
