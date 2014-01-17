@@ -19,6 +19,9 @@ process.load('HLTrigger.Configuration.HLT_GRun_cff')
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 
+# load full CMSSW reconstruction config, needed for btagging
+process.load("Configuration.StandardSequences.Reconstruction_cff")
+
 ######################################################
 
 ############ Jets #############
@@ -36,8 +39,43 @@ process.load("RecoJets.JetProducers.PileupJetID_cfi")
 process.pileupJetIdProducer.jets = "ak5PFJetsCorr"
 process.pileupJetIdProducer.residualsTxt = cms.FileInPath("RecoJets/JetProducers/data/mva_JetID_v1.weights.xml")
 
-process.JetSequence(process.ak5PFJetsCorr
-                    * process.pileupJetIdProducer)
+# b-tagging on PFJets (taken from https://twiki.cern.ch/twiki/pub/CMS/BtvTutorialHandsOn/runBtagExample1SV.py.txt)
+#process.load('RecoBTag.Configuration.RecoBTag_cff')
+process.MyAk5PFJetTracksAssociatorAtVertex = cms.EDProducer("JetTracksAssociatorAtVertex",
+   process.j2tParametersVX,
+   jets = cms.InputTag("ak5PFJetsCorr")
+)
+process.MyImpactParameterPFTagInfos = process.impactParameterTagInfos.clone(
+  jetTracks = "MyAk5PFJetTracksAssociatorAtVertex"
+)
+process.MySecondaryVertexTagInfos = process.secondaryVertexTagInfos.clone(
+  trackIPTagInfos = cms.InputTag("MyImpactParameterPFTagInfos"),
+)
+process.MyCombinedSecondaryVertexBJetTags  = process.combinedSecondaryVertexBJetTags.clone(
+  tagInfos = cms.VInputTag(cms.InputTag("MyImpactParameterPFTagInfos"),
+                           cms.InputTag("MySecondaryVertexTagInfos"))
+)
+
+process.JetSequence = cms.Sequence(process.ak5PFJetsCorr
+                    * process.pileupJetIdProducer
+                    * process.MyAk5PFJetTracksAssociatorAtVertex
+                    * process.MyImpactParameterPFTagInfos
+                    * process.MySecondaryVertexTagInfos
+                    * process.MyCombinedSecondaryVertexBJetTags)
+
+# jet flavour (https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookBTagging#BtagMCTools)
+if not "<DataType>" == "Data":
+    process.load("PhysicsTools.JetMCAlgos.CaloJetsMCFlavour_cfi")
+    process.PFAK5byRef = process.AK5byRef.clone(
+                                                jets = cms.InputTag("ak5PFJetsCorr")
+                                                )
+    process.PFAK5byValAlgo = process.AK5byValAlgo.clone(
+                                                        srcByReference = cms.InputTag("PFAK5byRef")
+                                                        )
+    process.JetSequence += process.myPartons
+    process.JetSequence += process.PFAK5byRef
+    process.JetSequence += process.PFAK5byValAlgo
+
 
 ############ MET #############
 # load recommended met filters
