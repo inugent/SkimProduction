@@ -19,56 +19,71 @@ process.load('HLTrigger.Configuration.HLT_GRun_cff')
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 
+# load full CMSSW reconstruction config, needed for btagging
+process.load("Configuration.StandardSequences.Reconstruction_cff")
+
 ######################################################
-#
-# load Pat
-process.load("PhysicsTools.PatAlgos.patSequences_cff")
-from PhysicsTools.PatAlgos.tools.coreTools import removeMCMatching
-from PhysicsTools.PatAlgos.tools.jetTools import switchJetCollection
-from PhysicsTools.PatAlgos.tools.pfTools import switchToPFMET
 
-removeMCMatching(process, outputModules=[])
-
+############ Jets #############
 # Jet energy corrections to use:
+JetCorrection = "ak5PFL1FastL2L3"
 if "<DataType>" == "Data":
-    inputJetCorrLabel = ('AK5PF', ['L1FastJet', 'L2Relative', 'L3Absolute', 'L2L3Residual'])
-else:
-    inputJetCorrLabel = ('AK5PF', ['L1FastJet', 'L2Relative', 'L3Absolute'])
-#process.patJetCorrFactors.useRho=False
+    JetCorrection += "Residual"
+process.ak5PFJetsCorr = cms.EDProducer('PFJetCorrectionProducer',
+                                       src = cms.InputTag("ak5PFJets"),
+                                       correctors = cms.vstring(JetCorrection) # NOTE: use "ak5PFL1FastL2L3" for MC / "ak5PFL1FastL2L3Residual" for Data
+                                       )
 
-# Add PF jets
-switchJetCollection(process,cms.InputTag('ak5PFJets'),
-                    doJTA        = True,
-                    doBTagging   = True,
-                    jetCorrLabel = inputJetCorrLabel,
-                    doType1MET   = True,
-                    genJetCollection=cms.InputTag("ak5GenJets"),
-                    doJetID      = True,
-                    outputModules= []
-                    )
-process.patJets.addTagInfos = True
-process.patJets.tagInfoSources  = cms.VInputTag(
-    cms.InputTag("secondaryVertexTagInfosAOD"),
-    )
+# load PUJetID
+process.load("RecoJets.JetProducers.PileupJetID_cfi")
+process.pileupJetIdProducer.jets = "ak5PFJetsCorr"
+process.pileupJetIdProducer.residualsTxt = cms.FileInPath("RecoJets/JetProducers/data/mva_JetID_v1.weights.xml")
 
-# load the PU JetID sequence
-#process.load("CMGTools.External.pujetidsequence_cff") # should not be needed, is done below with MVA MET
+# b-tagging on PFJets (taken from https://twiki.cern.ch/twiki/pub/CMS/BtvTutorialHandsOn/runBtagExample1SV.py.txt)
+#process.load('RecoBTag.Configuration.RecoBTag_cff')
+process.MyAk5PFJetTracksAssociatorAtVertex = cms.EDProducer("JetTracksAssociatorAtVertex",
+   process.j2tParametersVX,
+   jets = cms.InputTag("ak5PFJetsCorr")
+)
+process.MyImpactParameterPFTagInfos = process.impactParameterTagInfos.clone(
+  jetTracks = "MyAk5PFJetTracksAssociatorAtVertex"
+)
+process.MySecondaryVertexTagInfos = process.secondaryVertexTagInfos.clone(
+  trackIPTagInfos = cms.InputTag("MyImpactParameterPFTagInfos"),
+)
+process.MyCombinedSecondaryVertexBJetTags  = process.combinedSecondaryVertexBJetTags.clone(
+  tagInfos = cms.VInputTag(cms.InputTag("MyImpactParameterPFTagInfos"),
+                           cms.InputTag("MySecondaryVertexTagInfos"))
+)
 
-# Select jets
-process.selectedPatJets.cut = cms.string('pt > 18')
+process.JetSequence = cms.Sequence(process.ak5PFJetsCorr
+                    * process.pileupJetIdProducer
+                    * process.MyAk5PFJetTracksAssociatorAtVertex
+                    * process.MyImpactParameterPFTagInfos
+                    * process.MySecondaryVertexTagInfos
+                    * process.MyCombinedSecondaryVertexBJetTags)
+
+# jet flavour (https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookBTagging#BtagMCTools)
+if not "<DataType>" == "Data":
+    process.load("PhysicsTools.JetMCAlgos.CaloJetsMCFlavour_cfi")
+    process.PFAK5byRef = process.AK5byRef.clone(
+                                                jets = cms.InputTag("ak5PFJetsCorr")
+                                                )
+    process.PFAK5byValAlgo = process.AK5byValAlgo.clone(
+                                                        srcByReference = cms.InputTag("PFAK5byRef")
+                                                        )
+    process.JetSequence += process.myPartons
+    process.JetSequence += process.PFAK5byRef
+    process.JetSequence += process.PFAK5byValAlgo
+
 
 ############ MET #############
-# add pf met
-switchToPFMET(process, input=cms.InputTag('pfMet')) #this adds uncorrected MET collection labeled "patMETs"
 # load recommended met filters
 process.load("RecoMET.METFilters.metFilters_cff")
 # produce corrected MET collections (RECO)
 process.load("JetMETCorrections.Type1MET.correctionTermsCaloMet_cff")
 process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType1Type2_cff")
-if "<DataType>" == "Data":
-    process.corrPfMetType1.jetCorrLabel = cms.string("ak5PFL1FastL2L3Residual")
-else:
-    process.corrPfMetType1.jetCorrLabel = cms.string("ak5PFL1FastL2L3")
+process.corrPfMetType1.jetCorrLabel = cms.string(JetCorrection)
 
 process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
 process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0RecoTrack_cff")
@@ -79,107 +94,16 @@ else:
     process.corrPfMetShiftXY.parameter = process.pfMEtSysShiftCorrParameters_2012runABCDvsNvtx_mc
 process.load("JetMETCorrections.Type1MET.correctedMet_cff")
 
-# produce PAT MET collections
-from PhysicsTools.PatAlgos.producersLayer1.metProducer_cfi import patMETs
-process.patPfMetT0rt = patMETs.clone(
-    metSource = cms.InputTag('pfMetT0rt'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET = cms.bool(False)
-)
-process.patPfMetT0rtT1 = patMETs.clone(
-    metSource = cms.InputTag('pfMetT0rtT1'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET = cms.bool(False)
-)
-process.patPfMetT0pc = patMETs.clone(
-    metSource = cms.InputTag('pfMetT0pc'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET = cms.bool(False)
-)
-process.patPfMetT0pcT1 = patMETs.clone(
-    metSource = cms.InputTag('pfMetT0pcT1'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET    = cms.bool(False)
-)
-process.patPfMetT0rtTxy = patMETs.clone(
-    metSource = cms.InputTag('pfMetT0rtTxy'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET = cms.bool(False)
-)
-process.patPfMetT0rtT1Txy = patMETs.clone(
-    metSource = cms.InputTag('pfMetT0rtT1Txy'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET = cms.bool(False)
-)
-process.patPfMetT0pcTxy = patMETs.clone(
-    metSource = cms.InputTag('pfMetT0pcTxy'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET = cms.bool(False)
-)
-process.patPfMetT0pcT1Txy = patMETs.clone(
-    metSource = cms.InputTag('pfMetT0pcT1Txy'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET = cms.bool(False)
-)
-process.patPfMetT1 = patMETs.clone(
-    metSource = cms.InputTag('pfMetT1'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET    = cms.bool(False)
-)
-process.patPfMetT1Txy = patMETs.clone(
-    metSource = cms.InputTag('pfMetT1Txy'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET    = cms.bool(False)
-)
-process.patCaloMetT1 = patMETs.clone(
-    metSource = cms.InputTag('caloMetT1'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET    = cms.bool(False)
-)
-process.patCaloMetT1T2 = patMETs.clone(
-    metSource = cms.InputTag('caloMetT1T2'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET    = cms.bool(False)
-)
-
-# PUJetID following the instructions given here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/PileupJetID
-process.load("CMGTools.External.pujetidsequence_cff")
-#process.puJetId.algos = cms.VPSet(full_53x,cutbased,PhilV1)
-
-# to use MVA-MET + PUJetID, uncomment the 2 sections below
-'''# compute PUJetID (https://twiki.cern.ch/twiki/bin/view/CMS/HiggsToTauTauWorkingSummer2013#MVA_JET_Id)
-from RecoJets.JetProducers.PileupJetID_cfi import *
-stdalgos = cms.VPSet(full_53x,cutbased,PhilV1)
-process.puJetMva = cms.EDProducer('PileupJetIdProducer',
-    produceJetIds = cms.bool(True),
-    jetids = cms.InputTag(""),
-    runMvas = cms.bool(True),
-    jets = cms.InputTag("ak5PFJets"),
-    vertexes = cms.InputTag("offlinePrimaryVertices"),
-    algos = cms.VPSet(stdalgos),
-    rho     = cms.InputTag("kt6PFJets","rho"),
-    jec     = cms.string("AK5PF"),
-    applyJec = cms.bool(True),
-    inputIsCorrected = cms.bool(False),
-    residualsFromTxt = cms.bool(False),
-    residualsTxt     = cms.FileInPath("RecoJets/JetProducers/data/dummy.txt"),
-)'''
 
 # compute MVA MET
-'''process.load('JetMETCorrections.METPUSubtraction.mvaPFMET_leptons_cff')
+process.load('JetMETCorrections.Configuration.JetCorrectionProducers_cff')
+process.load('RecoMET.METPUSubtraction.mvaPFMET_leptons_cff')
+process.load('RecoMET.METPUSubtraction.noPileUpPFMET_cff')
+#Specify the leptons
 process.pfMEtMVA.srcLeptons = cms.VInputTag("isomuons","isoelectrons","isotaus") # load default lepton selection (H2Tau) for MVA-MET
-if "<DataType>" == "Data":
-    process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.vstring("ak5PFL1FastL2L3Residual")
-else:
-    process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.string("ak5PFL1FastL2L3")
-process.patPfMetMVA = patMETs.clone(
-    metSource = cms.InputTag('pfMEtMVA'),
-    addMuonCorrections = cms.bool(False),
-    addGenMET    = cms.bool(False)
-)
-process.PUJetMVAMetSequence = cms.Sequence( process.pfMEtMVAsequence * process.puJetMva * process.patPfMetMVA)
-'''
-process.JetMetSequence = cms.Sequence(process.correctionTermsPfMetType1Type2
+process.pfMEtMVA.srcCorrJets = cms.InputTag("ak5PFJetsCorr")
+
+process.MetSequence = cms.Sequence(process.correctionTermsPfMetType1Type2
                                       * process.correctionTermsPfMetType0RecoTrack
                                       * process.correctionTermsPfMetType0PFCandidate
                                       * process.correctionTermsPfMetShiftXY
@@ -196,22 +120,10 @@ process.JetMetSequence = cms.Sequence(process.correctionTermsPfMetType1Type2
                                       * process.pfMetT1Txy
                                       * process.caloMetT1
                                       * process.caloMetT1T2
-                                      * process.patPfMetT0rt
-                                      * process.patPfMetT0rtT1
-                                      * process.patPfMetT0pc
-                                      * process.patPfMetT0pcT1
-                                      * process.patPfMetT0rtTxy
-                                      * process.patPfMetT0rtT1Txy
-                                      * process.patPfMetT0pcTxy
-                                      * process.patPfMetT0pcT1Txy
-                                      * process.patPfMetT1
-                                      * process.patPfMetT1Txy
-                                      * process.patCaloMetT1
-                                      * process.patCaloMetT1T2
-                                      * process.puJetIdSqeuence) # use this to run PUJetID alone
-                                      #* process.PUJetMVAMetSequence) # use this for MVA-MET + PUJetID
+                                      * process.pfMEtMVAsequence)
 
-####### done with setting up PAT
+###############
+
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
     #'file://dcap://grid-dcap.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/store/mc/Summer12/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/AODSIM/PU_S7_START52_V9-v2/0000/D2E4D132-3D97-E111-88B2-003048673FC0.root'),
@@ -245,6 +157,10 @@ process.CountTriggerPassedEvents = process.EvntCounterB.clone()
 process.CountTriggerPassedEvents.CounterType = cms.untracked.string("CountTriggerPassedEvents")
 process.CountKinFitPassedEvents = process.EvntCounterB.clone()
 process.CountKinFitPassedEvents.CounterType = cms.untracked.string("CountKinFitPassedEvents")
+
+process.NtupleMaker.doPatJets = cms.untracked.bool(False)
+process.NtupleMaker.doPatMET = cms.untracked.bool(False)
+process.NtupleMaker.doMVAMET = cms.untracked.bool(True)
                         
 ###### New HPS
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
@@ -281,11 +197,6 @@ process.NtupleMaker.EleMVATrigWeights4 = cms.untracked.string(base+'/EgammaAnaly
 process.NtupleMaker.EleMVATrigWeights5 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat5.weights.xml')
 process.NtupleMaker.EleMVATrigWeights6 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat6.weights.xml')
 
-# set Ntuple to run on PAT jets
-process.NtupleMaker.doPatJets = cms.untracked.bool(True)
-process.NtupleMaker.srcPatJets = cms.untracked.string("selectedPatJets")
-process.NtupleMaker.doPatMET = cms.untracked.bool(True)
-process.NtupleMaker.doMVAMET = cms.untracked.bool(False)
 
 process.schedule = cms.Schedule()
 
@@ -302,67 +213,33 @@ elif "<DataType>" == "dy_ll" or "<DataType>" == "dy_ee" or "<DataType>" == "dy_m
 else:
     process.MultiTrigFilter.useTriggers = cms.vstring("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu24_eta2p1_v","HLT_Mu17_Ele8_CaloIdL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL","HLT_Mu8_Ele17_CaloIdL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL")    
 
-
-#process.TauNtupleSkim  = cms.Path(process.EvntCounterA
-#				  * process.metFilters
-#                                  * process.MultiTrigFilter
-#                                  * process.MuonPreselectionCuts
-#                                  * process.CountTriggerPassedEvents
-#                                  * process.recoTauClassicHPSSequence
-#                                  * process.patDefaultSequence
-#                                  * process.JetMetSequence
-#                                  * process.PreselectionCuts
-#                                  * process.EvntCounterB
-#                                  * process.NtupleMaker)
-
+# choose preselection to apply
 if "<PRESELECTION>" == "DoubleMu":
-    process.TauNtupleSkim = cms.Path(process.EvntCounterA
-                                     * process.metFilters
-                                     * process.MultiTrigFilter
-                                     * process.MuonPreselectionCuts
-                                     * process.CountTriggerPassedEvents
-                                     * process.recoTauClassicHPSSequence
-                                     * process.patDefaultSequence
-                                     * process.JetMetSequence
-                                     * process.DoubleMuPreselectionCuts
-                                     * process.EvntCounterB
-                                     * process.NtupleMaker)
+    firstLevelPreselection = process.MuonPreselectionCuts
+    secondLevelPreselection = process.DoubleMuPreselectionCuts
 elif "<PRESELECTION>" == "DoubleEle":
-    process.TauNtupleSkim = cms.Path(process.EvntCounterA
-                                     * process.metFilters
-                                     * process.MultiTrigFilter
-                                     * process.ElePreselectionCuts
-                                     * process.CountTriggerPassedEvents
-                                     * process.recoTauClassicHPSSequence
-                                     * process.patDefaultSequence
-                                     * process.JetMetSequence
-                                     * process.DoubleElePreselectionCuts
-                                     * process.EvntCounterB
-                                     * process.NtupleMaker)
+    firstLevelPreselection = process.ElePreselectionCuts
+    secondLevelPreselection = process.DoubleElePreselectionCuts
 elif "<PRESELECTION>" == "MuJet":
-    process.TauNtupleSkim = cms.Path(process.EvntCounterA
-                                     * process.metFilters
-                                     * process.MultiTrigFilter
-                                     * process.MuonPreselectionCuts
-                                     * process.CountTriggerPassedEvents
-                                     * process.recoTauClassicHPSSequence
-                                     * process.patDefaultSequence
-                                     * process.JetMetSequence
-                                     * process.MuJetPreselectionCuts
-                                     * process.EvntCounterB
-                                     * process.NtupleMaker)
+    firstLevelPreselection = process.MuonPreselectionCuts
+    secondLevelPreselection = process.MuJetPreselectionCuts
 else:
-    process.TauNtupleSkim = cms.Path(process.EvntCounterA
-                                     * process.metFilters
-                                     * process.MultiTrigFilter
-                                     * process.MuonPreselectionCuts
-                                     * process.CountTriggerPassedEvents
-                                     * process.recoTauClassicHPSSequence
-                                     * process.patDefaultSequence
-                                     * process.JetMetSequence
-                                     * process.PreselectionCuts
-                                     * process.EvntCounterB
-                                     * process.NtupleMaker)
+    firstLevelPreselection = process.MuonPreselectionCuts
+    secondLevelPreselection = process.PreselectionCuts
+    
+process.TauNtupleSkim  = cms.Path(process.EvntCounterA
+				                  * process.metFilters
+                                  * process.MultiTrigFilter
+                                  * firstLevelPreselection
+                                  * process.CountTriggerPassedEvents
+                                  * process.recoTauClassicHPSSequence
+                                  * process.JetSequence
+                                  * process.MetSequence
+                                  * secondLevelPreselection
+                                  * process.EvntCounterB
+                                  * process.NtupleMaker)
+
+
 
 process.schedule.append(process.TauNtupleSkim)
 
