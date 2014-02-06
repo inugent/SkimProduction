@@ -345,7 +345,7 @@ if( $ARGV[0] eq "--CheckandCleanOutput" ){
 		system(sprintf("tail -n 1 junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"uberftp grid-ftp.physik.rwth-aachen.de \\\"cd /pnfs/physik.rwth-aachen.de/cms\" a[1] \"/TauNtuple\" a[2]  \" ; ls */ \\\" | tee junk3 \"}' > junk2"));
 
 	    $FilesonDisk="$myDIR/$datadir/OutputFilesfromDisk.log";
-	    system(sprintf("echo \"grep root junk3 | awk '{print \\\$9 }'| tee $FilesonDisk   \" >> junk2"));
+	    system(sprintf("echo \"grep root junk3 | awk '{print \\\$8 }'| tee $FilesonDisk   \" >> junk2"));
 	    system(sprintf("source junk2;"));
 
 	    open(DAT, $FilesonDisk) || die("Could not open file $FilesonDisk!");
