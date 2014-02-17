@@ -167,8 +167,8 @@ process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 ###### New HPS
 
 
-#debugging = True
 debugging = False
+#debugging = True
 if debugging:
     base = os.path.relpath(os.environ.get('CMSSW_BASE'))+'/src'
 else:
@@ -203,15 +203,31 @@ process.schedule = cms.Schedule()
 process.NtupleMaker.doTrack= cms.untracked.bool(False)
 
 #hlt modules
-process.NtupleMaker.useFilterModules = cms.vstring("hltOverlapFilterIsoMu17LooseIsoPFTau20","hltL3crIsoL1sMu16Eta2p1L1f0L2f16QL3f18QL3crIsoFiltered10","hltL1Mu12EG7L3MuFiltered17","hltL1sL1Mu3p5EG12ORL1MuOpenEG12L3Filtered8","hltL1MuOpenEG12L3Filtered8","hltMu8Ele17CaloIdTCaloIsoVLTrkIdVLTrkIsoVLTrackIsoFilter","hltMu8Ele17dZFilter","hltMu17Ele8CaloIdTCaloIsoVLTrkIdVLTrkIsoVLTrackIsoFilter","hltMu17Ele8dZFilter","hltL3crIsoL1sMu16Eta2p1L1f0L2f16QL3f24QL3crIsoRhoFiltered0p15","hltL3crIsoL1sMu16Eta2p1L1f0L2f16QL3f24QL3crIsoFiltered10","hltL3fL1sMu12L3Filtered17","hltEle17CaloIdTCaloIsoVLTrkIdVLTrkIsoVLTrackIsoFilter","hltEle8CaloIdLCaloIsoVLPixelMatchFilter","hltEle8CaloIdTTrkIdVLDphiFilter","hltL3fL1sMu3L3Filtered8","hltL3crIsoL1sMu16L1f0L2f16QL3f24QL3crIsoRhoFiltered0p15","hltL3crIsoL1sMu16L1f0L2f16QL3f30QL3crIsoRhoFiltered0p15","hltL3fL1sMu16L1f0L2f16QL3Filtered40Q","hltL3fL1sMu16Eta2p1L1f0L2f16QL3Filtered40Q","hltL3fL1sMu7L3Filtered12","hltEle27CaloIdLCaloIsoVLTrkIdVLTrkIsoVLTrackIsoFilter","hltL3fL1DoubleMu10MuOpenOR3p5L1f0L2f10L3Filtered17","hltL3fL1DoubleMu10MuOpenL1f0L2f10L3Filtered17","hltEle17TightIdLooseIsoEle8TightIdLooseIsoTrackIsoDZ","hltEle8TightIdLooseIsoTrackIsoFilter","hltEle25CaloIdVTCaloIsoTTrkIdTTrkIsoTCentralPFNoPUJet30EleCleaned","hltEleBLifetimeL3PFNoPUFilterSingleTop","hltEle27WP80TrackIsoFilter")
+process.NtupleMaker.useFilterModules = cms.vstring("hltOverlapFilterIsoMu17LooseIsoPFTau20","hltL3crIsoL1sMu14erORMu16erL1f0L2f14QL3f17QL3crIsoRhoFiltered0p15", # HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v
+                                                   "hltOverlapFilterIsoMu18LooseIsoPFTau20","hltL3crIsoL1sMu16Eta2p1L1f0L2f16QL3f18QL3crIsoFiltered10", # HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v
+                                                   "hltL3crIsoL1sMu16Eta2p1L1f0L2f16QL3f24QL3crIsoRhoFiltered0p15","hltL3crIsoL1sMu16Eta2p1L1f0L2f16QL3f24QL3crIsoFiltered10", # HLT_IsoMu24_eta2p1_v
+                                                   "hltL3crIsoL1sMu16L1f0L2f16QL3f24QL3crIsoRhoFiltered0p15", # HLT_IsoMu24_v
+                                                   "hltMu17Ele8CaloIdTCaloIsoVLTrkIdVLTrkIsoVLTrackIsoFilter","hltL1Mu12EG7L3MuFiltered17", # HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL
+                                                   "hltMu8Ele17CaloIdTCaloIsoVLTrkIdVLTrkIsoVLTrackIsoFilter","hltL1sL1Mu3p5EG12ORL1MuOpenEG12L3Filtered8","hltL1MuOpenEG12L3Filtered8", # HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL
+                                                   "hltEle8CaloIdLCaloIsoVLPixelMatchFilter", # HLT_Ele8_CaloIdL_CaloIsoVL_v
+                                                   "hltEle8CaloIdTTrkIdVLDphiFilter", # HLT_Ele8_CaloIdT_TrkIdVL_v
+                                                   "hltEle8TightIdLooseIsoTrackIsoFilter", # HLT_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v
+                                                   "hltL3fL1sMu3L3Filtered8", # HLT_Mu8_v
+                                                   "hltL3fL1sMu7L3Filtered12", # HLT_Mu12_v
+                                                   "hltL3fL1sMu12L3Filtered17", # HLT_Mu17_v
+                                                   "hltDiMuonGlb17Glb8DzFiltered0p2","hltL3fL1DoubleMu10MuOpenOR3p5L1f0L2f10L3Filtered17","hltL3fL1DoubleMu10MuOpenL1f0L2f10L3Filtered17","hltDiMuonMu17Mu8DzFiltered0p2","hltL3pfL1DoubleMu10MuOpenOR3p5L1f0L2pf0L3PreFiltered8","hltL3pfL1DoubleMu10MuOpenL1f0L2pf0L3PreFiltered8" # HLT_Mu17_Mu8_v
+                                                   "hltEle17TightIdLooseIsoEle8TightIdLooseIsoTrackIsoDZ", # HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v
+                                                   "hltEle27WP80TrackIsoFilter" # HLT_Ele27_WP80_v
+                                                   )
 
 #hlt paths
-if "<DataType>" == "Data":
-    process.MultiTrigFilter.useTriggers = cms.vstring("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu24_eta2p1_v","HLT_Mu17_Ele8_CaloIdL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL","HLT_Mu8_Ele17_CaloIdL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL","HLT_Mu17_v","HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v","HLT_QuadJet80_v","HLT_Ele8_CaloIdL_CaloIsoVL_v","HLT_Ele8_CaloIdT_TrkIdVL_v","HLT_Mu8_v","HLT_IsoMu24_v","HLT_IsoMu30_v","HLT_Mu40_v","HLT_Mu40_eta2p1_v","HLT_Mu12_v","HLT_Ele27_CaloIdL_CaloIsoVL_TrkIdVL_TrkIsoVL_v","HLT_Mu17_Mu8_v","HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v","HLT_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v","HLT_Ele25_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_CentralPFNoPUJet30_v","HLT_Ele25_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_CentralPFNoPUJet30_BTagIPIter_v","HLT_Ele27_WP80_v")
-elif "<DataType>" == "dy_ll" or "<DataType>" == "dy_ee" or "<DataType>" == "dy_mumu" or "<DataType>" == "dy_tautau":
-    process.MultiTrigFilter.useTriggers = cms.vstring("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu24_eta2p1_v","HLT_Mu17_Ele8_CaloIdL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL","HLT_Mu8_Ele17_CaloIdL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL","HLT_Mu17_v","HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v","HLT_IsoMu24_v","HLT_IsoMu30_v","HLT_Mu40_v","HLT_Mu40_eta2p1_v","HLT_Mu12_v","HLT_Ele27_CaloIdL_CaloIsoVL_TrkIdVL_TrkIsoVL_v","HLT_Mu17_Mu8_v","HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v","HLT_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v","HLT_Ele25_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_CentralPFNoPUJet30_v","HLT_Ele25_CaloIdVT_CaloIsoT_TrkIdT_TrkIsoT_CentralPFNoPUJet30_BTagIPIter_v","HLT_Ele27_WP80_v")
-else:
-    process.MultiTrigFilter.useTriggers = cms.vstring("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu24_eta2p1_v","HLT_Mu17_Ele8_CaloIdL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL","HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL","HLT_Mu8_Ele17_CaloIdL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL")    
+process.MultiTrigFilter.useTriggers = cms.vstring("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v", # for mu+tau analyses
+                                                  "HLT_IsoMu24_eta2p1_v","HLT_IsoMu24_v", # for claudia and possible trigger efficiency measurements
+                                                  "HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL", # for e+mu analysis
+                                                  "HLT_Ele8_CaloIdL_CaloIsoVL_v","HLT_Ele8_CaloIdT_TrkIdVL_v","HLT_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v", # for electron fake rate measurements
+                                                  "HLT_Mu8_v","HLT_Mu12_v","HLT_Mu17_v", # for muon fakerate measurements
+                                                  "HLT_Mu17_Mu8_v","HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v","HLT_Ele27_WP80_v" # for trigger efficiency measurements
+                                                  )
 
 # choose preselection to apply
 if "<PRESELECTION>" == "DoubleMu":
