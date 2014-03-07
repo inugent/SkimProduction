@@ -161,6 +161,7 @@ process.CountKinFitPassedEvents.CounterType = cms.untracked.string("CountKinFitP
 process.NtupleMaker.doPatJets = cms.untracked.bool(False)
 process.NtupleMaker.doPatMET = cms.untracked.bool(False)
 process.NtupleMaker.doMVAMET = cms.untracked.bool(True)
+
                         
 ###### New HPS
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
@@ -196,6 +197,35 @@ process.NtupleMaker.EleMVATrigWeights3 = cms.untracked.string(base+'/EgammaAnaly
 process.NtupleMaker.EleMVATrigWeights4 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat4.weights.xml')
 process.NtupleMaker.EleMVATrigWeights5 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat5.weights.xml')
 process.NtupleMaker.EleMVATrigWeights6 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat6.weights.xml')
+
+### Electron momentum regression ###
+process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+                                                  calibratedElectrons = cms.PSet(
+                                                                                 initialSeed = cms.untracked.uint32(1),
+                                                                                 engineName = cms.untracked.string("TRandom3")
+                                                                                 ),
+                                                  )
+process.load("EgammaAnalysis.ElectronTools.calibratedElectrons_cfi")
+if "<DataType>" == "Data":
+    process.calibratedElectrons.isMC = cms.bool(False)
+    process.calibratedElectrons.inputDataset = cms.string("22Jan2013ReReco")
+else:
+    process.calibratedElectrons.isMC = cms.bool(True)
+    process.calibratedElectrons.inputDataset = cms.string("Summer12_LegacyPaper")
+process.calibratedElectrons.updateEnergyError = cms.bool(True)
+process.calibratedElectrons.correctionsType = cms.int32(2)
+process.calibratedElectrons.combinationType = cms.int32(3)
+
+process.load('EgammaAnalysis.ElectronTools.electronRegressionEnergyProducer_cfi')
+process.eleRegressionEnergy.inputElectronsTag = cms.InputTag('gsfElectrons')
+process.eleRegressionEnergy.inputCollectionType = cms.uint32(0)
+process.eleRegressionEnergy.useRecHitCollections = cms.bool(True)
+process.eleRegressionEnergy.produceValueMaps = cms.bool(True)
+process.eleRegressionEnergy.regressionInputFile = cms.string("EgammaAnalysis/ElectronTools/data/eleEnergyRegWeights_WithSubClusters_VApr15.root")
+process.eleRegressionEnergy.energyRegressionType = cms.uint32(2)
+
+process.NtupleMaker.pfelectrons = cms.InputTag("calibratedElectrons","calibratedGsfElectrons","")
+####################################
 
 
 process.schedule = cms.Schedule()
@@ -245,6 +275,8 @@ else:
     
 process.TauNtupleSkim  = cms.Path(process.EvntCounterA
 				                  * process.metFilters
+                                  * process.eleRegressionEnergy
+                                  * process.calibratedElectrons
                                   * process.MultiTrigFilter
                                   * firstLevelPreselection
                                   * process.CountTriggerPassedEvents
