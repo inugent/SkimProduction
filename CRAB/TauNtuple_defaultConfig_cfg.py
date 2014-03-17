@@ -215,6 +215,7 @@ else:
 process.calibratedElectrons.updateEnergyError = cms.bool(True)
 process.calibratedElectrons.correctionsType = cms.int32(2)
 process.calibratedElectrons.combinationType = cms.int32(3)
+process.calibratedElectrons.applyLinearityCorrection = cms.bool(True)
 
 process.load('EgammaAnalysis.ElectronTools.electronRegressionEnergyProducer_cfi')
 process.eleRegressionEnergy.inputElectronsTag = cms.InputTag('gsfElectrons')
