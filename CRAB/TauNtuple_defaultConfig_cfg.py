@@ -274,6 +274,16 @@ else:
     firstLevelPreselection = process.MuonPreselectionCuts
     secondLevelPreselection = process.PreselectionCuts
     
+# object selection cuts
+process.NtupleMaker.MuonPtCut = cms.double(3.0)
+process.NtupleMaker.MuonEtaCut = cms.double(2.5)
+process.NtupleMaker.TauPtCut = cms.double(18.0)
+process.NtupleMaker.TauEtaCut = cms.double(2.4)
+process.NtupleMaker.ElectronPtCut = cms.double(8.0)
+process.NtupleMaker.ElectronEtaCut = cms.double(2.5)
+process.NtupleMaker.JetPtCut = cms.double(10.0)
+process.NtupleMaker.JetEtaCut = cms.double(4.7)
+    
 process.TauNtupleSkim  = cms.Path(process.EvntCounterA
 				                  * process.metFilters
                                   * process.eleRegressionEnergy
