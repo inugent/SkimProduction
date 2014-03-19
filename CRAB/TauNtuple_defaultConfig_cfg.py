@@ -271,8 +271,10 @@ debugging = False
 #debugging = True
 if debugging:
     base = os.path.relpath(os.environ.get('CMSSW_BASE'))+'/src'
+    process.MessageLogger.cerr.FwkReport.reportEvery = 10
 else:
     base = 'src'
+    process.MessageLogger.cerr.FwkReport.reportEvery = 1000
     
 process.NtupleMaker.PUInputFile = cms.untracked.string(base+'/data/<Pile_Up_File>')
 # weight files for triggering MVA w/o IP
