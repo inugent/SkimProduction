@@ -261,6 +261,13 @@ process.NtupleMaker.doPatJets = cms.untracked.bool(False)
 process.NtupleMaker.doPatMET = cms.untracked.bool(False)
 process.NtupleMaker.doMVAMET = cms.untracked.bool(True)
 
+## change Pileup histograms to use
+process.NtupleMaker.PUInputFile= cms.untracked.string("$CMSSW_BASE/src/data/HTauTau_MCandData_Pileup.root")
+process.NtupleMaker.PUInputHistoMC    = cms.untracked.string("mc_pileup")
+process.NtupleMaker.PUInputHistoData  = cms.untracked.string("data_pileup")
+process.NtupleMaker.PUInputHistoData_p5  = cms.untracked.string("data_pileup")
+process.NtupleMaker.PUInputHistoData_m5  = cms.untracked.string("data_pileup")
+
                         
 ###### New HPS
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
