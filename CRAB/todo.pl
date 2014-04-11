@@ -156,6 +156,7 @@ if( $ARGV[0] eq "--Submit" ){
 	system(sprintf("./subs \"<globaltag>\"               \"$globaltag[$idx]\"                    $dir/HLT_Tau_Ntuple_cfg.py"));
 	system(sprintf("./subs \"<Pile_Up_File>\"            \"$pileupfile[$idx]\"                   $dir/HLT_Tau_Ntuple_cfg.py"));
 	system(sprintf("./subs \"<PRESELECTION>\"            \"$preselection[$idx]\"                 $dir/HLT_Tau_Ntuple_cfg.py"));
+	system(sprintf("./subs \"<datasetpath>\"             \"$datasetpath[$idx]\"                  $dir/HLT_Tau_Ntuple_cfg.py"));
 	system(sprintf("./subs \"<Pile_Up_File>\"            \"$pileupfile[$idx]\"                   $dir/crab.cfg"));
 	system(sprintf("./subs \"<datasetpath>\"             \"$datasetpath[$idx]\"                  $dir/crab.cfg"));
 	system(sprintf("./subs \"<dbs_url>\"                 \"$dbs_url[$idx] \"                     $dir/crab.cfg"));

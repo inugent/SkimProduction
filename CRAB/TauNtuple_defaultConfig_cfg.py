@@ -1,5 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 import os
+import hashlib
 import HLTrigger.HLTfilters.triggerResultsFilter_cfi as hlt
 
 process = cms.Process("TauNTuple")
@@ -300,9 +301,17 @@ process.NtupleMaker.EleMVATrigWeights5 = cms.untracked.string(base+'/EgammaAnaly
 process.NtupleMaker.EleMVATrigWeights6 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat6.weights.xml')
 
 ### Electron momentum regression ###
+
+# generate hash from datasetpath and form unique but constant seed for each sample
+# !!! WARNING: seed is still dependent on job splitting !!!
+to_hash = "<datasetpath>"
+hash_input = to_hash.split("=")[1].strip()
+generate_hash = hashlib.md5(hash_input)
+seed = abs(int(str(int(generate_hash.hexdigest(),16))[0:9])) # crab expects uint32 -> only up to 9 digits of hash can be safely used
+
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                   calibratedElectrons = cms.PSet(
-                                                                                 initialSeed = cms.untracked.uint32(1),
+                                                                                 initialSeed = cms.untracked.uint32(seed),
                                                                                  engineName = cms.untracked.string("TRandom3")
                                                                                  ),
                                                   )
