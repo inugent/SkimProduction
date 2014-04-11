@@ -262,11 +262,13 @@ process.NtupleMaker.doPatMET = cms.untracked.bool(False)
 process.NtupleMaker.doMVAMET = cms.untracked.bool(True)
 
 ## change Pileup histograms to use
-process.NtupleMaker.PUInputFile= cms.untracked.string("$CMSSW_BASE/src/data/HTauTau_MCandData_Pileup.root")
-process.NtupleMaker.PUInputHistoMC    = cms.untracked.string("mc_pileup")
-process.NtupleMaker.PUInputHistoData  = cms.untracked.string("data_pileup")
-process.NtupleMaker.PUInputHistoData_p5  = cms.untracked.string("data_pileup")
-process.NtupleMaker.PUInputHistoData_m5  = cms.untracked.string("data_pileup")
+process.NtupleMaker.PUInputFile= cms.untracked.string("$CMSSW_BASE/src/data/Lumi_OfficialAndHtautau.root")
+process.NtupleMaker.PUInputHistoMC    = cms.untracked.string("official_MC_Summer12")
+process.NtupleMaker.PUInputHistoData  = cms.untracked.string("official_h_190456_20868")
+process.NtupleMaker.PUInputHistoData_p5  = cms.untracked.string("official_h_190456_20868_p5")
+process.NtupleMaker.PUInputHistoData_m5  = cms.untracked.string("official_h_190456_20868_m5")
+process.NtupleMaker.PUInputHistoMCFineBins = cms.untracked.string("htautau_mc_pileup")
+process.NtupleMaker.PUInputHistoDataFineBins = cms.untracked.string("htautau_data_pileup")
 
                         
 ###### New HPS
