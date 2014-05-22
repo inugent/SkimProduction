@@ -28,7 +28,7 @@ process.load("Configuration.StandardSequences.Reconstruction_cff")
 ############ Jets #############
 # Jet energy corrections to use:
 JetCorrection = "ak5PFL1FastL2L3"
-if "<DataType>" == "Data":
+if "<DataType>" == "Data" or "embedded" in "<DataType>":
     JetCorrection += "Residual"
 process.ak5PFJetsCorr = cms.EDProducer('PFJetCorrectionProducer',
                                        src = cms.InputTag("ak5PFJets"),
@@ -65,7 +65,7 @@ process.JetSequence = cms.Sequence(process.ak5PFJetsCorr
                     * process.MyCombinedSecondaryVertexBJetTags)
 
 # jet flavour (https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookBTagging#BtagMCTools)
-if not "<DataType>" == "Data":
+if not ("<DataType>" == "Data") and not ("embedded" in "<DataType>"):
     process.load("PhysicsTools.JetMCAlgos.CaloJetsMCFlavour_cfi")
     process.PFAK5byRef = process.AK5byRef.clone(
                                                 jets = cms.InputTag("ak5PFJetsCorr")
@@ -89,7 +89,7 @@ process.corrPfMetType1.jetCorrLabel = cms.string(JetCorrection)
 process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
 process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0RecoTrack_cff")
 process.load("JetMETCorrections.Type1MET.correctionTermsPfMetShiftXY_cff")
-if "<DataType>" == "Data":
+if "<DataType>" == "Data" or "embedded" in "<DataType>":
     process.corrPfMetShiftXY.parameter = process.pfMEtSysShiftCorrParameters_2012runABCDvsNvtx_data
 else:
     process.corrPfMetShiftXY.parameter = process.pfMEtSysShiftCorrParameters_2012runABCDvsNvtx_mc
@@ -316,7 +316,7 @@ process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService
                                                                                  ),
                                                   )
 process.load("EgammaAnalysis.ElectronTools.calibratedElectrons_cfi")
-if "<DataType>" == "Data":
+if "<DataType>" == "Data" or "embedded" in "<DataType>":
     process.calibratedElectrons.isMC = cms.bool(False)
     process.calibratedElectrons.inputDataset = cms.string("22Jan2013ReReco")
 else:
@@ -336,6 +336,16 @@ process.eleRegressionEnergy.regressionInputFile = cms.string("EgammaAnalysis/Ele
 process.eleRegressionEnergy.energyRegressionType = cms.uint32(2)
 
 process.NtupleMaker.pfelectrons = cms.InputTag("calibratedElectrons","calibratedGsfElectrons","")
+
+# JEC uncertainty files
+process.NtupleMaker.JECuncData = cms.untracked.string(base+'/data/JECuncertaintyData.txt')
+process.NtupleMaker.JECuncMC = cms.untracked.string(base+'/data/JECuncertaintyMC.txt')
+
+####################################
+if "embedded" in "<DataType>":
+    process.NtupleMaker.Embedded = cms.untracked.bool(True);
+else:
+    process.NtupleMaker.Embedded = cms.untracked.bool(False);
 ####################################
 
 
@@ -393,9 +403,23 @@ process.NtupleMaker.ElectronPtCut = cms.double(8.0)
 process.NtupleMaker.ElectronEtaCut = cms.double(2.5)
 process.NtupleMaker.JetPtCut = cms.double(10.0)
 process.NtupleMaker.JetEtaCut = cms.double(4.7)
-    
-process.TauNtupleSkim  = cms.Path(process.EvntCounterA
-				                  * process.metFilters
+
+if "embedded" in "<DataType>":
+    process.TauNtupleSkim  = cms.Path(process.EvntCounterA
+                                  * process.metFilters
+                                  * process.eleRegressionEnergy
+                                  * process.calibratedElectrons
+                                  * firstLevelPreselection
+                                  * process.CountTriggerPassedEvents
+                                  * process.recoTauClassicHPSSequence
+                                  * process.JetSequence
+                                  * process.MetSequence
+                                  * secondLevelPreselection
+                                  * process.EvntCounterB
+                                  * process.NtupleMaker)
+else:
+    process.TauNtupleSkim  = cms.Path(process.EvntCounterA
+                                  * process.metFilters
                                   * process.eleRegressionEnergy
                                   * process.calibratedElectrons
                                   * process.MultiTrigFilter
