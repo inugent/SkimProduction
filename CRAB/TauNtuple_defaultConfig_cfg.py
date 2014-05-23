@@ -1,5 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 import os
+import hashlib
 import HLTrigger.HLTfilters.triggerResultsFilter_cfi as hlt
 
 process = cms.Process("TauNTuple")
@@ -27,7 +28,7 @@ process.load("Configuration.StandardSequences.Reconstruction_cff")
 ############ Jets #############
 # Jet energy corrections to use:
 JetCorrection = "ak5PFL1FastL2L3"
-if "<DataType>" == "Data":
+if "<DataType>" == "Data" or "embedded" in "<DataType>":
     JetCorrection += "Residual"
 process.ak5PFJetsCorr = cms.EDProducer('PFJetCorrectionProducer',
                                        src = cms.InputTag("ak5PFJets"),
@@ -64,7 +65,7 @@ process.JetSequence = cms.Sequence(process.ak5PFJetsCorr
                     * process.MyCombinedSecondaryVertexBJetTags)
 
 # jet flavour (https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookBTagging#BtagMCTools)
-if not "<DataType>" == "Data":
+if not ("<DataType>" == "Data") and not ("embedded" in "<DataType>"):
     process.load("PhysicsTools.JetMCAlgos.CaloJetsMCFlavour_cfi")
     process.PFAK5byRef = process.AK5byRef.clone(
                                                 jets = cms.InputTag("ak5PFJetsCorr")
@@ -88,7 +89,7 @@ process.corrPfMetType1.jetCorrLabel = cms.string(JetCorrection)
 process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
 process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0RecoTrack_cff")
 process.load("JetMETCorrections.Type1MET.correctionTermsPfMetShiftXY_cff")
-if "<DataType>" == "Data":
+if "<DataType>" == "Data" or "embedded" in "<DataType>":
     process.corrPfMetShiftXY.parameter = process.pfMEtSysShiftCorrParameters_2012runABCDvsNvtx_data
 else:
     process.corrPfMetShiftXY.parameter = process.pfMEtSysShiftCorrParameters_2012runABCDvsNvtx_mc
@@ -261,6 +262,15 @@ process.NtupleMaker.doPatJets = cms.untracked.bool(False)
 process.NtupleMaker.doPatMET = cms.untracked.bool(False)
 process.NtupleMaker.doMVAMET = cms.untracked.bool(True)
 
+## change Pileup histograms to use
+process.NtupleMaker.PUInputFile= cms.untracked.string("$CMSSW_BASE/src/data/Lumi_OfficialAndHtautau.root")
+process.NtupleMaker.PUInputHistoMC    = cms.untracked.string("official_MC_Summer12")
+process.NtupleMaker.PUInputHistoData  = cms.untracked.string("official_h_190456_20868")
+process.NtupleMaker.PUInputHistoData_p5  = cms.untracked.string("official_h_190456_20868_p5")
+process.NtupleMaker.PUInputHistoData_m5  = cms.untracked.string("official_h_190456_20868_m5")
+process.NtupleMaker.PUInputHistoMCFineBins = cms.untracked.string("htautau_mc_pileup")
+process.NtupleMaker.PUInputHistoDataFineBins = cms.untracked.string("htautau_data_pileup")
+
                         
 ###### New HPS
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
@@ -300,14 +310,22 @@ process.NtupleMaker.EleMVATrigWeights5 = cms.untracked.string(base+'/EgammaAnaly
 process.NtupleMaker.EleMVATrigWeights6 = cms.untracked.string(base+'/EgammaAnalysis/ElectronTools/data/Electrons_BDTG_TrigV0_Cat6.weights.xml')
 
 ### Electron momentum regression ###
+
+# generate hash from datasetpath and form unique but constant seed for each sample
+# !!! WARNING: seed is still dependent on job splitting !!!
+to_hash = "<datasetpath>"
+hash_input = to_hash.split("=")[1].strip()
+generate_hash = hashlib.md5(hash_input)
+seed = abs(int(str(int(generate_hash.hexdigest(),16))[0:9])) # crab expects uint32 -> only up to 9 digits of hash can be safely used
+
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                   calibratedElectrons = cms.PSet(
-                                                                                 initialSeed = cms.untracked.uint32(1),
+                                                                                 initialSeed = cms.untracked.uint32(seed),
                                                                                  engineName = cms.untracked.string("TRandom3")
                                                                                  ),
                                                   )
 process.load("EgammaAnalysis.ElectronTools.calibratedElectrons_cfi")
-if "<DataType>" == "Data":
+if "<DataType>" == "Data" or "embedded" in "<DataType>":
     process.calibratedElectrons.isMC = cms.bool(False)
     process.calibratedElectrons.inputDataset = cms.string("22Jan2013ReReco")
 else:
@@ -327,6 +345,16 @@ process.eleRegressionEnergy.regressionInputFile = cms.string("EgammaAnalysis/Ele
 process.eleRegressionEnergy.energyRegressionType = cms.uint32(2)
 
 process.NtupleMaker.pfelectrons = cms.InputTag("calibratedElectrons","calibratedGsfElectrons","")
+
+# JEC uncertainty files
+process.NtupleMaker.JECuncData = cms.untracked.string(base+'/data/JECuncertaintyData.txt')
+process.NtupleMaker.JECuncMC = cms.untracked.string(base+'/data/JECuncertaintyMC.txt')
+
+####################################
+if "embedded" in "<DataType>":
+    process.NtupleMaker.Embedded = cms.untracked.bool(True);
+else:
+    process.NtupleMaker.Embedded = cms.untracked.bool(False);
 ####################################
 
 
@@ -384,9 +412,23 @@ process.NtupleMaker.ElectronPtCut = cms.double(8.0)
 process.NtupleMaker.ElectronEtaCut = cms.double(2.5)
 process.NtupleMaker.JetPtCut = cms.double(10.0)
 process.NtupleMaker.JetEtaCut = cms.double(4.7)
-    
-process.TauNtupleSkim  = cms.Path(process.EvntCounterA
-				                  * process.metFilters
+
+if "embedded" in "<DataType>":
+    process.TauNtupleSkim  = cms.Path(process.EvntCounterA
+                                  * process.metFilters
+                                  * process.eleRegressionEnergy
+                                  * process.calibratedElectrons
+                                  * firstLevelPreselection
+                                  * process.CountTriggerPassedEvents
+                                  * process.recoTauClassicHPSSequence
+                                  * process.JetSequence
+                                  * process.MetSequence
+                                  * secondLevelPreselection
+                                  * process.EvntCounterB
+                                  * process.NtupleMaker)
+else:
+    process.TauNtupleSkim  = cms.Path(process.EvntCounterA
+                                  * process.metFilters
                                   * process.eleRegressionEnergy
                                   * process.calibratedElectrons
                                   * process.MultiTrigFilter
