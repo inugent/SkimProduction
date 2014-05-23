@@ -78,6 +78,7 @@ if( $ARGV[0] eq "--Submit" ){
     @DataType;
     @globaltag;
     @pileupfile;
+    @preselection;
     open(DAT, $TempDataSetFile) || die("Could not open file $TempDataSetFile! [ABORTING]");
     $idx=-1;
     while ($item = <DAT>) {
@@ -98,6 +99,7 @@ if( $ARGV[0] eq "--Submit" ){
 	    push(@DataType,$c);
 	    push(@globaltag,"");
             push(@pileupfile,"");
+            push(@preselection,"");
 	}
         if($a eq "process.GlobalTag.globaltag"){
             $globaltag[$idx]=$item;
@@ -135,6 +137,9 @@ if( $ARGV[0] eq "--Submit" ){
 	if($a eq "Pile_Up_File"){
 	    $pileupfile[$idx]=$c;
 	}
+	if($a eq "preselection"){
+	    $preselection[$idx]=$c;
+	}
     }
     close(DAT);
     ## create crab files and submit 
@@ -150,6 +155,8 @@ if( $ARGV[0] eq "--Submit" ){
 	system(sprintf("./subs \"<DataType>\"                \"$DataType[$idx]\"                     $dir/HLT_Tau_Ntuple_cfg.py"));
 	system(sprintf("./subs \"<globaltag>\"               \"$globaltag[$idx]\"                    $dir/HLT_Tau_Ntuple_cfg.py"));
 	system(sprintf("./subs \"<Pile_Up_File>\"            \"$pileupfile[$idx]\"                   $dir/HLT_Tau_Ntuple_cfg.py"));
+	system(sprintf("./subs \"<PRESELECTION>\"            \"$preselection[$idx]\"                 $dir/HLT_Tau_Ntuple_cfg.py"));
+	system(sprintf("./subs \"<datasetpath>\"             \"$datasetpath[$idx]\"                  $dir/HLT_Tau_Ntuple_cfg.py"));
 	system(sprintf("./subs \"<Pile_Up_File>\"            \"$pileupfile[$idx]\"                   $dir/crab.cfg"));
 	system(sprintf("./subs \"<datasetpath>\"             \"$datasetpath[$idx]\"                  $dir/crab.cfg"));
 	system(sprintf("./subs \"<dbs_url>\"                 \"$dbs_url[$idx] \"                     $dir/crab.cfg"));
@@ -335,17 +342,17 @@ if( $ARGV[0] eq "--CheckandCleanOutput" ){
             foreach $file (@files){
 		system(sprintf("grep \"LFN:\"  $myDIR/$datadir/$subdir/res/$file  | grep -v \"echo\"  >> junk1"));
 	    }
-	    system(sprintf("cat junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"TauNtuple\"a[2] }' | tee $myDIR/$datadir/OutputFilesfromlog.log"));
-	    system(sprintf("tail -n 1 junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"uberftp grid-ftp.physik.rwth-aachen.de \\\"cd /pnfs/physik.rwth-aachen.de/cms\"  a[1]  \" ; ls */ \\\" | tee junk3 \"}' > junk2")); 
+		system(sprintf("cat junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"TauNtuple\"a[2] }' | tee $myDIR/$datadir/OutputFilesfromlog.log"));
+		system(sprintf("tail -n 1 junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"uberftp grid-ftp.physik.rwth-aachen.de \\\"cd /pnfs/physik.rwth-aachen.de/cms\" a[1] \" ; ls */ \\\" | tee junk3 \"}' > junk2"));
 
 	    $FilesonDisk="$myDIR/$datadir/OutputFilesfromDisk.log";
-	    system(sprintf("echo \"grep root junk3 | awk '{print \\\$9 }'| tee $FilesonDisk   \" >> junk2"));
+	    system(sprintf("echo \"grep root junk3 | awk '{print \\\$8 }'| tee $FilesonDisk   \" >> junk2"));
 	    system(sprintf("source junk2;"));
 
 	    open(DAT, $FilesonDisk) || die("Could not open file $FilesonDisk!");
             while ($item = <DAT>) {
                 chomp($item);
-		system(sprintf("tail -n 1 junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"uberftp grid-ftp.physik.rwth-aachen.de \\\"cd /pnfs/physik.rwth-aachen.de/cms\"  a[1]  \" ; rm $item \\\" \"}' >> junk5"));
+		system(sprintf("tail -n 1 junk1 | awk '{ split(\$2,a,\"/TauNtuple\"); print \"uberftp grid-ftp.physik.rwth-aachen.de \\\"cd /pnfs/physik.rwth-aachen.de/cms\"  a[1] \" ; rm $item \\\" \"}' >> junk5"));
 
 	    }
 	    close(DAT);
