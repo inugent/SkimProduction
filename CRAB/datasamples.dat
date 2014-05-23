@@ -9,7 +9,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list =  T2_DE_DESY
 
 DataType = Data
 datasetpath = /MuEG/Run2012B-22Jan2013-v1/AOD
@@ -22,7 +21,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list =  T2_DE_DESY
 
 DataType = Data
 datasetpath = /MuEG/Run2012C-22Jan2013-v1/AOD
@@ -35,7 +33,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list =  T2_DE_DESY
 
 DataType = Data
 datasetpath = /MuEG/Run2012D-22Jan2013-v1/AOD
@@ -48,7 +45,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list =  T2_DE_DESY
 
 DataType = Data
 datasetpath = /DoubleElectron/Run2012A-22Jan2013-v1/AOD
@@ -61,7 +57,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = DoubleEle
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list =  T2_DE_DESY
 
 DataType = Data
 datasetpath = /DoubleElectron/Run2012B-22Jan2013-v1/AOD
@@ -74,7 +69,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = DoubleEle
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list =  T2_DE_DESY
 
 DataType = Data
 datasetpath = /DoubleElectron/Run2012C-22Jan2013-v1/AOD
@@ -87,7 +81,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = DoubleEle
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list =  T2_DE_DESY
 
 DataType = Data
 datasetpath = /DoubleElectron/Run2012D-22Jan2013-v1/AOD
@@ -100,7 +93,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = DoubleEle
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list =  T2_DE_DESY
 
 DataType = Data
 datasetpath = /DoubleMu/Run2012A-22Jan2013-v1/AOD
@@ -113,7 +105,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = DoubleMu
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list =  T2_DE_DESY
 
 DataType = Data
 datasetpath = /DoubleMuParked/Run2012B-22Jan2013-v1/AOD
@@ -126,7 +117,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = DoubleMu
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list =  T2_DE_DESY
 
 DataType = Data
 datasetpath = /DoubleMuParked/Run2012C-22Jan2013-v1/AOD
@@ -139,7 +129,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = DoubleMu
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list =  T2_DE_DESY
 
 DataType = Data
 datasetpath = /DoubleMuParked/Run2012D-22Jan2013-v1/AOD
@@ -152,7 +141,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = DoubleMu
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list =  T2_DE_DESY
 
 DataType = Data
 datasetpath = /TauPlusX/Run2012A-22Jan2013-v1/AOD
@@ -177,7 +165,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list = T2_DE_RWTH
 
 DataType = Data
 datasetpath = /TauPlusX/Run2012C-22Jan2013-v1/AOD
@@ -190,7 +177,6 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list = T2_DE_RWTH
   
 DataType = Data
 datasetpath = /TauPlusX/Run2012D-22Jan2013-v1/AOD
@@ -203,4 +189,3 @@ number_of_jobs = 450
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
 preselection = Standard
 Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
-se_white_list = T2_DE_RWTH 
