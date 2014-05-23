@@ -7,7 +7,7 @@ total_number_of_events = -1
 number_of_jobs = 10
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_mue
 datasetpath = /SignalMC_Z2MuE_v7_GEN-SIM-RAW/anehrkor-SignalMC_Z2MuE_v7_AODSIM-d7f8f1e306baff866e162d27fb2d0504/USER
@@ -18,7 +18,7 @@ total_number_of_events = -1
 number_of_jobs = 10
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_ee
 datasetpath = /DYToEE_M-20_CT10_TuneZ2star_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -29,7 +29,7 @@ total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_mumu
 datasetpath = /DYToMuMu_M-20_CT10_TuneZ2star_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -40,7 +40,7 @@ total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_tautau
 datasetpath = /DYToTauTau_M-20_CT10_TuneZ2star_v2_8TeV-powheg-tauola-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM
@@ -51,7 +51,7 @@ total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = ww_2l2nu
 datasetpath = /WWJetsTo2L2Nu_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -62,7 +62,7 @@ total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = wz_3l1nu
 datasetpath = /WZJetsTo3LNu_TuneZ2_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -73,7 +73,7 @@ total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = wz_2l2q
 datasetpath = /WZJetsTo2L2Q_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -84,7 +84,7 @@ total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = zz_4l
 datasetpath = /ZZJetsTo4L_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -95,7 +95,7 @@ total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = zz_2l2q
 datasetpath = /ZZJetsTo2L2Q_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -106,7 +106,7 @@ total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = zz_2l2nu
 datasetpath = /ZZJetsTo2L2Nu_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v3/AODSIM
@@ -117,7 +117,7 @@ total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = ttbar
 datasetpath = /TT_CT10_TuneZ2star_8TeV-powheg-tauola/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM
@@ -128,7 +128,7 @@ total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = tw
 datasetpath = /T_tW-channel-DR_TuneZ2star_8TeV-powheg-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -139,7 +139,7 @@ total_number_of_events = -1
 number_of_jobs = 200
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = tbarw
 datasetpath = /Tbar_tW-channel-DR_TuneZ2star_8TeV-powheg-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -150,7 +150,7 @@ total_number_of_events = -1
 number_of_jobs = 200
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = hplusbwb
 datasetpath = /TTToHplusBWB_M-80_8TeV_ext-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM
@@ -161,7 +161,7 @@ total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = hplusbwb
 datasetpath = /TTToHplusBWB_M-120_8TeV_ext-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM
@@ -172,7 +172,7 @@ total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = hplusbwb
 datasetpath = /TTToHplusBWB_M-160_8TeV_ext-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM
@@ -183,7 +183,7 @@ total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = w_lnu
 datasetpath = /WJetsToLNu_TuneZ2Star_8TeV-madgraph-tarball/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -194,7 +194,7 @@ total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = w_lnu
 datasetpath = /WJetsToLNu_TuneZ2Star_8TeV-madgraph-tarball/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM
@@ -205,7 +205,7 @@ total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = h_tautau_ggf
 datasetpath = /GluGluToHToTauTau_M-125_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -216,7 +216,7 @@ total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = h_tautau_vbf
 datasetpath = /VBF_HToTauTau_M-125_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -227,7 +227,7 @@ total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = h_tautau_whzhtth
 datasetpath = /WH_ZH_TTH_HToTauTau_M-125_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
@@ -238,4 +238,4 @@ total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
 preselection = Standard
-Pile_Up_File = Lumi_190456_208686MC_PU_S10_andData.root
+Pile_Up_File = Lumi_OfficialAndHtautau.root
