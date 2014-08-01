@@ -76,6 +76,16 @@ if not ("<DataType>" == "Data") and not ("embedded" in "<DataType>"):
     process.JetSequence += process.myPartons
     process.JetSequence += process.PFAK5byRef
     process.JetSequence += process.PFAK5byValAlgo
+    
+# get gen jets without neutrinos
+    from RecoJets.Configuration.GenJetParticles_cff import genParticlesForJetsNoNu
+    process.genParticlesForJetsNoNu = genParticlesForJetsNoNu
+
+    from RecoJets.JetProducers.ak5GenJets_cfi import ak5GenJets
+    process.ak5GenJetsNoNu = ak5GenJets.clone( src = cms.InputTag("genParticlesForJetsNoNu") )
+    
+    process.JetSequence += process.genParticlesForJetsNoNu
+    process.JetSequence += process.ak5GenJetsNoNu
 
 
 ############ MET #############
