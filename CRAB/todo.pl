@@ -182,7 +182,7 @@ if( $ARGV[0] eq "--Submit" ){
 	    system(sprintf("cd $dir ; crab -create -submit $njobs ; cd .."));
 	}
 	else{
-	    system(sprintf("echo 'cd $dir ; crab -create ; crab -submit 1; cd ..' >>  createandsubmittest \n"));
+	    system(sprintf("echo 'cd $dir ; crab -create ; python ../SetEnvForLHAPDF.py ; crab -submit 1; cd ..' >>  createandsubmittest \n"));
 	    system(sprintf("echo 'cd $dir ; crab -submit ; cd ..' >>  submitall \n"));
 	    system(sprintf("echo 'cd $dir;  crab -status; crab -getoutput; cd ..' >> getoutput \n"));
 	    system(sprintf("echo \"cd $dir; crab -status | grep -A 2 \\\"resubmit\\\" | grep \\\"jobs:\\\" | awk '{print \\\"crab -resubmit \\\" \\\$4}' | tee junk; source junk; cd ..\" >>  resubmit \n"));
@@ -193,6 +193,7 @@ if( $ARGV[0] eq "--Submit" ){
     	$idx++;  
     }
     printf("The Submission Directories have been set up....\n");
+    printf("Make sure to FIRST create the jobs, SECOND call the script SetEnvForLHAPDF.py in each jobdir separately, THIRD submit the jobs.");
     printf("To create and submit a test version of your crab jobs: source createandsubmittest \n");
     printf("To create and submit the crab jobs: source submitall \n");
     printf("To get the log files from the crab jobs: source getoutput \n");

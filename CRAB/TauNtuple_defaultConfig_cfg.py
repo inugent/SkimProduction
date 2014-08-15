@@ -76,6 +76,16 @@ if not ("<DataType>" == "Data") and not ("embedded" in "<DataType>"):
     process.JetSequence += process.myPartons
     process.JetSequence += process.PFAK5byRef
     process.JetSequence += process.PFAK5byValAlgo
+    
+# get gen jets without neutrinos
+    from RecoJets.Configuration.GenJetParticles_cff import genParticlesForJetsNoNu
+    process.genParticlesForJetsNoNu = genParticlesForJetsNoNu
+
+    from RecoJets.JetProducers.ak5GenJets_cfi import ak5GenJets
+    process.ak5GenJetsNoNu = ak5GenJets.clone( src = cms.InputTag("genParticlesForJetsNoNu") )
+    
+    process.JetSequence += process.genParticlesForJetsNoNu
+    process.JetSequence += process.ak5GenJetsNoNu
 
 
 ############ MET #############
@@ -244,6 +254,28 @@ process.options = cms.untracked.PSet(
     Rethrow = cms.untracked.vstring('ProductNotFound')
     )
 
+####################### PDFweights #####################
+if "powheg" in "<datasetpath>":
+    process.pdfWeighting = cms.EDProducer("PdfWeightProducer",
+                                    FixPOWHEG = cms.untracked.string("CT10.LHgrid"),
+                                    GenTag = cms.untracked.InputTag("genParticles"),
+                                    PdfInfoTag = cms.untracked.InputTag("generator"),
+                                    PdfSetNames = cms.untracked.vstring( # a maximum of three pdf sets is possible
+                                        "NNPDF21_100.LHgrid",
+                                        "MSTW2008nlo68cl.LHgrid"
+                                        )
+                                    )
+else:
+    process.pdfWeighting = cms.EDProducer("PdfWeightProducer",
+                                    GenTag = cms.untracked.InputTag("genParticles"),
+                                    PdfInfoTag = cms.untracked.InputTag("generator"),
+                                    PdfSetNames = cms.untracked.vstring( # a maximum of three pdf sets is possible
+                                        "CT10.LHgrid",
+                                        "NNPDF21_100.LHgrid",
+                                        "MSTW2008nlo68cl.LHgrid"
+                                        )
+                                    )
+
 ####################### TauNtuple ######################
 process.load("TauDataFormat.TauNtuple.triggerFilter_cfi")
 process.load("TauDataFormat.TauNtuple.cuts_cfi")
@@ -271,6 +303,12 @@ process.NtupleMaker.PUInputHistoData_m5  = cms.untracked.string("official_h_1904
 process.NtupleMaker.PUInputHistoMCFineBins = cms.untracked.string("htautau_mc_pileup")
 process.NtupleMaker.PUInputHistoDataFineBins = cms.untracked.string("htautau_data_pileup")
 
+###### save pdf weights
+process.NtupleMaker.pdfWeights = cms.VInputTag(
+                        "pdfWeighting:CT10",
+                        "pdfWeighting:NNPDF21",
+                        "pdfWeighting:MSTW2008nlo68cl"
+                        )
                         
 ###### New HPS
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
@@ -425,6 +463,7 @@ if "embedded" in "<DataType>":
                                   * process.MetSequence
                                   * secondLevelPreselection
                                   * process.EvntCounterB
+                                  * process.pdfWeighting
                                   * process.NtupleMaker)
 else:
     process.TauNtupleSkim  = cms.Path(process.EvntCounterA
@@ -439,6 +478,7 @@ else:
                                   * process.MetSequence
                                   * secondLevelPreselection
                                   * process.EvntCounterB
+                                  * process.pdfWeighting
                                   * process.NtupleMaker)
 
 
