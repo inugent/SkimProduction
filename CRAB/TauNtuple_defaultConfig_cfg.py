@@ -255,7 +255,18 @@ process.options = cms.untracked.PSet(
     )
 
 ####################### PDFweights #####################
-process.pdfWeighting = cms.EDProducer("PdfWeightProducer",
+if "powheg" in "<datasetpath>":
+    process.pdfWeighting = cms.EDProducer("PdfWeightProducer",
+                                    FixPOWHEG = cms.untracked.string("CT10.LHgrid"),
+                                    GenTag = cms.untracked.InputTag("genParticles"),
+                                    PdfInfoTag = cms.untracked.InputTag("generator"),
+                                    PdfSetNames = cms.untracked.vstring( # a maximum of three pdf sets is possible
+                                        "NNPDF21_100.LHgrid",
+                                        "MSTW2008nlo68cl.LHgrid"
+                                        )
+                                    )
+else:
+    process.pdfWeighting = cms.EDProducer("PdfWeightProducer",
                                     GenTag = cms.untracked.InputTag("genParticles"),
                                     PdfInfoTag = cms.untracked.InputTag("generator"),
                                     PdfSetNames = cms.untracked.vstring( # a maximum of three pdf sets is possible
