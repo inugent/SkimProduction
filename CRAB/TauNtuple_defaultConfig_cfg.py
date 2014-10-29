@@ -25,6 +25,12 @@ process.load("Configuration.StandardSequences.Reconstruction_cff")
 
 ######################################################
 
+############ Electron isolation ############
+from CommonTools.ParticleFlow.Tools.pfIsolation import setupPFElectronIso
+process.eleIso = setupPFElectronIso(process, 'gsfElectrons')
+process.eleIsoSequence = cms.Sequence(process.pfParticleSelectionSequence
+                                      * proces.eleIso)
+
 ############ Jets #############
 # Jet energy corrections to use:
 JetCorrection = "ak5PFL1FastL2L3"
@@ -449,7 +455,7 @@ process.NtupleMaker.TauEtaCut = cms.double(2.4)
 process.NtupleMaker.ElectronPtCut = cms.double(8.0)
 process.NtupleMaker.ElectronEtaCut = cms.double(2.5)
 process.NtupleMaker.JetPtCut = cms.double(10.0)
-process.NtupleMaker.JetEtaCut = cms.double(4.7)
+process.NtupleMaker.JetEtaCut = cms.double(5.2)
 
 if "embedded" in "<DataType>":
     process.TauNtupleSkim  = cms.Path(process.EvntCounterA
@@ -459,6 +465,7 @@ if "embedded" in "<DataType>":
                                   * firstLevelPreselection
                                   * process.CountTriggerPassedEvents
                                   * process.recoTauClassicHPSSequence
+                                  * process.eleIsoSequence
                                   * process.JetSequence
                                   * process.MetSequence
                                   * secondLevelPreselection
@@ -474,6 +481,7 @@ else:
                                   * firstLevelPreselection
                                   * process.CountTriggerPassedEvents
                                   * process.recoTauClassicHPSSequence
+                                  * process.eleIsoSequence
                                   * process.JetSequence
                                   * process.MetSequence
                                   * secondLevelPreselection

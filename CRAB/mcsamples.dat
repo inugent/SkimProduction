@@ -21,7 +21,7 @@ preselection = Standard
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_ee
-datasetpath = /DYToEE_M-20_CT10_TuneZ2star_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
+datasetpath = /DYToEE_M-20_CT10_TuneZ2star_v2_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
 dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
 publish_data_name = Production_<TAG>_dyee
 output_file = TauNtuple.root
@@ -32,7 +32,7 @@ preselection = Standard
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_mumu
-datasetpath = /DYToMuMu_M-20_CT10_TuneZ2star_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
+datasetpath = /DYToMuMu_M-20_CT10_TuneZ2star_v2_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM
 dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
 publish_data_name = Production_<TAG>_dymumu
 output_file = TauNtuple.root
