@@ -29,7 +29,7 @@ process.load("Configuration.StandardSequences.Reconstruction_cff")
 from CommonTools.ParticleFlow.Tools.pfIsolation import setupPFElectronIso
 process.eleIso = setupPFElectronIso(process, 'gsfElectrons')
 process.eleIsoSequence = cms.Sequence(process.pfParticleSelectionSequence
-                                      * proces.eleIso)
+                                      * process.eleIso)
 
 ############ Jets #############
 # Jet energy corrections to use:
@@ -443,6 +443,9 @@ elif "<PRESELECTION>" == "DoubleEle":
 elif "<PRESELECTION>" == "MuJet":
     firstLevelPreselection = process.MuonPreselectionCuts
     secondLevelPreselection = process.MuJetPreselectionCuts
+elif "<PRESELECTION>" == "EMuTvariable":
+    firstLevelPreselection = process.MuOrElePreselectionCuts
+    secondLevelPreselection = process.EMuTvariablePreselectionCuts
 else:
     firstLevelPreselection = process.MuonPreselectionCuts
     secondLevelPreselection = process.PreselectionCuts
