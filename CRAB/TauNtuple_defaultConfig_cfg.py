@@ -238,6 +238,102 @@ process.MetSequence = cms.Sequence(process.correctionTermsPfMetType1Type2
                                       * process.pfMetMVAMuTau # customized MVA-MET
                                       )
 
+dopatmet = False
+dopatmet = True
+
+if dopatmet:
+    from PhysicsTools.PatAlgos.producersLayer1.metProducer_cfi import patMETs
+    process.patPfMetT0rt = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0rt'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0rtT1 = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0rtT1'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0pc = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0pc'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0pcT1 = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0pcT1'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0rtTxy = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0rtTxy'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0rtT1Txy = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0rtT1Txy'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0pcTxy = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0pcTxy'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0pcT1Txy = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0pcT1Txy'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT1 = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT1'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT1Txy = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT1Txy'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patCaloMetT1 = patMETs.clone(
+                                         metSource = cms.InputTag('caloMetT1'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patCaloMetT1T2 = patMETs.clone(
+                                         metSource = cms.InputTag('caloMetT1T2'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patMet = patMETs.clone(
+                                   metSource = cms.InputTag('pfMet'),
+                                   addMuonCorrections = cms.bool(False),
+                                   addGenMET = cms.bool(False)
+                                   )
+    process.patMVAMet = patMETs.clone(
+                                      metSource = cms.InputTag('pfMEtMVA'),
+                                      addMuonCorrections = cms.bool(False),
+                                      addGenMET = cms.bool(False)
+                                      )
+    process.patMVAMetMuTau = patMETs.clone(
+                                           metSource = cms.InputTag('pfMetMVAMuTau'),
+                                           addMuonCorrections = cms.bool(False),
+                                           addGenMET = cms.bool(False)
+                                           )
+    process.MetSequence += process.patPfMetT0rt
+    process.MetSequence += process.patPfMetT0rtT1
+    process.MetSequence += process.patPfMetT0pc
+    process.MetSequence += process.patPfMetT0pcT1
+    process.MetSequence += process.patPfMetT0rtTxy
+    process.MetSequence += process.patPfMetT0rtT1Txy
+    process.MetSequence += process.patPfMetT0pcTxy
+    process.MetSequence += process.patPfMetT0pcT1Txy
+    process.MetSequence += process.patPfMetT1
+    process.MetSequence += process.patPfMetT1Txy
+    process.MetSequence += process.patCaloMetT1
+    process.MetSequence += process.patCaloMetT1T2
+    process.MetSequence += process.patMet
+    process.MetSequence += process.patMVAMet
+    process.MetSequence += process.patMVAMetMuTau
+
 ###############
 
 process.source = cms.Source("PoolSource",
@@ -297,7 +393,7 @@ process.CountKinFitPassedEvents = process.EvntCounterB.clone()
 process.CountKinFitPassedEvents.CounterType = cms.untracked.string("CountKinFitPassedEvents")
 
 process.NtupleMaker.doPatJets = cms.untracked.bool(False)
-process.NtupleMaker.doPatMET = cms.untracked.bool(False)
+process.NtupleMaker.doPatMET = cms.untracked.bool(dopatmet)
 process.NtupleMaker.doMVAMET = cms.untracked.bool(True)
 
 ## change Pileup histograms to use
