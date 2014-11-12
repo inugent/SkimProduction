@@ -20,6 +20,30 @@ process.load('HLTrigger.Configuration.HLT_GRun_cff')
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 
+############ MET uncertainty tool ############
+# needs to go before everything else for some reason...
+# stolen from: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePATTools#MET_Systematics_Tools
+if not ("<DataType>" == "Data") and not ("embedded" in "<DataType>"):
+    process.load("PhysicsTools.PatAlgos.patSequences_cff")
+    #process.MetSequence += process.type0PFMEtCorrection
+    #process.MetSequence += process.patPFMETtype0Corr
+    from PhysicsTools.PatAlgos.patTemplate_cfg import *
+    from PhysicsTools.PatAlgos.tools.coreTools import *
+    from PhysicsTools.PatAlgos.tools.jetTools import *
+    from PhysicsTools.PatAlgos.tools.metTools import *
+    switchJetCollection(
+                        process,
+                        cms.InputTag('ak5PFJets'),
+                        doJTA = True,
+                        doBTagging = False,
+                        jetCorrLabel = ('AK5PF',cms.vstring(['L1FastJet','L2Relative','L3Absolute'])),
+                        doType1MET = False,
+                        doJetID = True,
+                        jetIdLabel = "ak5"
+                        )
+    from PhysicsTools.PatUtils.tools.metUncertaintyTools import runMEtUncertainties
+    runMEtUncertainties(process)
+
 # load full CMSSW reconstruction config, needed for btagging
 process.load("Configuration.StandardSequences.Reconstruction_cff")
 
@@ -571,6 +595,22 @@ if "embedded" in "<DataType>":
                                   * process.EvntCounterB
                                   * process.pdfWeighting
                                   * process.NtupleMaker)
+elif "<DataType>" == "Data":
+    process.TauNtupleSkim  = cms.Path(process.EvntCounterA
+                                  * process.metFilters
+                                  * process.eleRegressionEnergy
+                                  * process.calibratedElectrons
+                                  * process.MultiTrigFilter
+                                  * firstLevelPreselection
+                                  * process.CountTriggerPassedEvents
+                                  * process.recoTauClassicHPSSequence
+                                  * process.eleIsoSequence
+                                  * process.JetSequence
+                                  * process.MetSequence
+                                  * secondLevelPreselection
+                                  * process.EvntCounterB
+                                  * process.pdfWeighting
+                                  * process.NtupleMaker)
 else:
     process.TauNtupleSkim  = cms.Path(process.EvntCounterA
                                   * process.metFilters
@@ -586,6 +626,7 @@ else:
                                   * secondLevelPreselection
                                   * process.EvntCounterB
                                   * process.pdfWeighting
+                                  * process.patDefaultSequence #for MET uncertainties. Needs to be called after all other sequences.
                                   * process.NtupleMaker)
 
 
