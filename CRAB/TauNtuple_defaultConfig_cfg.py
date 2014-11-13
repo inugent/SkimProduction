@@ -380,28 +380,6 @@ process.options = cms.untracked.PSet(
     Rethrow = cms.untracked.vstring('ProductNotFound')
     )
 
-####################### PDFweights #####################
-if "powheg" in "<datasetpath>":
-    process.pdfWeighting = cms.EDProducer("PdfWeightProducer",
-                                    FixPOWHEG = cms.untracked.string("CT10.LHgrid"),
-                                    GenTag = cms.untracked.InputTag("genParticles"),
-                                    PdfInfoTag = cms.untracked.InputTag("generator"),
-                                    PdfSetNames = cms.untracked.vstring( # a maximum of three pdf sets is possible
-                                        "NNPDF21_100.LHgrid",
-                                        "MSTW2008nlo68cl.LHgrid"
-                                        )
-                                    )
-else:
-    process.pdfWeighting = cms.EDProducer("PdfWeightProducer",
-                                    GenTag = cms.untracked.InputTag("genParticles"),
-                                    PdfInfoTag = cms.untracked.InputTag("generator"),
-                                    PdfSetNames = cms.untracked.vstring( # a maximum of three pdf sets is possible
-                                        "CT10.LHgrid",
-                                        "NNPDF21_100.LHgrid",
-                                        "MSTW2008nlo68cl.LHgrid"
-                                        )
-                                    )
-
 ####################### TauNtuple ######################
 process.load("TauDataFormat.TauNtuple.triggerFilter_cfi")
 process.load("TauDataFormat.TauNtuple.cuts_cfi")
@@ -429,13 +407,6 @@ process.NtupleMaker.PUInputHistoData_m5  = cms.untracked.string("official_h_1904
 process.NtupleMaker.PUInputHistoMCFineBins = cms.untracked.string("htautau_mc_pileup")
 process.NtupleMaker.PUInputHistoDataFineBins = cms.untracked.string("htautau_data_pileup")
 
-###### save pdf weights
-process.NtupleMaker.pdfWeights = cms.VInputTag(
-                        "pdfWeighting:CT10",
-                        "pdfWeighting:NNPDF21",
-                        "pdfWeighting:MSTW2008nlo68cl"
-                        )
-                        
 ###### New HPS
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 ###### New HPS
@@ -593,7 +564,6 @@ if "embedded" in "<DataType>":
                                   * process.MetSequence
                                   * secondLevelPreselection
                                   * process.EvntCounterB
-                                  * process.pdfWeighting
                                   * process.NtupleMaker)
 elif "<DataType>" == "Data":
     process.TauNtupleSkim  = cms.Path(process.EvntCounterA
@@ -609,7 +579,6 @@ elif "<DataType>" == "Data":
                                   * process.MetSequence
                                   * secondLevelPreselection
                                   * process.EvntCounterB
-                                  * process.pdfWeighting
                                   * process.NtupleMaker)
 else:
     process.TauNtupleSkim  = cms.Path(process.EvntCounterA
@@ -625,7 +594,6 @@ else:
                                   * process.MetSequence
                                   * secondLevelPreselection
                                   * process.EvntCounterB
-                                  * process.pdfWeighting
                                   * process.patDefaultSequence #for MET uncertainties. Needs to be called after all other sequences.
                                   * process.NtupleMaker)
 
