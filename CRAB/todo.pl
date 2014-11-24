@@ -17,15 +17,13 @@ if($ARGV[0] eq "--help" || $ARGV[0] eq ""){
     printf("\nThe current input options are:");
     printf("\n    DataType = <DataType>");
     printf("\n    datasetpath = <datasetpath>");
-    printf("\n    dbs_url = <dbs_url>");
     printf("\n    publish_data_name = <publish_data_name>");
     printf("\n    output_file = <output_file>");
     printf("\n    lumi_mask = <lumi_mask>");
-    printf("\n    total_number_of_lumis = <total_number_of_lumis>");
-    printf("\n    total_number_of_events = <total_number_of_events>");
-    printf("\n    number_of_jobs = <number_of_jobs>");
-    printf("\n    se_white_list = <se_white_list>");
-    printf("\n    se_black_list = <se_black_list>");
+    printf("\n    splitting = <splitting>");
+    printf("\n    unitsPerJob = <unitsPerJob>");
+    printf("\n    white_list = <white_list>");
+    printf("\n    black_list = <black_list>");
     printf("\nList of DataTypes:\n");
     printf("    data, h_tautau, hpm_taunu, ttbar, w_lnu, w_enu, w_munu, w_taunu, dy_ll, dy_ee, dy_mumu, dy_tautau\n");
     printf("    ZZ, WW, WZ, qcd\n");
@@ -66,15 +64,13 @@ if( $ARGV[0] eq "--Submit" ){
     $TempDataSetFile=$ARGV[2];
     # Open ListofFile.txt
     @datasetpath;
-    @dbs_url;
     @publish_data_name;
     @output_file;
     @lumi_mask;
-    @total_number_of_lumis;
-    @total_number_of_events;
-    @number_of_jobs;
-    @se_white_list;
-    @se_black_list;
+    @splitting;
+    @unitsPerJob;
+    @white_list;
+    @black_list;
     @DataType;
     @globaltag;
     @pileupfile;
@@ -87,19 +83,18 @@ if( $ARGV[0] eq "--Submit" ){
 	if($a eq "DataType"){
 	    $idx++;
 	    push(@datasetpath,"");
-	    push(@dbs_url,"");
 	    push(@publish_data_name,"");
 	    push(@output_file,"");
 	    push(@lumi_mask,"");
-	    push(@total_number_of_lumis,"");
-	    push(@total_number_of_events,"");
-	    push(@number_of_jobs,"");
-	    push(@se_white_list,"");
-	    push(@se_black_list,"");
+	    push(@splitting,"");
+	    push(@unitsPerJob,"");
+	    push(@white_list,"");
+	    push(@black_list,"");
 	    push(@DataType,$c);
 	    push(@globaltag,"");
             push(@pileupfile,"");
             push(@preselection,"");
+
 	}
         if($a eq "process.GlobalTag.globaltag"){
             $globaltag[$idx]=$item;
@@ -107,10 +102,7 @@ if( $ARGV[0] eq "--Submit" ){
         if($a eq "datasetpath"){
             $datasetpath[$idx]=$item;
         }
-	if($a eq "dbs_url"){
-	    $dbs_url[$idx]=$item;
-	}
-        if($a eq "publish_data_name"){
+        if($a eq "publishDataName"){
             $publish_data_name[$idx]=$item . $time;
 	}
 	if($a eq "output_file"){
@@ -119,20 +111,17 @@ if( $ARGV[0] eq "--Submit" ){
 	if($a eq "lumi_mask"){
 	    $lumi_mask[$idx]=$item;
 	}
-	if($a eq "total_number_of_lumis"){
-	    $total_number_of_lumis[$idx]=$item;
+	if($a eq "splitting"){
+	    $splitting[$idx]=$item;
 	}
-	if($a eq "total_number_of_events"){
-	    $total_number_of_events[$idx]=$item;
+	if($a eq "unitsPerJob"){
+	    $unitsPerJob[$idx]=$item;
 	}
-	if($a eq "number_of_jobs"){
-	    $number_of_jobs[$idx]=$item;
-	}
-        if($a eq "se_white_list"){
-            $se_white_list[$idx]=$item;
+        if($a eq "whitelist"){
+            $white_list[$idx]=$item;
         }
-        if($a eq "se_black_list"){
-            $se_black_list[$idx]=$item;
+        if($a eq "blacklist"){
+            $black_list[$idx]=$item;
         }
 	if($a eq "Pile_Up_File"){
 	    $pileupfile[$idx]=$c;
@@ -150,34 +139,46 @@ if( $ARGV[0] eq "--Submit" ){
 	$dir=~ s/DataType =/ /g;
 	$dir.=sprintf("%d", $idx);
 	printf("\ncreating dir: $dir\n");
-	system(sprintf("rm $dir -rf; mkdir $dir; cp crab_TEMPLATE.cfg  $dir/crab.cfg;cp $pythonfile $dir/HLT_Tau_Ntuple_cfg.py"));
+	system(sprintf("rm $dir -rf; mkdir $dir; cp crab_TEMPLATE.cfg  $dir/crab.cfg;cp $pythonfile $dir/TauStudy_cfg.py"));
 	system(sprintf("cp ../../data/$pileupfile[$idx] $dir"));
-	system(sprintf("./subs \"<DataType>\"                \"$DataType[$idx]\"                     $dir/HLT_Tau_Ntuple_cfg.py"));
-	system(sprintf("./subs \"<globaltag>\"               \"$globaltag[$idx]\"                    $dir/HLT_Tau_Ntuple_cfg.py"));
-	system(sprintf("./subs \"<Pile_Up_File>\"            \"$pileupfile[$idx]\"                   $dir/HLT_Tau_Ntuple_cfg.py"));
-	system(sprintf("./subs \"<PRESELECTION>\"            \"$preselection[$idx]\"                 $dir/HLT_Tau_Ntuple_cfg.py"));
-	system(sprintf("./subs \"<datasetpath>\"             \"$datasetpath[$idx]\"                  $dir/HLT_Tau_Ntuple_cfg.py"));
+	system(sprintf("./subs \"<DataType>\"                \"$DataType[$idx]\"                     $dir/TauStudy_cfg.py"));
+	system(sprintf("./subs \"<globaltag>\"               \"$globaltag[$idx]\"                    $dir/TauStudy_cfg.py"));
+	system(sprintf("./subs \"<Pile_Up_File>\"            \"$pileupfile[$idx]\"                   $dir/TauStudy_cfg.py"));
+	system(sprintf("./subs \"<PRESELECTION>\"            \"$preselection[$idx]\"                 $dir/TauStudy_cfg.py"));
+	system(sprintf("./subs \"<datasetpath>\"             \"$datasetpath[$idx]\"                  $dir/TauStudy_cfg.py"));
 	system(sprintf("./subs \"<Pile_Up_File>\"            \"$pileupfile[$idx]\"                   $dir/crab.cfg"));
-	system(sprintf("./subs \"<datasetpath>\"             \"$datasetpath[$idx]\"                  $dir/crab.cfg"));
-	system(sprintf("./subs \"<dbs_url>\"                 \"$dbs_url[$idx] \"                     $dir/crab.cfg"));
-	system(sprintf("./subs \"<publish_data_name>\"       \"$publish_data_name[$idx] \"           $dir/crab.cfg"));
-	system(sprintf("./subs \"<output_file>\"             \"$output_file[$idx] \"                 $dir/crab.cfg"));
-	if($lumi_mask[$idx] ne "none"){
+	$dataset=$datasetpath[$idx]; $dataset=~ s/datasetpath = //g; $dataset=~ s/ //g;
+	system(sprintf("./subs \"<datasetpath>\"             \"$dataset\"                  $dir/crab.cfg"));
+	system(sprintf("./subs \"<publish_data_name>\"       \"$publish\"           $dir/crab.cfg"));
+	$output=$output_file[$idx]; $output=~ s/output_file = //g; $output=~ s/ //g;
+	system(sprintf("./subs \"<output_file>\"             \"$output\"                 $dir/crab.cfg"));
+	if($lumi_mask[$idx] ne "none" && $lumi_mask[$idx] ne " "){
 	    $lumifile=$lumi_mask[$idx];
-	    $lumifile=~ s/lumi_mask =/ /g;
+	    $lumifile=~ s/lumi_mask = / /g; $lumifile=~ s/ //g;
 	    system(sprintf("cp $lumifile $dir"));
-	    system(sprintf("./subs \"<lumi_mask>\"              \"$lumi_mask[$idx] \"                $dir/crab.cfg"));
-	    system(sprintf("./subs \"<total_number_of_lumis>\"  \"$total_number_of_lumis[$idx] \"    $dir/crab.cfg"));
+	    system(sprintf("./subs \"<lumi_mask>\"          \"config.Data.lumiMask = '$lumifile' \"    $dir/crab.cfg"));
 	}
-	system(sprintf("./subs \"<total_number_of_events>\" \"$total_number_of_events[$idx] \"       $dir/crab.cfg"));
-	system(sprintf("./subs \"<number_of_jobs>\"         \"$number_of_jobs[$idx] \"               $dir/crab.cfg"));
-	system(sprintf("./subs \"<number_of_jobs>\"         \"$number_of_jobs[$idx] \"               $dir/crab.cfg"));
-	if($se_white_list[$idx] ne "none" || $se_white_list[$idx] ne ""){
-	    system(sprintf("./subs \"<se_white_list>\"          \"$se_white_list[$idx] \"            $dir/crab.cfg"));
+	else{
+	    system(sprintf("./subs \"<lumi_mask>\"          \" \"    $dir/crab.cfg"));
 	}
-	if($se_black_list[$idx] ne "none" || $se_black_list[$idx] ne ""){
-            system(sprintf("./subs \"<se_black_list>\"          \"$se_black_list[$idx] \"            $dir/crab.cfg"));
+	system(sprintf("./subs \"<splitting>\"              \"$splitting[$idx] \"                    $dir/crab.cfg"));
+	system(sprintf("./subs \"<unitsPerJob>\"            \"$unitsPerJob[$idx] \"                  $dir/crab.cfg"));
+	$whitelist=$white_list[$idx];
+	$whitelist=~ s/whitelist =/ /g; $whitelist=~ s/ //g;
+	if($whitelist ne "none" && $whitelist ne ""){
+	    system(sprintf("./subs \"<whitelist>\"          \"config.Site.whitelist = \[$whitelist\] \"            $dir/crab.cfg"));
+	}
+	else{
+	    system(sprintf("./subs \"<whitelist>\"          \" \"            $dir/crab.cfg"));
+	}
+	$blacklist=$black_list[$idx];
+	$black_list=~ s/blacklist =/ /g;$black_list=~ s/ //g;
+	if($blacklist ne "none" && $blacklist ne ""){
+            system(sprintf("./subs \"<blacklist>\"          \"config.Site.blacklist = \[$blacklist\] \"            $dir/crab.cfg"));
         }
+	else{
+	    system(sprintf("./subs \"<blacklist>\"          \" \"            $dir/crab.cfg"));
+	}
 	if($njobs !=0){
 	    system(sprintf("cd $dir ; crab -create -submit $njobs ; cd .."));
 	}
@@ -198,7 +199,6 @@ if( $ARGV[0] eq "--Submit" ){
     printf("To create and submit the crab jobs: source submitall \n");
     printf("To get the log files from the crab jobs: source getoutput \n");
     printf("NOTE: PLEASE VALIDATE YOUR CODE RUNS BEFORE SUBMITTING ALL JOBS (ie source createandsubmittest)\n");
-
 }
 
 
@@ -244,10 +244,17 @@ if( $ARGV[0] eq "--SkimSummary" ){
 	closedir DIR;
 	foreach $subdir (@dirs){
 	    printf("Opening Dir: $myDIR/$datadir/$subdir\n");
-	    opendir(SUBDIR,"$myDIR/$datadir/$subdir/res/");
+	    opendir(SUBDIR,"$myDIR/$datadir/$subdir/results/");
+            opendir(SUBDIR,"$myDIR/$datadir/$subdir/results/");
+	    chdir $myDIR."/".$datadir."/".$subdir."/results/";
+            @tarfiles = grep { /tar/ } readdir(SUBDIR);
+            foreach $tarfile (@tarfiles){
+                system(sprintf("tar -xzvf $tarfile"));
+            }
+	    chdir $myDIR;
 	    @files = grep { /stdout/ } readdir(SUBDIR);
 	    foreach $file (@files){
-		open(INPUT,"$myDIR/$datadir/$subdir/res/$file")  || die "can't open log file $myDIR/$datadir/$subdir/res/$file" ;
+		open(INPUT,"$myDIR/$datadir/$subdir/results/$file")  || die "can't open log file $myDIR/$datadir/$subdir/res/$file" ;
 		while (<INPUT>) {
 		    ($i1,$i2,$i3,$i4,$i5,$i6,$i7,$i8,$i9,$i10,$i11,$i12,$i13)=split(/ /,$_);
 		    if($i1 eq "[EventCounter-AllEvents]:" || $i1 eq "[EventCounter-BeforeTauNtuple]:"){
@@ -338,6 +345,10 @@ if( $ARGV[0] eq "--CheckandCleanOutput" ){
             system(sprintf("rm FileSummary.log"));
             printf("Opening Dir: $myDIR/$datadir/$subdir\n");
             opendir(SUBDIR,"$myDIR/$datadir/$subdir/res/");
+	    @tarfiles = grep { /tar/ } readdir(SUBDIR);
+	    foreach $tarfile (@tarfiles){
+		system(sprintf("tar -xzvf $tarfile"));
+	    }
             @files = grep { /stdout/ } readdir(SUBDIR);
 	    system(sprintf("rm junk1; touch junk1; touch junk5"));	    
             foreach $file (@files){
