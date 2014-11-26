@@ -20,10 +20,40 @@ process.load('HLTrigger.Configuration.HLT_GRun_cff')
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 
+############ MET uncertainty tool ############
+# needs to go before everything else for some reason...
+# stolen from: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePATTools#MET_Systematics_Tools
+if not ("<DataType>" == "Data") and not ("embedded" in "<DataType>"):
+    process.load("PhysicsTools.PatAlgos.patSequences_cff")
+    #process.MetSequence += process.type0PFMEtCorrection
+    #process.MetSequence += process.patPFMETtype0Corr
+    from PhysicsTools.PatAlgos.patTemplate_cfg import *
+    from PhysicsTools.PatAlgos.tools.coreTools import *
+    from PhysicsTools.PatAlgos.tools.jetTools import *
+    from PhysicsTools.PatAlgos.tools.metTools import *
+    switchJetCollection(
+                        process,
+                        cms.InputTag('ak5PFJets'),
+                        doJTA = True,
+                        doBTagging = False,
+                        jetCorrLabel = ('AK5PF',cms.vstring(['L1FastJet','L2Relative','L3Absolute'])),
+                        doType1MET = False,
+                        doJetID = True,
+                        jetIdLabel = "ak5"
+                        )
+    from PhysicsTools.PatUtils.tools.metUncertaintyTools import runMEtUncertainties
+    runMEtUncertainties(process)
+
 # load full CMSSW reconstruction config, needed for btagging
 process.load("Configuration.StandardSequences.Reconstruction_cff")
 
 ######################################################
+
+############ Electron isolation ############
+from CommonTools.ParticleFlow.Tools.pfIsolation import setupPFElectronIso
+process.eleIso = setupPFElectronIso(process, 'gsfElectrons')
+process.eleIsoSequence = cms.Sequence(process.pfParticleSelectionSequence
+                                      * process.eleIso)
 
 ############ Jets #############
 # Jet energy corrections to use:
@@ -232,6 +262,102 @@ process.MetSequence = cms.Sequence(process.correctionTermsPfMetType1Type2
                                       * process.pfMetMVAMuTau # customized MVA-MET
                                       )
 
+dopatmet = False
+dopatmet = True
+
+if dopatmet:
+    from PhysicsTools.PatAlgos.producersLayer1.metProducer_cfi import patMETs
+    process.patPfMetT0rt = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0rt'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0rtT1 = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0rtT1'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0pc = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0pc'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0pcT1 = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0pcT1'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0rtTxy = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0rtTxy'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0rtT1Txy = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0rtT1Txy'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0pcTxy = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0pcTxy'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT0pcT1Txy = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT0pcT1Txy'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT1 = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT1'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patPfMetT1Txy = patMETs.clone(
+                                         metSource = cms.InputTag('pfMetT1Txy'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patCaloMetT1 = patMETs.clone(
+                                         metSource = cms.InputTag('caloMetT1'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patCaloMetT1T2 = patMETs.clone(
+                                         metSource = cms.InputTag('caloMetT1T2'),
+                                         addMuonCorrections = cms.bool(False),
+                                         addGenMET = cms.bool(False)
+                                         )
+    process.patMet = patMETs.clone(
+                                   metSource = cms.InputTag('pfMet'),
+                                   addMuonCorrections = cms.bool(False),
+                                   addGenMET = cms.bool(False)
+                                   )
+    process.patMVAMet = patMETs.clone(
+                                      metSource = cms.InputTag('pfMEtMVA'),
+                                      addMuonCorrections = cms.bool(False),
+                                      addGenMET = cms.bool(False)
+                                      )
+    process.patMVAMetMuTau = patMETs.clone(
+                                           metSource = cms.InputTag('pfMetMVAMuTau'),
+                                           addMuonCorrections = cms.bool(False),
+                                           addGenMET = cms.bool(False)
+                                           )
+    process.MetSequence += process.patPfMetT0rt
+    process.MetSequence += process.patPfMetT0rtT1
+    process.MetSequence += process.patPfMetT0pc
+    process.MetSequence += process.patPfMetT0pcT1
+    process.MetSequence += process.patPfMetT0rtTxy
+    process.MetSequence += process.patPfMetT0rtT1Txy
+    process.MetSequence += process.patPfMetT0pcTxy
+    process.MetSequence += process.patPfMetT0pcT1Txy
+    process.MetSequence += process.patPfMetT1
+    process.MetSequence += process.patPfMetT1Txy
+    process.MetSequence += process.patCaloMetT1
+    process.MetSequence += process.patCaloMetT1T2
+    process.MetSequence += process.patMet
+    process.MetSequence += process.patMVAMet
+    process.MetSequence += process.patMVAMetMuTau
+
 ###############
 
 process.source = cms.Source("PoolSource",
@@ -254,28 +380,6 @@ process.options = cms.untracked.PSet(
     Rethrow = cms.untracked.vstring('ProductNotFound')
     )
 
-####################### PDFweights #####################
-if "powheg" in "<datasetpath>":
-    process.pdfWeighting = cms.EDProducer("PdfWeightProducer",
-                                    FixPOWHEG = cms.untracked.string("CT10.LHgrid"),
-                                    GenTag = cms.untracked.InputTag("genParticles"),
-                                    PdfInfoTag = cms.untracked.InputTag("generator"),
-                                    PdfSetNames = cms.untracked.vstring( # a maximum of three pdf sets is possible
-                                        "NNPDF21_100.LHgrid",
-                                        "MSTW2008nlo68cl.LHgrid"
-                                        )
-                                    )
-else:
-    process.pdfWeighting = cms.EDProducer("PdfWeightProducer",
-                                    GenTag = cms.untracked.InputTag("genParticles"),
-                                    PdfInfoTag = cms.untracked.InputTag("generator"),
-                                    PdfSetNames = cms.untracked.vstring( # a maximum of three pdf sets is possible
-                                        "CT10.LHgrid",
-                                        "NNPDF21_100.LHgrid",
-                                        "MSTW2008nlo68cl.LHgrid"
-                                        )
-                                    )
-
 ####################### TauNtuple ######################
 process.load("TauDataFormat.TauNtuple.triggerFilter_cfi")
 process.load("TauDataFormat.TauNtuple.cuts_cfi")
@@ -291,7 +395,7 @@ process.CountKinFitPassedEvents = process.EvntCounterB.clone()
 process.CountKinFitPassedEvents.CounterType = cms.untracked.string("CountKinFitPassedEvents")
 
 process.NtupleMaker.doPatJets = cms.untracked.bool(False)
-process.NtupleMaker.doPatMET = cms.untracked.bool(False)
+process.NtupleMaker.doPatMET = cms.untracked.bool(dopatmet)
 process.NtupleMaker.doMVAMET = cms.untracked.bool(True)
 
 ## change Pileup histograms to use
@@ -303,13 +407,6 @@ process.NtupleMaker.PUInputHistoData_m5  = cms.untracked.string("official_h_1904
 process.NtupleMaker.PUInputHistoMCFineBins = cms.untracked.string("htautau_mc_pileup")
 process.NtupleMaker.PUInputHistoDataFineBins = cms.untracked.string("htautau_data_pileup")
 
-###### save pdf weights
-process.NtupleMaker.pdfWeights = cms.VInputTag(
-                        "pdfWeighting:CT10",
-                        "pdfWeighting:NNPDF21",
-                        "pdfWeighting:MSTW2008nlo68cl"
-                        )
-                        
 ###### New HPS
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 ###### New HPS
@@ -404,15 +501,8 @@ process.NtupleMaker.doTrack= cms.untracked.bool(False)
 process.NtupleMaker.useFilterModules = cms.vstring("hltOverlapFilterIsoMu17LooseIsoPFTau20","hltL3crIsoL1sMu14erORMu16erL1f0L2f14QL3f17QL3crIsoRhoFiltered0p15", # HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v
                                                    "hltOverlapFilterIsoMu18LooseIsoPFTau20","hltL3crIsoL1sMu16Eta2p1L1f0L2f16QL3f18QL3crIsoFiltered10", # HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v
                                                    "hltL3crIsoL1sMu16Eta2p1L1f0L2f16QL3f24QL3crIsoRhoFiltered0p15","hltL3crIsoL1sMu16Eta2p1L1f0L2f16QL3f24QL3crIsoFiltered10", # HLT_IsoMu24_eta2p1_v
-                                                   "hltL3crIsoL1sMu16L1f0L2f16QL3f24QL3crIsoRhoFiltered0p15", # HLT_IsoMu24_v
                                                    "hltMu17Ele8CaloIdTCaloIsoVLTrkIdVLTrkIsoVLTrackIsoFilter","hltL1Mu12EG7L3MuFiltered17", # HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL
                                                    "hltMu8Ele17CaloIdTCaloIsoVLTrkIdVLTrkIsoVLTrackIsoFilter","hltL1sL1Mu3p5EG12ORL1MuOpenEG12L3Filtered8","hltL1MuOpenEG12L3Filtered8", # HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL
-                                                   "hltEle8CaloIdLCaloIsoVLPixelMatchFilter", # HLT_Ele8_CaloIdL_CaloIsoVL_v
-                                                   "hltEle8CaloIdTTrkIdVLDphiFilter", # HLT_Ele8_CaloIdT_TrkIdVL_v
-                                                   "hltEle8TightIdLooseIsoTrackIsoFilter", # HLT_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v
-                                                   "hltL3fL1sMu3L3Filtered8", # HLT_Mu8_v
-                                                   "hltL3fL1sMu7L3Filtered12", # HLT_Mu12_v
-                                                   "hltL3fL1sMu12L3Filtered17", # HLT_Mu17_v
                                                    "hltDiMuonGlb17Glb8DzFiltered0p2","hltL3fL1DoubleMu10MuOpenOR3p5L1f0L2f10L3Filtered17","hltL3fL1DoubleMu10MuOpenL1f0L2f10L3Filtered17","hltDiMuonMu17Mu8DzFiltered0p2","hltL3pfL1DoubleMu10MuOpenOR3p5L1f0L2pf0L3PreFiltered8","hltL3pfL1DoubleMu10MuOpenL1f0L2pf0L3PreFiltered8" # HLT_Mu17_Mu8_v
                                                    "hltEle17TightIdLooseIsoEle8TightIdLooseIsoTrackIsoDZ", # HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v
                                                    "hltEle27WP80TrackIsoFilter" # HLT_Ele27_WP80_v
@@ -420,10 +510,8 @@ process.NtupleMaker.useFilterModules = cms.vstring("hltOverlapFilterIsoMu17Loose
 
 #hlt paths
 process.MultiTrigFilter.useTriggers = cms.vstring("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v", # for mu+tau analyses
-                                                  "HLT_IsoMu24_eta2p1_v","HLT_IsoMu24_v", # for claudia and possible trigger efficiency measurements
+                                                  "HLT_IsoMu24_eta2p1_v", # for claudia and possible trigger efficiency measurements
                                                   "HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL","HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL", # for e+mu analysis
-                                                  "HLT_Ele8_CaloIdL_CaloIsoVL_v","HLT_Ele8_CaloIdT_TrkIdVL_v","HLT_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v", # for electron fake rate measurements
-                                                  "HLT_Mu8_v","HLT_Mu12_v","HLT_Mu17_v", # for muon fakerate measurements
                                                   "HLT_Mu17_Mu8_v","HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v","HLT_Ele27_WP80_v" # for trigger efficiency measurements
                                                   )
 
@@ -437,6 +525,9 @@ elif "<PRESELECTION>" == "DoubleEle":
 elif "<PRESELECTION>" == "MuJet":
     firstLevelPreselection = process.MuonPreselectionCuts
     secondLevelPreselection = process.MuJetPreselectionCuts
+elif "<PRESELECTION>" == "EMuTvariable":
+    firstLevelPreselection = process.MuOrElePreselectionCuts
+    secondLevelPreselection = process.EMuTvariablePreselectionCuts
 else:
     firstLevelPreselection = process.MuonPreselectionCuts
     secondLevelPreselection = process.PreselectionCuts
@@ -449,7 +540,7 @@ process.NtupleMaker.TauEtaCut = cms.double(2.4)
 process.NtupleMaker.ElectronPtCut = cms.double(8.0)
 process.NtupleMaker.ElectronEtaCut = cms.double(2.5)
 process.NtupleMaker.JetPtCut = cms.double(10.0)
-process.NtupleMaker.JetEtaCut = cms.double(4.7)
+process.NtupleMaker.JetEtaCut = cms.double(5.2)
 
 if "embedded" in "<DataType>":
     process.TauNtupleSkim  = cms.Path(process.EvntCounterA
@@ -459,11 +550,26 @@ if "embedded" in "<DataType>":
                                   * firstLevelPreselection
                                   * process.CountTriggerPassedEvents
                                   * process.recoTauClassicHPSSequence
+                                  * process.eleIsoSequence
                                   * process.JetSequence
                                   * process.MetSequence
                                   * secondLevelPreselection
                                   * process.EvntCounterB
-                                  * process.pdfWeighting
+                                  * process.NtupleMaker)
+elif "<DataType>" == "Data":
+    process.TauNtupleSkim  = cms.Path(process.EvntCounterA
+                                  * process.metFilters
+                                  * process.eleRegressionEnergy
+                                  * process.calibratedElectrons
+                                  * process.MultiTrigFilter
+                                  * firstLevelPreselection
+                                  * process.CountTriggerPassedEvents
+                                  * process.recoTauClassicHPSSequence
+                                  * process.eleIsoSequence
+                                  * process.JetSequence
+                                  * process.MetSequence
+                                  * secondLevelPreselection
+                                  * process.EvntCounterB
                                   * process.NtupleMaker)
 else:
     process.TauNtupleSkim  = cms.Path(process.EvntCounterA
@@ -474,11 +580,12 @@ else:
                                   * firstLevelPreselection
                                   * process.CountTriggerPassedEvents
                                   * process.recoTauClassicHPSSequence
+                                  * process.eleIsoSequence
                                   * process.JetSequence
                                   * process.MetSequence
                                   * secondLevelPreselection
                                   * process.EvntCounterB
-                                  * process.pdfWeighting
+                                  * process.patDefaultSequence #for MET uncertainties. Needs to be called after all other sequences.
                                   * process.NtupleMaker)
 
 
