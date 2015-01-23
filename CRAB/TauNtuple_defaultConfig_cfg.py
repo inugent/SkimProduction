@@ -522,9 +522,6 @@ if "<PRESELECTION>" == "DoubleMu":
 elif "<PRESELECTION>" == "DoubleEle":
     firstLevelPreselection = process.ElePreselectionCuts
     secondLevelPreselection = process.DoubleElePreselectionCuts
-elif "<PRESELECTION>" == "MuJet":
-    firstLevelPreselection = process.MuonPreselectionCuts
-    secondLevelPreselection = process.MuJetPreselectionCuts
 elif "<PRESELECTION>" == "EMuTvariable":
     firstLevelPreselection = process.MuOrElePreselectionCuts
     secondLevelPreselection = process.EMuTvariablePreselectionCuts
