@@ -5,7 +5,7 @@ import socket
 import HLTrigger.HLTfilters.triggerResultsFilter_cfi as hlt
 import FWCore.ParameterSet.VarParsing as VarParsing
 
-process = cms.Process("TauNTuple")
+process = cms.Process("TauNtupleProcess")
 
 process.load('Configuration/StandardSequences/Services_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
