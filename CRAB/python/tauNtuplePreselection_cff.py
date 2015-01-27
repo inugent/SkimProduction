@@ -11,9 +11,12 @@ def eventPreselection(process, preselection):
     elif preselection == "EMuTvariable":
         process.firstLevelPreselection = process.MuOrElePreselectionCuts
         process.secondLevelPreselection = process.EMuTvariablePreselectionCuts
+    elif preselection == "MuTau":
+        process.firstLevelPreselection = process.MuonPreselectionCuts
+        process.secondLevelPreselection = process.MuTauPreselectionCuts
     else:
         process.firstLevelPreselection = process.MuonPreselectionCuts
-        process.secondLevelPreselection = process.PreselectionCuts
+        process.secondLevelPreselection = process.NoPreselectionCuts
     
     # HLT paths to use
     process.MultiTrigFilter.useTriggers = cms.vstring("HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v","HLT_IsoMu18_eta2p1_LooseIsoPFTau20_v", # for mu+tau analyses
