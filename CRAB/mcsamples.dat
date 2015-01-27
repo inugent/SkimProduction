@@ -6,7 +6,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 10
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_mue
@@ -17,7 +17,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 10
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_ee
@@ -28,7 +28,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_mumu
@@ -39,7 +39,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_tautau
@@ -50,7 +50,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau/EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_ll
@@ -61,7 +61,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau/EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = ww_2l2nu
@@ -72,7 +72,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau/EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = wz_3l1nu
@@ -83,7 +83,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau/EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = wz_2l2q
@@ -94,7 +94,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau/EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = zz_4l
@@ -105,7 +105,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau/EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = zz_2l2q
@@ -116,7 +116,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau/EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = zz_2l2nu
@@ -127,7 +127,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau/EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = ttbar
@@ -138,7 +138,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 450
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau/EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = tw
@@ -149,7 +149,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 200
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau/EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = tbarw
@@ -160,40 +160,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 200
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
-Pile_Up_File = Lumi_OfficialAndHtautau.root
-
-DataType = hplusbwb
-datasetpath = /TTToHplusBWB_M-80_8TeV_ext-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM
-dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
-publish_data_name = Production_<TAG>_hplusbwb_m80
-output_file = TauNtuple.root
-total_number_of_events = -1
-number_of_jobs = 400
-process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
-Pile_Up_File = Lumi_OfficialAndHtautau.root
-
-DataType = hplusbwb
-datasetpath = /TTToHplusBWB_M-120_8TeV_ext-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM
-dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
-publish_data_name = Production_<TAG>_hplusbwb_m120
-output_file = TauNtuple.root
-total_number_of_events = -1
-number_of_jobs = 400
-process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
-Pile_Up_File = Lumi_OfficialAndHtautau.root
-
-DataType = hplusbwb
-datasetpath = /TTToHplusBWB_M-160_8TeV_ext-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM
-dbs_url = http://cmsdbsprod.cern.ch/cms_dbs_ph_analysis_01/servlet/DBSServlet
-publish_data_name = Production_<TAG>_hplusbwb_m160
-output_file = TauNtuple.root
-total_number_of_events = -1
-number_of_jobs = 400
-process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau/EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = w_lnu
@@ -204,7 +171,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = w_lnu
@@ -215,7 +182,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = h_tautau_ggf
@@ -226,7 +193,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = h_tautau_vbf
@@ -237,7 +204,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = h_tautau_whzhtth
@@ -248,5 +215,5 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'START53_V27::All'
-preselection = Standard
+preselection = MuTau
 Pile_Up_File = Lumi_OfficialAndHtautau.root

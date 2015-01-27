@@ -5,7 +5,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
-preselection = Standard
+preselection = MuTau
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_mutau_embedded
@@ -15,7 +15,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
-preselection = Standard
+preselection = MuTau
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_mutau_embedded
@@ -25,7 +25,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
-preselection = Standard
+preselection = MuTau
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_mutau_embedded
@@ -35,7 +35,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
-preselection = Standard
+preselection = MuTau
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_emu_embedded
@@ -45,7 +45,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
-preselection = Standard
+preselection = EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_emu_embedded
@@ -55,7 +55,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
-preselection = Standard
+preselection = EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_emu_embedded
@@ -65,7 +65,7 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
-preselection = Standard
+preselection = EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
 
 DataType = dy_emu_embedded
@@ -75,5 +75,5 @@ output_file = TauNtuple.root
 total_number_of_events = -1
 number_of_jobs = 400
 process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
-preselection = Standard
+preselection = EMuTvariable
 Pile_Up_File = Lumi_OfficialAndHtautau.root
