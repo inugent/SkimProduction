@@ -1,0 +1,79 @@
+DataType = dy_mutau_embedded
+datasetpath = /DoubleMu/StoreResults-Run2012A_22Jan2013_v1_RHembedded_trans1_tau116_ptmu1_16had1_18_v4-f456bdbb960236e5c696adfe9b04eaae/USER
+publish_data_name = Production_<TAG>_dy_mutau_embedded
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 400
+process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = MuTau
+Pile_Up_File = Lumi_OfficialAndHtautau.root
+
+DataType = dy_mutau_embedded
+datasetpath = /DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_RHembedded_trans1_tau116_ptmu1_16had1_18_v4-f456bdbb960236e5c696adfe9b04eaae/USER 
+publish_data_name = Production_<TAG>_dy_mutau_embedded
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 400
+process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = MuTau
+Pile_Up_File = Lumi_OfficialAndHtautau.root
+
+DataType = dy_mutau_embedded
+datasetpath = /DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_RHembedded_trans1_tau116_ptmu1_16had1_18_v4-f456bdbb960236e5c696adfe9b04eaae/USER 
+publish_data_name = Production_<TAG>_dy_mutau_embedded
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 400
+process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = MuTau
+Pile_Up_File = Lumi_OfficialAndHtautau.root
+
+DataType = dy_mutau_embedded
+datasetpath = /DoubleMuParked/StoreResults-V2-Run2012D_22Jan2013_v1_RHembedded_trans1_tau116_ptmu1_16had1_18_v4-f456bdbb960236e5c696adfe9b04eaae/USER 
+publish_data_name = Production_<TAG>_dy_mutau_embedded
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 400
+process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = MuTau
+Pile_Up_File = Lumi_OfficialAndHtautau.root
+
+DataType = dy_emu_embedded
+datasetpath = /DoubleMu/StoreResults-Run2012A_22Jan2013_v1_RHembedded_trans1_tau123_pttau1_18tau2_8_v4-f456bdbb960236e5c696adfe9b04eaae/USER
+publish_data_name = Production_<TAG>_dy_mutau_embedded
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 400
+process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = EMuTvariable
+Pile_Up_File = Lumi_OfficialAndHtautau.root
+
+DataType = dy_emu_embedded
+datasetpath = /DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_RHembedded_trans1_tau123_pttau1_18tau2_8_v4-f456bdbb960236e5c696adfe9b04eaae/USER 
+publish_data_name = Production_<TAG>_dy_mutau_embedded
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 400
+process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = EMuTvariable
+Pile_Up_File = Lumi_OfficialAndHtautau.root
+
+DataType = dy_emu_embedded
+datasetpath = /DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_RHembedded_trans1_tau123_pttau1_18tau2_8_v4-f456bdbb960236e5c696adfe9b04eaae/USER 
+publish_data_name = Production_<TAG>_dy_mutau_embedded
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 400
+process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = EMuTvariable
+Pile_Up_File = Lumi_OfficialAndHtautau.root
+
+DataType = dy_emu_embedded
+datasetpath = /DoubleMuParked/StoreResults-V2-Run2012D_22Jan2013_v1_RHembedded_trans1_tau123_pttau1_18tau2_8_v4-f456bdbb960236e5c696adfe9b04eaae/USER 
+publish_data_name = Production_<TAG>_dy_mutau_embedded
+output_file = TauNtuple.root
+total_number_of_events = -1
+number_of_jobs = 400
+process.GlobalTag.globaltag = 'FT53_V21A_AN6::All'
+preselection = EMuTvariable
+Pile_Up_File = Lumi_OfficialAndHtautau.root
